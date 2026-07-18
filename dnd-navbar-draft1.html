@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nav bar — first draft</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink: #0C0C0D;
+    --ink-raised: #16161A;
+    --paper: #F2EFE9;
+    --gold: #D9A441;
+    --gold-dim: #8A6E33;
+    --line: rgba(255,255,255,0.08);
+  }
+
+  *{ box-sizing: border-box; }
+  body{
+    margin:0;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* just to show the bar sitting over "art" so you can judge contrast */
+.hero-preview{
+  height: 60vh;
+  background-image:
+    linear-gradient(180deg, rgba(12,12,13,0.75) 0%, rgba(12,12,13,0.35) 40%, rgba(12,12,13,0.9) 100%),
+    url('images/hero-art.png');
+  background-size: cover;
+  background-position: center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+  .hero-preview p{
+    color: rgba(242,239,233,0.35);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  header{
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    transition: background .25s ease, border-color .25s ease, backdrop-filter .25s ease;
+    
+  }
+  header.scrolled{
+    background: rgba(12,12,13,0.7);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  nav{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 18px 32px;
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+  }
+
+  .logo{
+    display:flex;
+    align-items:center;
+    gap: 10px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.04em;
+    color: var(--paper);
+    text-decoration:none;
+  }
+  .logo-mark{
+    width: 20px;
+    height: 20px;
+    flex-shrink:0;
+  }
+
+  .nav-links{
+    display:flex;
+    gap: 36px;
+    list-style:none;
+    margin:0; padding:0;
+  }
+  .nav-links a{
+    position:relative;
+    color: rgba(242,239,233,0.75);
+    text-decoration:none;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    padding: 6px 0;
+    transition: color .15s ease;
+  }
+  .nav-links a::after{
+    content:"";
+    position:absolute;
+    left:0; bottom:0;
+    height:2px;
+    width:0;
+    background: var(--gold);
+    transition: width .2s ease;
+  }
+  .nav-links a:hover{
+    color: var(--paper);
+  }
+  .nav-links a:hover::after{
+    width: 100%;
+  }
+  .nav-links a.active{
+    color: var(--paper);
+  }
+  .nav-links a.active::after{
+    width: 100%;
+  }
+
+  .nav-right{
+    display:flex;
+    align-items:center;
+    gap: 20px;
+  }
+
+  .cart-link{
+    color: rgba(242,239,233,0.75);
+    text-decoration:none;
+    font-size: 14px;
+    display:flex;
+    align-items:center;
+    gap: 6px;
+    transition: color .15s ease;
+  }
+  .cart-link:hover{ color: var(--paper); }
+
+  .btn-cta{
+    background: var(--gold);
+    color: var(--ink);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration:none;
+    white-space:nowrap;
+    transition: background .15s ease, transform .15s ease;
+  }
+  .btn-cta:hover{
+    background: #E8B75A;
+    transform: translateY(-1px);
+  }
+
+  :focus-visible{
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
+
+  /* mobile */
+  .burger{
+    display:none;
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding: 6px;
+  }
+  .burger span{
+    display:block;
+    width: 22px;
+    height: 2px;
+    background: var(--paper);
+    margin: 5px 0;
+    transition: transform .2s ease, opacity .2s ease;
+  }
+
+  @media (max-width: 860px){
+    .nav-links{ display:none; }
+    .nav-right .btn-cta{ display:none; }
+    .burger{ display:block; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="#" class="logo">
+      <svg class="logo-mark" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L2 8.5L12 15L22 8.5L12 2Z" stroke="#D9A441" stroke-width="1.4" stroke-linejoin="round"/>
+        <path d="M2 8.5V15.5L12 22L22 15.5V8.5" stroke="#D9A441" stroke-width="1.4" stroke-linejoin="round"/>
+      </svg>
+      EMBERFALL
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#" class="active">Home</a></li>
+      <li><a href="#">Adventures</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Blog</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <a href="#" class="cart-link">Cart (2)</a>
+      <a href="#" class="btn-cta">Browse Adventures</a>
+      <button class="burger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<div class="hero-preview">
+  <p>— hero art goes here, this is just to check contrast —</p>
+</div>
+
+<div style="height: 150vh; background: #16161A;"></div>
+
+<script>
+  const header = document.querySelector('header');
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 40) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  });
+</script>
+
+</body>
+</html>
