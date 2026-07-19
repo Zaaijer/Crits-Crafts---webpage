@@ -1,0 +1,179 @@
+<!--
+  This is the ONE reusable template page for every adventure product —
+  there is no separate HTML file per adventure. Which adventure shows up
+  depends on the URL, e.g. adventure.html?id=murder-on-the-aurora-dawn.
+
+  How it works: every element below with a "data-field" attribute starts
+  out empty/blank (or with placeholder text). js/product-loader.js reads
+  the "id" from the URL, looks that id up in data/products.json, and then
+  fills in every matching data-field element with the real content. So to
+  add a brand-new adventure to the site, you add an entry to
+  data/products.json — you never need to touch this HTML file.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adventure — Crits & Crafts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Same nav bar as the homepage, just with links pointed back at dnd-navbar-draft1.html since this page lives on its own -->
+<header>
+  <nav>
+    <a href="dnd-navbar-draft1.html" class="logo">
+      <img class="logo-mark" src="Images/Crits&amp;Crafts logo.png" alt="Crits & Crafts">
+    </a>
+    <ul class="nav-links">
+      <li><a href="dnd-navbar-draft1.html">Home</a></li>
+      <li><a href="dnd-navbar-draft1.html#adventures" class="active">Adventures</a></li>
+      <li><a href="dnd-navbar-draft1.html#about">About</a></li>
+      <li><a href="dnd-navbar-draft1.html#">Blog</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="#" class="cart-link">Cart (0)</a>
+      <a href="dnd-navbar-draft1.html#adventures" class="btn-cta">Browse Adventures</a>
+      <button class="burger" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <!--
+    Both of these start "hidden" (see the hidden attribute — a plain HTML
+    attribute that means "don't show this"). js/product-loader.js decides
+    which one to reveal: if the id in the URL matches a real product, it
+    un-hides #product-content and fills it in; if not (or there's no id
+    at all), it un-hides this fallback message instead.
+  -->
+  <div id="product-not-found" class="product-fallback wrap" hidden>
+    <h1>Adventure not found</h1>
+    <p>We couldn't find that adventure — it may have been moved, or the link is out of date.</p>
+    <a href="dnd-navbar-draft1.html#adventures" class="btn-cta">Browse all adventures</a>
+  </div>
+
+  <div id="product-content" hidden>
+
+    <!--
+      Opening gallery: one large image, two stacked beside it. This section
+      starts completely empty — product-loader.js builds the 3 image boxes
+      here in JavaScript, using whatever's listed under this product's
+      "images.gallery" array in products.json. If a gallery entry has real
+      art (a "src"), it shows that image; otherwise it shows a colored
+      gradient box with a text label as a stand-in until real art exists.
+    -->
+    <section class="opening-gallery wrap" data-field="gallery"></section>
+
+    <!-- Info bar: genre pill + title on the left, price + buy button on the right -->
+    <div class="info-bar wrap">
+      <div class="info-bar-left">
+        <span class="product-genre-pill" data-field="genre">Genre</span>
+        <h1 data-field="title">Adventure title</h1>
+      </div>
+      <div class="info-bar-right">
+        <span class="product-price" data-field="price">€0</span>
+        <!-- This exact button is what the sticky buy bar (further down the page) watches to know when to reveal itself on scroll -->
+        <a href="#" class="btn-cta" id="info-bar-buy">Buy Now</a>
+      </div>
+    </div>
+
+    <!-- Two-column: The Setup (synopsis) on the left, What's Included (bullet list) on the right -->
+    <section class="details-row wrap">
+      <div class="setup-col">
+        <h2>The Setup</h2>
+        <p data-field="hook">Synopsis.</p>
+      </div>
+      <div class="included-col">
+        <h2>What's Included</h2>
+        <ul class="included-list" data-field="whatsIncluded"></ul>
+      </div>
+    </section>
+
+    <!-- Scenes From the Story: a row of 4 more image boxes, same placeholder-or-real-image logic as the opening gallery above -->
+    <section class="scene-strip wrap">
+      <h2>Scenes From the Story</h2>
+      <div class="scene-strip-grid" data-field="sceneStrip"></div>
+    </section>
+
+    <!-- Cinematic breather band: one full-width mood image with an in-character pull-quote centered on top of it -->
+    <section class="breather-band" data-field="breatherBand">
+      <blockquote data-field="quote"></blockquote>
+    </section>
+
+    <!-- Cast of Characters: circular portrait + name + role for each character, built by product-loader.js from the "cast" array -->
+    <section class="cast-section wrap">
+      <h2>Cast of Characters</h2>
+      <div class="cast-grid" data-field="cast"></div>
+    </section>
+
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="dnd-navbar-draft1.html" class="logo footer-logo">
+          <img src="Images/Crits&amp;Crafts logo_White_Horizontal-04.png" alt="Crits & Crafts">
+        </a>
+        <p>Digital D&D one-shots for Dungeon Masters who care about the story as much as the fight.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="dnd-navbar-draft1.html#adventures">All adventures</a></li>
+          <li><a href="#">Bundles</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="dnd-navbar-draft1.html#about">About</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Terms</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2026 Crits & Crafts. All adventures written and playtested in-house.
+    </div>
+  </div>
+</footer>
+
+
+<!--
+  Persistent buy bar. It's ONE bar in the HTML, but CSS media queries make
+  it behave two different ways depending on screen size:
+    - On mobile, it's pinned to the BOTTOM of the screen and always visible.
+    - On desktop, it's pinned to the TOP, hidden by default, and only
+      slides into view once you scroll past the "Buy Now" button in the
+      info bar above (that's what js/product-loader.js's scroll listener
+      is watching for).
+-->
+<div class="sticky-buy-bar" id="sticky-buy-bar">
+  <div class="sticky-buy-bar-info">
+    <span class="sticky-buy-bar-title" data-field="title">Adventure title</span>
+    <span class="product-price" data-field="price">€0</span>
+  </div>
+  <a href="#" class="btn-cta" id="sticky-bar-buy">Buy Now</a>
+</div>
+
+<!-- main.js handles the nav scroll effect (shared with the homepage); product-loader.js is specific to this page -->
+<script src="js/main.js"></script>
+<script src="js/product-loader.js"></script>
+</body>
+</html>

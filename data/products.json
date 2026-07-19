@@ -1,0 +1,77 @@
+{
+  "murder-on-the-aurora-dawn": {
+    "title": "Murder on the Aurora Dawn",
+    "genre": "Mystery",
+    "tagline": "A steampunk murder mystery adventure for 5th Edition",
+    "price": 5,
+    "buyLink": "https://critscrafts.lemonsqueezy.com/checkout/buy/67961a40-0b45-473b-a3a2-07c074ecfe92",
+    "levelRange": "3–5",
+    "partySize": "4–6 players",
+    "sessionLength": "3–4hr session",
+    "hook": "When the airship Aurora Dawn is three days from port, one of its wealthiest passengers turns up dead in a locked stateroom — and the killer is still aboard. Your party has until the ship docks to sort suspects from scapegoats, unravel motives tangled in old debts and older grudges, and catch a murderer before they slip away into the crowd at landing.",
+    "quote": "Everyone on this ship has a reason to want him dead. I'm just the only one honest enough to admit it.",
+    "whatsIncluded": [
+      "Full adventure PDF",
+      "VTT-ready battle maps (Roll20 & Foundry)",
+      "Character token sheet",
+      "Print-ready version"
+    ],
+    "images": {
+      "gallery": [
+        { "label": "Cover image", "tone": "amber", "src": "Images/Murder on the Aurora Dawn/Cover_image-Aurora.png" },
+        { "label": "Interior scene", "tone": "blue", "src": "Images/Murder on the Aurora Dawn/Module_Render-Aurora.png" },
+        { "label": "Key art", "tone": "moss" }
+      ],
+      "sceneStrip": [
+        { "label": "Scene", "tone": "amber" },
+        { "label": "Scene", "tone": "blue" },
+        { "label": "Scene", "tone": "moss" },
+        { "label": "Scene", "tone": "plum" }
+      ],
+      "breatherBand": { "label": "Cinematic moment", "tone": "plum" },
+      "cast": [
+        { "name": "Mr. Aldous Renner", "role": "Suspect", "tone": "amber" },
+        { "name": "Lady Iris Wentworth", "role": "Victim", "tone": "blue" },
+        { "name": "Chief Engineer Mabel Cross", "role": "Crew", "tone": "moss" },
+        { "name": "Inspector Josiah Vane", "role": "Detective", "tone": "plum" }
+      ]
+    }
+  },
+  "the-carnival-of-forgotten-smiles": {
+    "title": "The Carnival of Forgotten Smiles",
+    "genre": "Horror",
+    "tagline": "Uncover the dark secrets behind a mysterious carnival in this thrilling one-shot for 5E.",
+    "price": 5,
+    "levelRange": "1–4",
+    "partySize": "4–6 players",
+    "sessionLength": "3–4hr session",
+    "hook": "A traveling carnival rolls into town overnight, its tents lit and its performers smiling — but the smiles never seem to move, and nobody in town remembers inviting it. When a local child goes missing after the opening show, your party has one night to find out what the carnival really is before it packs up and vanishes for good.",
+    "quote": "Step right up — everyone who walks through these gates gets exactly what they deserve.",
+    "whatsIncluded": [
+      "Full adventure PDF",
+      "VTT-ready battle maps (Roll20 & Foundry)",
+      "Character token sheet",
+      "Print-ready version"
+    ],
+    "images": {
+      "gallery": [
+        { "label": "Cover image", "tone": "plum", "src": "Images/Carnival of Forgotten Smiles/Cover_image-Forgotten.png" },
+        { "label": "Interior scene", "tone": "amber", "src": "Images/Carnival of Forgotten Smiles/Key_art-Forgotten.jpg" },
+        { "label": "Key art", "tone": "blue", "src": "Images/Carnival of Forgotten Smiles/Key_art2-Forgotten.jpg" }
+      ],
+      "sceneStrip": [
+        { "label": "Scene", "tone": "plum" },
+        { "label": "Scene", "tone": "amber" },
+        { "label": "Scene", "tone": "moss" },
+        { "label": "Scene", "tone": "blue" }
+      ],
+      "breatherBand": { "label": "Cinematic moment", "tone": "amber" },
+      "cast": [
+        { "name": "PLACEHOLDER", "role": "Ringmaster", "tone": "plum" },
+        { "name": "PLACEHOLDER", "role": "Fortune Teller", "tone": "amber" },
+        { "name": "PLACEHOLDER", "role": "Missing Performer", "tone": "moss" },
+        { "name": "PLACEHOLDER", "role": "Skeptical Investigator", "tone": "blue" }
+      ]
+    }
+  }
+}

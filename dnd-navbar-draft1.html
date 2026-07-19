@@ -1,532 +1,30 @@
+<!--
+  This is the homepage. It's a single self-contained HTML file — no build step,
+  no framework. All the visual styling lives in css/style.css (linked below),
+  and all the interactive behavior (nav scroll effect, the image carousel)
+  lives in js/main.js, loaded at the very bottom of this file.
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Crits & Crafts — Digital D&D Adventures</title>
+<!-- Loads the "Barlow" font from Google Fonts, used everywhere on the site -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --ink: #0C0C0D;
-    --ink-raised: #16161A;
-    --ink-raised-2: #1D1D22;
-    --paper: #F2EFE9;
-    --paper-dim: rgba(242,239,233,0.65);
-    --paper-dimmer: rgba(242,239,233,0.4);
-    --gold: #D9A441;
-    --gold-bright: #E8B75A;
-    --gold-dim: #8A6E33;
-    --line: rgba(255,255,255,0.08);
-  }
-
-  *{ box-sizing: border-box; }
-  html{ scroll-behavior: smooth; }
-  body{
-    margin:0;
-    background: var(--ink);
-    color: var(--paper);
-    font-family: 'Barlow', sans-serif;
-    -webkit-font-smoothing: antialiased;
-  }
-  h1, h2, h3{
-    font-family: 'Barlow', sans-serif;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    margin: 0;
-  }
-  a{ color: inherit; }
-  img{ max-width: 100%; display:block; }
-  :focus-visible{
-    outline: 2px solid var(--gold);
-    outline-offset: 3px;
-  }
-
-  .wrap{
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 32px;
-  }
-
-  .eyebrow{
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 14px;
-    display:block;
-  }
-
-  /* ---------- HEADER ---------- */
-  header{
-    position: sticky;
-    top: 0;
-    z-index: 30;
-    background: transparent;
-    border-bottom: 1px solid transparent;
-    transition: background .25s ease, border-color .25s ease, backdrop-filter .25s ease;
-  }
-  header.scrolled{
-    background: rgba(12,12,13,0.7);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--line);
-  }
-  nav{
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 18px 32px;
-    display:flex;
-    align-items:center;
-    justify-content: space-between;
-  }
-  .logo{
-    display:flex;
-    align-items:center;
-    gap: 10px;
-    font-family: 'Barlow', sans-serif;
-    font-weight: 700;
-    font-size: 22px;
-    letter-spacing: 0.04em;
-    color: var(--paper);
-    text-decoration:none;
-  }
-  .logo-mark{ width: 20px; height: 20px; flex-shrink:0; }
-  img.logo-mark{ width:auto; height: 34px; object-fit:contain; }
-  .nav-links{
-    display:flex;
-    gap: 36px;
-    list-style:none;
-    margin:0; padding:0;
-  }
-  .nav-links a{
-    position:relative;
-    color: var(--paper-dim);
-    text-decoration:none;
-    font-size: 14px;
-    font-weight: 500;
-    padding: 6px 0;
-    transition: color .15s ease;
-  }
-  .nav-links a::after{
-    content:"";
-    position:absolute;
-    left:0; bottom:0;
-    height:2px;
-    width:0;
-    background: var(--gold);
-    transition: width .2s ease;
-  }
-  .nav-links a:hover{ color: var(--paper); }
-  .nav-links a:hover::after{ width: 100%; }
-  .nav-links a.active{ color: var(--paper); }
-  .nav-links a.active::after{ width: 100%; }
-  .nav-right{ display:flex; align-items:center; gap: 20px; }
-  .cart-link{
-    color: var(--paper-dim);
-    text-decoration:none;
-    font-size: 14px;
-    transition: color .15s ease;
-  }
-  .cart-link:hover{ color: var(--paper); }
-  .btn-cta{
-    background: var(--gold);
-    color: var(--ink);
-    font-size: 14px;
-    font-weight: 600;
-    padding: 10px 20px;
-    border-radius: 4px;
-    text-decoration:none;
-    white-space:nowrap;
-    text-align:center;
-    transition: background .15s ease, transform .15s ease;
-    display:inline-block;
-  }
-  .btn-cta:hover{ background: var(--gold-bright); transform: translateY(-1px); }
-  .btn-ghost{
-    border: 1px solid rgba(242,239,233,0.3);
-    color: var(--paper);
-    font-size: 14px;
-    font-weight: 600;
-    padding: 13px 26px;
-    border-radius: 4px;
-    text-decoration:none;
-    text-align:center;
-    transition: border-color .15s ease, background .15s ease;
-    display:inline-block;
-  }
-  .btn-ghost:hover{ border-color: var(--gold); background: rgba(217,164,65,0.08); }
-  .burger{ display:none; background:none; border:none; cursor:pointer; padding: 6px; }
-  .burger span{ display:block; width: 22px; height: 2px; background: var(--paper); margin: 5px 0; }
-
-  /* ---------- HERO ---------- */
-  .hero{
-    min-height: 88vh;
-    margin-top: -84px;
-    padding-top: 84px;
-    background:
-      linear-gradient(180deg, rgba(12,12,13,0.55) 0%, rgba(12,12,13,0.25) 35%, rgba(12,12,13,0.95) 100%),
-      url("Images/hero-art-zeppelin.png");
-    background-size: cover, cover;
-    background-position: center, center;
-    background-repeat: no-repeat, no-repeat;
-    display:flex;
-    align-items:center;
-  }
-  .hero-inner{ max-width: 680px; }
-  .hero h1{
-    font-size: clamp(42px, 6vw, 76px);
-    line-height: 1.02;
-  }
-  .hero p.lede{
-    margin-top: 22px;
-    font-size: 18px;
-    line-height: 1.6;
-    color: var(--paper-dim);
-    max-width: 52ch;
-  }
-  .hero-ctas{ display:flex; gap: 14px; margin-top: 34px; flex-wrap:wrap; }
-  .trust-row{
-    margin-top: 56px;
-    display:flex;
-    align-items:center;
-    gap: 22px;
-    flex-wrap:wrap;
-  }
-  .trust-row span{
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--paper-dimmer);
-  }
-  .trust-row .marks{
-    display:flex;
-    gap: 20px;
-    font-family:'Barlow', sans-serif;
-    font-weight: 600;
-    font-size: 16px;
-    color: var(--paper-dimmer);
-    letter-spacing: 0.06em;
-  }
-
-  /* ---------- ABOUT ---------- */
-  .about{
-    padding: 60px 0 100px;
-    text-align:center;
-    background: var(--paper);
-    color: var(--ink);
-  }
-  .about .wrap{
-    padding-top: 35px;
-  }
-  .about h2{
-    font-size: clamp(30px, 4vw, 44px);
-    max-width: 18ch;
-    margin: 0 auto;
-    line-height: 1.05;
-  }
-  .about p{
-    max-width: 62ch;
-    margin: 22px auto 0;
-    color: rgba(12,12,13,0.65);
-    font-size: 16px;
-    line-height: 1.7;
-  }
-  .about .btn-cta{ margin-top: 30px; }
-
-  /* ---------- SHOWCASE CAROUSEL ---------- */
-  .showcase{
-    position:relative;
-    overflow:hidden;
-  }
-  .showcase-track{
-    display:flex;
-    transition: transform .5s ease;
-  }
-  .showcase-slide{
-    flex: 0 0 100%;
-    min-height: 620px;
-    position:relative;
-    background-size: cover;
-    background-position: center;
-    display:flex;
-    align-items:center;
-  }
-  .showcase-slide::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:
-      radial-gradient(ellipse 55% 60% at 50% 55%, rgba(12,12,13,0.82) 0%, rgba(12,12,13,0.5) 50%, rgba(12,12,13,0.1) 80%, rgba(12,12,13,0) 100%),
-      linear-gradient(180deg, rgba(12,12,13,0.35) 0%, rgba(12,12,13,0.1) 25%, rgba(12,12,13,0.45) 100%);
-  }
-  .showcase-content{
-    position:relative;
-    z-index:1;
-    width:100%;
-    display:flex;
-    flex-direction:column;
-    align-items:stretch;
-  }
-  .showcase-divider{
-    width:100%;
-    margin-bottom: 35px;
-  }
-  .showcase-row-inner{
-    align-self:center;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap: 40px;
-    flex-wrap:wrap;
-  }
-  .showcase-title-wrap{
-    position:relative;
-    flex: 1 1 320px;
-  }
-  .showcase-title-inner{
-    position:relative;
-  }
-  .showcase-ghost{
-    position:absolute;
-    left:0;
-    top:50%;
-    transform: translateY(-50%);
-    font-family:'Barlow', sans-serif;
-    font-weight: 800;
-    font-size: clamp(60px, 10vw, 140px);
-    color: rgba(242,239,233,0.07);
-    white-space:nowrap;
-    letter-spacing: 0.02em;
-    z-index:0;
-    pointer-events:none;
-  }
-  .showcase-title{
-    position:relative;
-    z-index:1;
-    font-size: clamp(32px, 4.6vw, 52px);
-    line-height:1.05;
-    max-width: 18ch;
-    text-transform: uppercase;
-  }
-  .showcase-desc{
-    position:relative;
-    z-index:1;
-    flex: 1 1 320px;
-    max-width: 40ch;
-    color: var(--paper-dim);
-    font-size: 16px;
-    line-height: 1.7;
-  }
-  .showcase-dots{
-    position:absolute;
-    bottom: 28px;
-    left:50%;
-    transform: translateX(-50%);
-    display:flex;
-    gap: 10px;
-    z-index:2;
-  }
-  .showcase-dot{
-    width:8px;
-    height:8px;
-    border-radius:50%;
-    border:none;
-    padding:0;
-    background: rgba(242,239,233,0.35);
-    cursor:pointer;
-    transition: background .2s ease, transform .2s ease;
-  }
-  .showcase-dot.active{
-    background: var(--gold);
-    transform: scale(1.3);
-  }
-  @media (max-width: 860px){
-    .showcase-slide{ min-height: 520px; align-items:flex-end; padding-bottom: 60px; }
-    .showcase-row-inner{ flex-direction:column; align-items:flex-start; gap:20px; }
-    .showcase-ghost{ display:none; }
-  }
-
-  /* ---------- FEATURED ADVENTURES ---------- */
-  .adventures{
-    padding: 40px 0 110px;
-  }
-  .section-head{
-    display:flex;
-    justify-content: space-between;
-    align-items:flex-end;
-    margin-bottom: 44px;
-    gap: 24px;
-    flex-wrap:wrap;
-  }
-  .section-head h2{ font-size: clamp(28px, 3.6vw, 40px); }
-  .section-head p{
-    color: var(--paper-dim);
-    max-width: 40ch;
-    font-size: 15px;
-    line-height:1.6;
-  }
-  .adventure-grid{
-    display:grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-  .adventure-card{
-    background: var(--ink-raised);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    overflow:hidden;
-    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-  }
-  .adventure-card:hover{
-    transform: translateY(-5px);
-    box-shadow: 0 16px 30px -18px rgba(0,0,0,0.6);
-    border-color: rgba(217,164,65,0.35);
-  }
-  .adventure-thumb{ height: 170px; position:relative; }
-  .genre-tag{
-    position:absolute;
-    top:12px;
-    left:12px;
-    font-size: 10.5px;
-    font-weight:600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--gold);
-    border: 1px solid var(--gold);
-    background: rgba(12,12,13,0.55);
-    backdrop-filter: blur(4px);
-    padding: 5px 10px;
-    border-radius: 100px;
-  }
-  .adventure-body{ padding: 22px; }
-  .adventure-row{
-    display:flex;
-    justify-content: space-between;
-    align-items:flex-start;
-    gap: 10px;
-  }
-  .adventure-body h3{
-    font-family:'Barlow', sans-serif;
-    font-weight: 700;
-    font-size: 17px;
-    letter-spacing: 0;
-  }
-  .adventure-price{ font-size: 14px; color: var(--gold); white-space:nowrap; font-weight:600; }
-  .adventure-body p{
-    font-size: 13.5px;
-    color: var(--paper-dim);
-    line-height: 1.6;
-    margin-top: 10px;
-  }
-  .adventure-level{
-    display:inline-flex;
-    align-items:center;
-    gap: 6px;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--paper-dimmer);
-    margin-top: 14px;
-  }
-  .level-icon{ width: 12px; height: 12px; flex-shrink:0; }
-
-  /* ---------- CTA BAND ---------- */
-  .cta-band{
-    margin: 0 32px 100px;
-    padding: 64px 48px;
-    background: var(--ink-raised-2);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    text-align:center;
-  }
-  .cta-band h2{
-    font-size: clamp(26px, 3.4vw, 38px);
-    max-width: 20ch;
-    margin: 0 auto;
-  }
-  .cta-band p{
-    color: var(--paper-dim);
-    margin: 16px auto 30px;
-    max-width: 50ch;
-    font-size: 15px;
-  }
-
-  /* ---------- FOOTER ---------- */
-  footer{
-    border-top: 1px solid var(--line);
-    padding: 56px 0 40px;
-  }
-  .footer-grid{
-    display:grid;
-    grid-template-columns: 1.4fr 1fr 1fr 1fr;
-    gap: 32px;
-    margin-bottom: 48px;
-  }
-  .footer-brand .logo{ margin-bottom: 14px; }
-  .footer-brand p{
-    color: var(--paper-dimmer);
-    font-size: 13.5px;
-    line-height: 1.6;
-    max-width: 30ch;
-  }
-  .footer-col h4{
-    font-family:'Barlow', sans-serif;
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--paper-dimmer);
-    margin-bottom: 16px;
-  }
-  .footer-col ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap: 10px; }
-  .footer-col a{
-    color: var(--paper-dim);
-    text-decoration:none;
-    font-size: 14px;
-    transition: color .15s ease;
-  }
-  .footer-col a:hover{ color: var(--gold); }
-  .footer-bottom{
-    border-top: 1px solid var(--line);
-    padding-top: 24px;
-    font-size: 13px;
-    color: var(--paper-dimmer);
-  }
-
-  /* ---------- ORNATE DIVIDER ---------- */
-  .divider-wrap{
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 32px;
-  }
-  .ornate-divider{
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1200 / 56;
-    display:block;
-  }
-
-  /* ---------- RESPONSIVE ---------- */
-  @media (max-width: 860px){
-    .nav-links{ display:none; }
-    .nav-right .btn-cta{ display:none; }
-    .burger{ display:block; }
-    .feature-grid{ grid-template-columns: 1fr; }
-    .adventure-grid{ grid-template-columns: 1fr 1fr; }
-    .footer-grid{ grid-template-columns: 1fr 1fr; }
-  }
-  @media (max-width: 560px){
-    .wrap{ padding: 0 20px; }
-    .adventure-grid{ grid-template-columns: 1fr; }
-    .footer-grid{ grid-template-columns: 1fr; }
-    .hero-ctas{ flex-direction:column; align-items:stretch; }
-    .cta-band{ margin: 0 20px 80px; padding: 44px 24px; }
-  }
-</style>
+<!-- All CSS for the whole site lives in this one shared file -->
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
+<!--
+  Site-wide navigation bar. It's "position: sticky" (see .header in the CSS),
+  meaning it stays pinned to the top of the screen as you scroll, and starts
+  see-through until you scroll down (handled by js/main.js adding a
+  ".scrolled" class), so it can sit transparently over the hero image below.
+-->
 <header>
   <nav>
     <a href="#" class="logo">
@@ -541,12 +39,18 @@
     <div class="nav-right">
       <a href="#" class="cart-link">Cart (0)</a>
       <a href="#adventures" class="btn-cta">Browse Adventures</a>
+      <!-- Hamburger menu button — only shown on mobile widths (see CSS media queries) -->
       <button class="burger" aria-label="Open menu"><span></span><span></span><span></span></button>
     </div>
   </nav>
 </header>
 
 <main>
+  <!--
+    HERO: the big full-width banner at the top of the page. The background
+    image + dark gradient tint are both set in the CSS (.hero), not here —
+    this HTML only holds the text and buttons that sit on top of it.
+  -->
   <section class="hero">
     <div class="wrap hero-inner">
       <h1>EVERY SESSION BECOMES<br>A STORY WORTH<br>TELLING</h1>
@@ -566,7 +70,23 @@
     </div>
   </section>
 
+  <!--
+    ABOUT: the light/white section right after the hero. Has its own
+    background color (set in CSS on .about) — everywhere else on the page
+    is dark, so this section deliberately flips to a light background for
+    visual contrast/breathing room.
+  -->
   <section class="about" id="about">
+    <!--
+      This gold line-with-a-small-icon graphic is a small hand-drawn SVG
+      "ornamental divider" used between sections throughout the site to
+      mark a break, instead of a plain horizontal rule. It's just two short
+      gold lines with a tiny gap, plus a few short strokes/circles in the
+      middle that form a small rapier icon. The exact same SVG (just with
+      different gradient ID names, since IDs must be unique per page) is
+      reused several more times further down — those repeats aren't
+      re-explained, they work identically to this one.
+    -->
     <div class="divider-wrap">
       <svg class="ornate-divider" viewBox="0 0 1200 56" preserveAspectRatio="none" aria-hidden="true">
         <defs>
@@ -595,10 +115,20 @@
     </div>
   </section>
 
+  <!--
+    SHOWCASE CAROUSEL: a full-width image slider with 3 slides. All 3 slides
+    sit side-by-side inside .showcase-track, and js/main.js slides between
+    them by shifting that track left/right with CSS transforms — only one
+    slide is ever visible at a time, the other two are just off to the side.
+    The 3 dots below act as both a "which slide am I on" indicator and
+    clickable buttons to jump to a slide.
+  -->
   <section class="showcase" id="showcase">
     <div class="showcase-track">
+      <!-- Slide 1 of 3 -->
       <div class="showcase-slide" style="background-image:url('Images/Greenhouse.png')">
         <div class="showcase-content wrap">
+          <!-- Small version of the ornamental divider (see the About section above for how it works) -->
           <div class="showcase-divider">
             <svg class="ornate-divider" viewBox="0 0 1200 56" preserveAspectRatio="none" aria-hidden="true">
               <defs>
@@ -630,6 +160,7 @@
           </div>
         </div>
       </div>
+      <!-- Slide 2 of 3 -->
       <div class="showcase-slide" style="background-image:url('Images/Battlemap.png')">
         <div class="showcase-content wrap">
           <div class="showcase-divider">
@@ -663,6 +194,7 @@
           </div>
         </div>
       </div>
+      <!-- Slide 3 of 3 -->
       <div class="showcase-slide" style="background-image:url('Images/Character Tokens.png')">
         <div class="showcase-content wrap">
           <div class="showcase-divider">
@@ -697,6 +229,7 @@
         </div>
       </div>
     </div>
+    <!-- The 3 clickable dots that control which slide is showing -->
     <div class="showcase-dots">
       <button class="showcase-dot active" data-index="0" aria-label="Show slide 1"></button>
       <button class="showcase-dot" data-index="1" aria-label="Show slide 2"></button>
@@ -704,7 +237,8 @@
     </div>
   </section>
 
-  <div class="divider-wrap">
+  <!-- Another ornamental divider, just marking the gap before "Featured Adventures" -->
+  <div class="divider-wrap divider-adventures">
     <svg class="ornate-divider" viewBox="0 0 1200 56" preserveAspectRatio="none" aria-hidden="true">
       <defs>
         <linearGradient id="divGradL3" gradientUnits="userSpaceOnUse" x1="400" y1="28" x2="560" y2="28">
@@ -725,6 +259,15 @@
     </svg>
   </div>
 
+  <!--
+    FEATURED ADVENTURES: the product grid. Each card below is a plain link
+    (<a>) styled to look like a card. The two that link to
+    "adventure.html?id=..." are wired up to real entries in
+    data/products.json — clicking them loads the shared adventure.html
+    template, which reads the "id" from the URL and fills itself in with
+    that product's data via js/product-loader.js. The third card is still
+    just a placeholder with no real link or data behind it yet.
+  -->
   <section class="adventures wrap" id="adventures">
     <div class="section-head">
       <h2>Featured Adventures</h2>
@@ -732,16 +275,37 @@
     </div>
     <div class="adventure-grid">
 
-      <div class="adventure-card">
-        <div class="adventure-thumb" style="background: linear-gradient(135deg, #3a2a15, #14100a);">
-          <span class="genre-tag">Heist</span>
+      <!-- Card 1: links to the "the-carnival-of-forgotten-smiles" entry in data/products.json -->
+      <a href="adventure.html?id=the-carnival-of-forgotten-smiles" class="adventure-card">
+        <div class="adventure-thumb" style="background-image: url('Images/Carnival%20of%20Forgotten%20Smiles/Cover_image-Forgotten.png');">
+          <span class="genre-tag">Horror</span>
         </div>
         <div class="adventure-body">
           <div class="adventure-row">
-            <h3>Adventure title here</h3>
-            <span class="adventure-price">$12</span>
+            <h3>The Carnival of Forgotten Smiles</h3>
+            <span class="adventure-price">€5</span>
           </div>
-          <p>One or two sentences setting up the hook, tone, and stakes for this one-shot.</p>
+          <p>Uncover the dark secrets behind a mysterious carnival in this thrilling one-shot for 5E.</p>
+          <span class="adventure-level">
+            <svg class="level-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M8 1L9.5 6.5L15 8L9.5 9.5L8 15L6.5 9.5L1 8L6.5 6.5L8 1Z" stroke="var(--gold)" stroke-width="1" stroke-linejoin="round"/>
+            </svg>
+            Levels 1–4
+          </span>
+        </div>
+      </a>
+
+      <!-- Card 2: links to the "murder-on-the-aurora-dawn" entry in data/products.json -->
+      <a href="adventure.html?id=murder-on-the-aurora-dawn" class="adventure-card">
+        <div class="adventure-thumb" style="background-image: url('Images/Murder%20on%20the%20Aurora%20Dawn/Cover_image-Aurora.png');">
+          <span class="genre-tag">Mystery</span>
+        </div>
+        <div class="adventure-body">
+          <div class="adventure-row">
+            <h3>Murder on the Aurora Dawn</h3>
+            <span class="adventure-price">€5</span>
+          </div>
+          <p>A steampunk murder mystery adventure for 5th Edition — a locked-room killing aboard an airship three days from port.</p>
           <span class="adventure-level">
             <svg class="level-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <path d="M8 1L9.5 6.5L15 8L9.5 9.5L8 15L6.5 9.5L1 8L6.5 6.5L8 1Z" stroke="var(--gold)" stroke-width="1" stroke-linejoin="round"/>
@@ -749,27 +313,9 @@
             Levels 3–5
           </span>
         </div>
-      </div>
+      </a>
 
-      <div class="adventure-card">
-        <div class="adventure-thumb" style="background: linear-gradient(135deg, #4a3520, #1a1408);">
-          <span class="genre-tag">Horror</span>
-        </div>
-        <div class="adventure-body">
-          <div class="adventure-row">
-            <h3>Adventure title here</h3>
-            <span class="adventure-price">$14</span>
-          </div>
-          <p>One or two sentences setting up the hook, tone, and stakes for this one-shot.</p>
-          <span class="adventure-level">
-            <svg class="level-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path d="M8 1L9.5 6.5L15 8L9.5 9.5L8 15L6.5 9.5L1 8L6.5 6.5L8 1Z" stroke="var(--gold)" stroke-width="1" stroke-linejoin="round"/>
-            </svg>
-            Levels 1–3
-          </span>
-        </div>
-      </div>
-
+      <!-- Card 3: placeholder only — not a real link yet, has no matching entry in products.json -->
       <div class="adventure-card">
         <div class="adventure-thumb" style="background: linear-gradient(135deg, #2d2010, #100c05);">
           <span class="genre-tag">Political Intrigue</span>
@@ -777,7 +323,7 @@
         <div class="adventure-body">
           <div class="adventure-row">
             <h3>Adventure title here</h3>
-            <span class="adventure-price">$16</span>
+            <span class="adventure-price">€5</span>
           </div>
           <p>One or two sentences setting up the hook, tone, and stakes for this one-shot.</p>
           <span class="adventure-level">
@@ -792,6 +338,7 @@
     </div>
   </section>
 
+  <!-- Simple closing call-to-action banner before the footer -->
   <div class="cta-band">
     <h2>Got a session to fill this week?</h2>
     <p>Browse the full shelf and find something that fits your party, your table, and your time slot.</p>
@@ -799,6 +346,7 @@
   </div>
 </main>
 
+<!-- One more ornamental divider, marking the boundary before the footer -->
 <div class="divider-wrap">
   <svg class="ornate-divider" viewBox="0 0 1200 56" preserveAspectRatio="none" aria-hidden="true">
     <defs>
@@ -820,16 +368,17 @@
   </svg>
 </div>
 
+<!--
+  FOOTER: brand blurb on the left, then 3 columns of links (Shop/Company/
+  Legal), then a copyright line at the very bottom. Reused near-identically
+  on adventure.html.
+-->
 <footer>
   <div class="wrap">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="#" class="logo">
-          <svg class="logo-mark" viewBox="0 0 24 24" fill="none">
-            <path d="M12 2L2 8.5L12 15L22 8.5L12 2Z" stroke="#D9A441" stroke-width="1.4" stroke-linejoin="round"/>
-            <path d="M2 8.5V15.5L12 22L22 15.5V8.5" stroke="#D9A441" stroke-width="1.4" stroke-linejoin="round"/>
-          </svg>
-          CRITS & CRAFTS
+        <a href="#" class="logo footer-logo">
+          <img src="Images/Crits&amp;Crafts logo_White_Horizontal-04.png" alt="Crits & Crafts">
         </a>
         <p>Digital D&D one-shots for Dungeon Masters who care about the story as much as the fight.</p>
       </div>
@@ -862,35 +411,9 @@
   </div>
 </footer>
 
-<script>
-  const header = document.querySelector('header');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 40) {
-      header.classList.add('scrolled');
-    } else {
-      header.classList.remove('scrolled');
-    }
-  });
-
-  const showcaseTrack = document.querySelector('.showcase-track');
-  const showcaseDots = document.querySelectorAll('.showcase-dot');
-  let showcaseIndex = 0;
-
-  function goToShowcaseSlide(index) {
-    showcaseIndex = index;
-    showcaseTrack.style.transform = `translateX(-${index * 100}%)`;
-    showcaseDots.forEach(dot => dot.classList.remove('active'));
-    showcaseDots[index].classList.add('active');
-  }
-
-  showcaseDots.forEach(dot => {
-    dot.addEventListener('click', () => goToShowcaseSlide(Number(dot.dataset.index)));
-  });
-
-  setInterval(() => {
-    goToShowcaseSlide((showcaseIndex + 1) % showcaseDots.length);
-  }, 6000);
-</script>
+<!-- Loads the site's JavaScript — placed at the very end of the page so the
+     HTML above it is already loaded by the time the script runs -->
+<script src="js/main.js"></script>
 
 </body>
 </html>
