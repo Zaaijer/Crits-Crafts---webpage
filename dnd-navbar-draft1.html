@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Emberfall — Digital D&D Adventures</title>
+<title>Crits & Crafts — Digital D&D Adventures</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink: #0C0C0D;
@@ -27,11 +27,12 @@
     margin:0;
     background: var(--ink);
     color: var(--paper);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Barlow', sans-serif;
     -webkit-font-smoothing: antialiased;
   }
   h1, h2, h3{
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 700;
     letter-spacing: 0.02em;
     margin: 0;
   }
@@ -84,13 +85,15 @@
     display:flex;
     align-items:center;
     gap: 10px;
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 700;
     font-size: 22px;
     letter-spacing: 0.04em;
     color: var(--paper);
     text-decoration:none;
   }
   .logo-mark{ width: 20px; height: 20px; flex-shrink:0; }
+  img.logo-mark{ width:auto; height: 34px; object-fit:contain; }
   .nav-links{
     display:flex;
     gap: 36px;
@@ -136,6 +139,7 @@
     border-radius: 4px;
     text-decoration:none;
     white-space:nowrap;
+    text-align:center;
     transition: background .15s ease, transform .15s ease;
     display:inline-block;
   }
@@ -148,6 +152,7 @@
     padding: 13px 26px;
     border-radius: 4px;
     text-decoration:none;
+    text-align:center;
     transition: border-color .15s ease, background .15s ease;
     display:inline-block;
   }
@@ -162,7 +167,10 @@
     padding-top: 84px;
     background:
       linear-gradient(180deg, rgba(12,12,13,0.55) 0%, rgba(12,12,13,0.25) 35%, rgba(12,12,13,0.95) 100%),
-      radial-gradient(circle at 72% 35%, #3a2a15 0%, #14100a 55%, #0C0C0D 100%);
+      url("Images/hero-art-zeppelin.png");
+    background-size: cover, cover;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
     display:flex;
     align-items:center;
   }
@@ -195,7 +203,8 @@
   .trust-row .marks{
     display:flex;
     gap: 20px;
-    font-family:'Bebas Neue', sans-serif;
+    font-family:'Barlow', sans-serif;
+    font-weight: 600;
     font-size: 16px;
     color: var(--paper-dimmer);
     letter-spacing: 0.06em;
@@ -203,8 +212,13 @@
 
   /* ---------- ABOUT ---------- */
   .about{
-    padding: 100px 0;
+    padding: 60px 0 100px;
     text-align:center;
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .about .wrap{
+    padding-top: 35px;
   }
   .about h2{
     font-size: clamp(30px, 4vw, 44px);
@@ -215,43 +229,123 @@
   .about p{
     max-width: 62ch;
     margin: 22px auto 0;
-    color: var(--paper-dim);
+    color: rgba(12,12,13,0.65);
     font-size: 16px;
     line-height: 1.7;
   }
   .about .btn-cta{ margin-top: 30px; }
 
-  /* ---------- FEATURE GRID ---------- */
-  .features{
-    padding: 40px 0 100px;
+  /* ---------- SHOWCASE CAROUSEL ---------- */
+  .showcase{
+    position:relative;
+    overflow:hidden;
   }
-  .feature-grid{
-    display:grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
+  .showcase-track{
+    display:flex;
+    transition: transform .5s ease;
   }
-  .feature-card{
-    background: var(--ink-raised);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 32px;
+  .showcase-slide{
+    flex: 0 0 100%;
+    min-height: 620px;
+    position:relative;
+    background-size: cover;
+    background-position: center;
+    display:flex;
+    align-items:center;
   }
-  .feature-card .num{
-    font-family:'Bebas Neue', sans-serif;
-    font-size: 14px;
-    color: var(--gold);
-    letter-spacing: 0.1em;
+  .showcase-slide::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      radial-gradient(ellipse 55% 60% at 50% 55%, rgba(12,12,13,0.82) 0%, rgba(12,12,13,0.5) 50%, rgba(12,12,13,0.1) 80%, rgba(12,12,13,0) 100%),
+      linear-gradient(180deg, rgba(12,12,13,0.35) 0%, rgba(12,12,13,0.1) 25%, rgba(12,12,13,0.45) 100%);
   }
-  .feature-card h3{
-    font-size: 24px;
-    margin-top: 14px;
-    margin-bottom: 12px;
+  .showcase-content{
+    position:relative;
+    z-index:1;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
   }
-  .feature-card p{
-    font-size: 14.5px;
-    line-height: 1.65;
+  .showcase-divider{
+    width:100%;
+    margin-bottom: 35px;
+  }
+  .showcase-row-inner{
+    align-self:center;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap: 40px;
+    flex-wrap:wrap;
+  }
+  .showcase-title-wrap{
+    position:relative;
+    flex: 1 1 320px;
+  }
+  .showcase-title-inner{
+    position:relative;
+  }
+  .showcase-ghost{
+    position:absolute;
+    left:0;
+    top:50%;
+    transform: translateY(-50%);
+    font-family:'Barlow', sans-serif;
+    font-weight: 800;
+    font-size: clamp(60px, 10vw, 140px);
+    color: rgba(242,239,233,0.07);
+    white-space:nowrap;
+    letter-spacing: 0.02em;
+    z-index:0;
+    pointer-events:none;
+  }
+  .showcase-title{
+    position:relative;
+    z-index:1;
+    font-size: clamp(32px, 4.6vw, 52px);
+    line-height:1.05;
+    max-width: 18ch;
+    text-transform: uppercase;
+  }
+  .showcase-desc{
+    position:relative;
+    z-index:1;
+    flex: 1 1 320px;
+    max-width: 40ch;
     color: var(--paper-dim);
-    margin:0;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+  .showcase-dots{
+    position:absolute;
+    bottom: 28px;
+    left:50%;
+    transform: translateX(-50%);
+    display:flex;
+    gap: 10px;
+    z-index:2;
+  }
+  .showcase-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    border:none;
+    padding:0;
+    background: rgba(242,239,233,0.35);
+    cursor:pointer;
+    transition: background .2s ease, transform .2s ease;
+  }
+  .showcase-dot.active{
+    background: var(--gold);
+    transform: scale(1.3);
+  }
+  @media (max-width: 860px){
+    .showcase-slide{ min-height: 520px; align-items:flex-end; padding-bottom: 60px; }
+    .showcase-row-inner{ flex-direction:column; align-items:flex-start; gap:20px; }
+    .showcase-ghost{ display:none; }
   }
 
   /* ---------- FEATURED ADVENTURES ---------- */
@@ -283,13 +377,29 @@
     border: 1px solid var(--line);
     border-radius: 10px;
     overflow:hidden;
-    transition: transform .18s ease, box-shadow .18s ease;
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
   }
   .adventure-card:hover{
-    transform: translateY(-4px);
+    transform: translateY(-5px);
     box-shadow: 0 16px 30px -18px rgba(0,0,0,0.6);
+    border-color: rgba(217,164,65,0.35);
   }
-  .adventure-thumb{ height: 170px; }
+  .adventure-thumb{ height: 170px; position:relative; }
+  .genre-tag{
+    position:absolute;
+    top:12px;
+    left:12px;
+    font-size: 10.5px;
+    font-weight:600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    background: rgba(12,12,13,0.55);
+    backdrop-filter: blur(4px);
+    padding: 5px 10px;
+    border-radius: 100px;
+  }
   .adventure-body{ padding: 22px; }
   .adventure-row{
     display:flex;
@@ -298,7 +408,7 @@
     gap: 10px;
   }
   .adventure-body h3{
-    font-family:'Inter', sans-serif;
+    font-family:'Barlow', sans-serif;
     font-weight: 700;
     font-size: 17px;
     letter-spacing: 0;
@@ -310,14 +420,17 @@
     line-height: 1.6;
     margin-top: 10px;
   }
-  .adventure-tag{
-    display:inline-block;
+  .adventure-level{
+    display:inline-flex;
+    align-items:center;
+    gap: 6px;
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--paper-dimmer);
     margin-top: 14px;
   }
+  .level-icon{ width: 12px; height: 12px; flex-shrink:0; }
 
   /* ---------- CTA BAND ---------- */
   .cta-band{
@@ -359,7 +472,7 @@
     max-width: 30ch;
   }
   .footer-col h4{
-    font-family:'Inter', sans-serif;
+    font-family:'Barlow', sans-serif;
     font-size: 13px;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -417,11 +530,7 @@
 <header>
   <nav>
     <a href="#" class="logo">
-      <svg class="logo-mark" viewBox="0 0 24 24" fill="none">
-        <path d="M12 2L2 8.5L12 15L22 8.5L12 2Z" stroke="#D9A441" stroke-width="1.4" stroke-linejoin="round"/>
-        <path d="M2 8.5V15.5L12 22L22 15.5V8.5" stroke="#D9A441" stroke-width="1.4" stroke-linejoin="round"/>
-      </svg>
-      EMBERFALL
+      <img class="logo-mark" src="Images/Crits&amp;Crafts logo.png" alt="Crits & Crafts">
     </a>
     <ul class="nav-links">
       <li><a href="#" class="active">Home</a></li>
@@ -440,7 +549,7 @@
 <main>
   <section class="hero">
     <div class="wrap hero-inner">
-      <h1>EVERY TABLE DESERVES<br>A NIGHT WORTH<br>REMEMBERING</h1>
+      <h1>EVERY SESSION BECOMES<br>A STORY WORTH<br>TELLING</h1>
       <p class="lede">Ready-to-run D&D one-shots built for Dungeon Masters who want atmosphere and story, not another generic dungeon crawl. Print it, open it, run it tonight.</p>
       <div class="hero-ctas">
         <a href="#adventures" class="btn-cta">Browse Adventures</a>
@@ -457,72 +566,141 @@
     </div>
   </section>
 
-  <div class="divider-wrap">
-    <svg class="ornate-divider" viewBox="0 0 1200 56" preserveAspectRatio="none" aria-hidden="true">
-      <defs>
-        <linearGradient id="divGradL1" gradientUnits="userSpaceOnUse" x1="400" y1="28" x2="560" y2="28">
-          <stop offset="0%" style="stop-color:var(--gold); stop-opacity:0.15"/>
-          <stop offset="100%" style="stop-color:var(--gold); stop-opacity:1"/>
-        </linearGradient>
-        <linearGradient id="divGradR1" gradientUnits="userSpaceOnUse" x1="640" y1="28" x2="800" y2="28">
-          <stop offset="0%" style="stop-color:var(--gold); stop-opacity:1"/>
-          <stop offset="100%" style="stop-color:var(--gold); stop-opacity:0.15"/>
-        </linearGradient>
-      </defs>
-      <line x1="400" y1="28" x2="560" y2="28" stroke="url(#divGradL1)" stroke-width="1.6"/>
-      <line x1="640" y1="28" x2="800" y2="28" stroke="url(#divGradR1)" stroke-width="1.6"/>
-      <line x1="600" y1="10" x2="600" y2="23" stroke="var(--gold)" stroke-width="1.1" opacity="0.9"/>
-      <circle cx="600" cy="28" r="5" stroke="var(--gold)" stroke-width="1.1" fill="none" opacity="0.9"/>
-      <line x1="600" y1="33" x2="600" y2="42" stroke="var(--gold)" stroke-width="1.1" opacity="0.9"/>
-      <circle cx="600" cy="45" r="2.5" fill="var(--gold)" opacity="0.9"/>
-    </svg>
-  </div>
-
-  <section class="about wrap" id="about">
-    <span class="eyebrow">About Emberfall</span>
-    <h2>Written to be run,<br>not just read.</h2>
-    <p>Every Emberfall adventure is built the way we'd want to prep for our own table — a strong hook, a location worth describing out loud, and choices that actually change how the session goes. No filler encounters, no fifty pages of lore you'll never use.</p>
-    <a href="#adventures" class="btn-cta">See what's on the shelf</a>
+  <section class="about" id="about">
+    <div class="divider-wrap">
+      <svg class="ornate-divider" viewBox="0 0 1200 56" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="divGradL1" gradientUnits="userSpaceOnUse" x1="400" y1="28" x2="560" y2="28">
+            <stop offset="0%" style="stop-color:var(--gold); stop-opacity:0.15"/>
+            <stop offset="100%" style="stop-color:var(--gold); stop-opacity:1"/>
+          </linearGradient>
+          <linearGradient id="divGradR1" gradientUnits="userSpaceOnUse" x1="640" y1="28" x2="800" y2="28">
+            <stop offset="0%" style="stop-color:var(--gold); stop-opacity:1"/>
+            <stop offset="100%" style="stop-color:var(--gold); stop-opacity:0.15"/>
+          </linearGradient>
+        </defs>
+        <line x1="400" y1="28" x2="560" y2="28" stroke="url(#divGradL1)" stroke-width="1.6"/>
+        <line x1="640" y1="28" x2="800" y2="28" stroke="url(#divGradR1)" stroke-width="1.6"/>
+        <line x1="600" y1="10" x2="600" y2="23" stroke="var(--gold)" stroke-width="1.1" opacity="0.9"/>
+        <circle cx="600" cy="28" r="5" stroke="var(--gold)" stroke-width="1.1" fill="none" opacity="0.9"/>
+        <line x1="600" y1="33" x2="600" y2="42" stroke="var(--gold)" stroke-width="1.1" opacity="0.9"/>
+        <circle cx="600" cy="45" r="2.5" fill="var(--gold)" opacity="0.9"/>
+      </svg>
+    </div>
+    <div class="wrap">
+      <span class="eyebrow">About Crits & Crafts</span>
+      <h2>Written to be run,<br>not just read.</h2>
+      <p>Every Crits & Crafts adventure is built the way we'd want to prep for our own table — a strong hook, a location worth describing out loud, and choices that actually change how the session goes. No filler encounters, no fifty pages of lore you'll never use.</p>
+      <a href="#adventures" class="btn-cta">See what's on the shelf</a>
+    </div>
   </section>
 
-  <div class="divider-wrap">
-    <svg class="ornate-divider" viewBox="0 0 1200 56" preserveAspectRatio="none" aria-hidden="true">
-      <defs>
-        <linearGradient id="divGradL2" gradientUnits="userSpaceOnUse" x1="400" y1="28" x2="560" y2="28">
-          <stop offset="0%" style="stop-color:var(--gold); stop-opacity:0.15"/>
-          <stop offset="100%" style="stop-color:var(--gold); stop-opacity:1"/>
-        </linearGradient>
-        <linearGradient id="divGradR2" gradientUnits="userSpaceOnUse" x1="640" y1="28" x2="800" y2="28">
-          <stop offset="0%" style="stop-color:var(--gold); stop-opacity:1"/>
-          <stop offset="100%" style="stop-color:var(--gold); stop-opacity:0.15"/>
-        </linearGradient>
-      </defs>
-      <line x1="400" y1="28" x2="560" y2="28" stroke="url(#divGradL2)" stroke-width="1.6"/>
-      <line x1="640" y1="28" x2="800" y2="28" stroke="url(#divGradR2)" stroke-width="1.6"/>
-      <line x1="600" y1="10" x2="600" y2="23" stroke="var(--gold)" stroke-width="1.1" opacity="0.9"/>
-      <circle cx="600" cy="28" r="5" stroke="var(--gold)" stroke-width="1.1" fill="none" opacity="0.9"/>
-      <line x1="600" y1="33" x2="600" y2="42" stroke="var(--gold)" stroke-width="1.1" opacity="0.9"/>
-      <circle cx="600" cy="45" r="2.5" fill="var(--gold)" opacity="0.9"/>
-    </svg>
-  </div>
-
-  <section class="features wrap">
-    <div class="feature-grid">
-      <div class="feature-card">
-        <span class="num">01</span>
-        <h3>A story worth telling</h3>
-        <p>Every adventure opens with a hook strong enough to pull your party in during session zero, and builds to a finale players will bring up months later.</p>
+  <section class="showcase" id="showcase">
+    <div class="showcase-track">
+      <div class="showcase-slide" style="background-image:url('Images/Greenhouse.png')">
+        <div class="showcase-content wrap">
+          <div class="showcase-divider">
+            <svg class="ornate-divider" viewBox="0 0 1200 56" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="divGradL-sc1" gradientUnits="userSpaceOnUse" x1="400" y1="28" x2="560" y2="28">
+                  <stop offset="0%" style="stop-color:var(--gold); stop-opacity:0.15"/>
+                  <stop offset="100%" style="stop-color:var(--gold); stop-opacity:1"/>
+                </linearGradient>
+                <linearGradient id="divGradR-sc1" gradientUnits="userSpaceOnUse" x1="640" y1="28" x2="800" y2="28">
+                  <stop offset="0%" style="stop-color:var(--gold); stop-opacity:1"/>
+                  <stop offset="100%" style="stop-color:var(--gold); stop-opacity:0.15"/>
+                </linearGradient>
+              </defs>
+              <line x1="400" y1="28" x2="560" y2="28" stroke="url(#divGradL-sc1)" stroke-width="1.6"/>
+              <line x1="640" y1="28" x2="800" y2="28" stroke="url(#divGradR-sc1)" stroke-width="1.6"/>
+              <line x1="600" y1="10" x2="600" y2="23" stroke="var(--gold)" stroke-width="1.1" opacity="0.9"/>
+              <circle cx="600" cy="28" r="5" stroke="var(--gold)" stroke-width="1.1" fill="none" opacity="0.9"/>
+              <line x1="600" y1="33" x2="600" y2="42" stroke="var(--gold)" stroke-width="1.1" opacity="0.9"/>
+              <circle cx="600" cy="45" r="2.5" fill="var(--gold)" opacity="0.9"/>
+            </svg>
+          </div>
+          <div class="showcase-row-inner">
+            <div class="showcase-title-wrap">
+              <div class="showcase-title-inner">
+                <span class="showcase-ghost">STORY</span>
+                <h2 class="showcase-title">A story worth<br>telling</h2>
+              </div>
+            </div>
+            <p class="showcase-desc">Every adventure opens with a hook strong enough to pull your party in during session zero, and builds to a finale players will bring up months later.</p>
+          </div>
+        </div>
       </div>
-      <div class="feature-card">
-        <span class="num">02</span>
-        <h3>Maps ready to drop in</h3>
-        <p>Battle maps and location art sized for VTTs like Roll20 and Foundry, plus print-ready versions for tables that still roll physical dice.</p>
+      <div class="showcase-slide" style="background-image:url('Images/Battlemap.png')">
+        <div class="showcase-content wrap">
+          <div class="showcase-divider">
+            <svg class="ornate-divider" viewBox="0 0 1200 56" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="divGradL-sc2" gradientUnits="userSpaceOnUse" x1="400" y1="28" x2="560" y2="28">
+                  <stop offset="0%" style="stop-color:var(--gold); stop-opacity:0.15"/>
+                  <stop offset="100%" style="stop-color:var(--gold); stop-opacity:1"/>
+                </linearGradient>
+                <linearGradient id="divGradR-sc2" gradientUnits="userSpaceOnUse" x1="640" y1="28" x2="800" y2="28">
+                  <stop offset="0%" style="stop-color:var(--gold); stop-opacity:1"/>
+                  <stop offset="100%" style="stop-color:var(--gold); stop-opacity:0.15"/>
+                </linearGradient>
+              </defs>
+              <line x1="400" y1="28" x2="560" y2="28" stroke="url(#divGradL-sc2)" stroke-width="1.6"/>
+              <line x1="640" y1="28" x2="800" y2="28" stroke="url(#divGradR-sc2)" stroke-width="1.6"/>
+              <line x1="600" y1="10" x2="600" y2="23" stroke="var(--gold)" stroke-width="1.1" opacity="0.9"/>
+              <circle cx="600" cy="28" r="5" stroke="var(--gold)" stroke-width="1.1" fill="none" opacity="0.9"/>
+              <line x1="600" y1="33" x2="600" y2="42" stroke="var(--gold)" stroke-width="1.1" opacity="0.9"/>
+              <circle cx="600" cy="45" r="2.5" fill="var(--gold)" opacity="0.9"/>
+            </svg>
+          </div>
+          <div class="showcase-row-inner">
+            <div class="showcase-title-wrap">
+              <div class="showcase-title-inner">
+                <span class="showcase-ghost">MAPS</span>
+                <h2 class="showcase-title">Maps ready<br>to drop in</h2>
+              </div>
+            </div>
+            <p class="showcase-desc">Battle maps and location art sized for VTTs like Roll20 and Foundry, plus print-ready versions for tables that still roll physical dice.</p>
+          </div>
+        </div>
       </div>
-      <div class="feature-card">
-        <span class="num">03</span>
-        <h3>Prep in one sitting</h3>
-        <p>A clear running guide, key NPCs, and stat blocks laid out so you can read it once over coffee and run it with confidence that night.</p>
+      <div class="showcase-slide" style="background-image:url('Images/Character Tokens.png')">
+        <div class="showcase-content wrap">
+          <div class="showcase-divider">
+            <svg class="ornate-divider" viewBox="0 0 1200 56" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="divGradL-sc3" gradientUnits="userSpaceOnUse" x1="400" y1="28" x2="560" y2="28">
+                  <stop offset="0%" style="stop-color:var(--gold); stop-opacity:0.15"/>
+                  <stop offset="100%" style="stop-color:var(--gold); stop-opacity:1"/>
+                </linearGradient>
+                <linearGradient id="divGradR-sc3" gradientUnits="userSpaceOnUse" x1="640" y1="28" x2="800" y2="28">
+                  <stop offset="0%" style="stop-color:var(--gold); stop-opacity:1"/>
+                  <stop offset="100%" style="stop-color:var(--gold); stop-opacity:0.15"/>
+                </linearGradient>
+              </defs>
+              <line x1="400" y1="28" x2="560" y2="28" stroke="url(#divGradL-sc3)" stroke-width="1.6"/>
+              <line x1="640" y1="28" x2="800" y2="28" stroke="url(#divGradR-sc3)" stroke-width="1.6"/>
+              <line x1="600" y1="10" x2="600" y2="23" stroke="var(--gold)" stroke-width="1.1" opacity="0.9"/>
+              <circle cx="600" cy="28" r="5" stroke="var(--gold)" stroke-width="1.1" fill="none" opacity="0.9"/>
+              <line x1="600" y1="33" x2="600" y2="42" stroke="var(--gold)" stroke-width="1.1" opacity="0.9"/>
+              <circle cx="600" cy="45" r="2.5" fill="var(--gold)" opacity="0.9"/>
+            </svg>
+          </div>
+          <div class="showcase-row-inner">
+            <div class="showcase-title-wrap">
+              <div class="showcase-title-inner">
+                <span class="showcase-ghost">PREP</span>
+                <h2 class="showcase-title">Prep in one<br>sitting</h2>
+              </div>
+            </div>
+            <p class="showcase-desc">A clear running guide, key NPCs, and stat blocks laid out so you can read it once over coffee and run it with confidence that night.</p>
+          </div>
+        </div>
       </div>
+    </div>
+    <div class="showcase-dots">
+      <button class="showcase-dot active" data-index="0" aria-label="Show slide 1"></button>
+      <button class="showcase-dot" data-index="1" aria-label="Show slide 2"></button>
+      <button class="showcase-dot" data-index="2" aria-label="Show slide 3"></button>
     </div>
   </section>
 
@@ -555,38 +733,59 @@
     <div class="adventure-grid">
 
       <div class="adventure-card">
-        <div class="adventure-thumb" style="background: linear-gradient(135deg, #3a2a15, #14100a);"></div>
+        <div class="adventure-thumb" style="background: linear-gradient(135deg, #3a2a15, #14100a);">
+          <span class="genre-tag">Heist</span>
+        </div>
         <div class="adventure-body">
           <div class="adventure-row">
             <h3>Adventure title here</h3>
             <span class="adventure-price">$12</span>
           </div>
           <p>One or two sentences setting up the hook, tone, and stakes for this one-shot.</p>
-          <span class="adventure-tag">Levels 3–5 · 4hr session</span>
+          <span class="adventure-level">
+            <svg class="level-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M8 1L9.5 6.5L15 8L9.5 9.5L8 15L6.5 9.5L1 8L6.5 6.5L8 1Z" stroke="var(--gold)" stroke-width="1" stroke-linejoin="round"/>
+            </svg>
+            Levels 3–5
+          </span>
         </div>
       </div>
 
       <div class="adventure-card">
-        <div class="adventure-thumb" style="background: linear-gradient(135deg, #4a3520, #1a1408);"></div>
+        <div class="adventure-thumb" style="background: linear-gradient(135deg, #4a3520, #1a1408);">
+          <span class="genre-tag">Horror</span>
+        </div>
         <div class="adventure-body">
           <div class="adventure-row">
             <h3>Adventure title here</h3>
             <span class="adventure-price">$14</span>
           </div>
           <p>One or two sentences setting up the hook, tone, and stakes for this one-shot.</p>
-          <span class="adventure-tag">Levels 1–3 · 3hr session</span>
+          <span class="adventure-level">
+            <svg class="level-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M8 1L9.5 6.5L15 8L9.5 9.5L8 15L6.5 9.5L1 8L6.5 6.5L8 1Z" stroke="var(--gold)" stroke-width="1" stroke-linejoin="round"/>
+            </svg>
+            Levels 1–3
+          </span>
         </div>
       </div>
 
       <div class="adventure-card">
-        <div class="adventure-thumb" style="background: linear-gradient(135deg, #2d2010, #100c05);"></div>
+        <div class="adventure-thumb" style="background: linear-gradient(135deg, #2d2010, #100c05);">
+          <span class="genre-tag">Political Intrigue</span>
+        </div>
         <div class="adventure-body">
           <div class="adventure-row">
             <h3>Adventure title here</h3>
             <span class="adventure-price">$16</span>
           </div>
           <p>One or two sentences setting up the hook, tone, and stakes for this one-shot.</p>
-          <span class="adventure-tag">Levels 5–7 · 4–5hr session</span>
+          <span class="adventure-level">
+            <svg class="level-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M8 1L9.5 6.5L15 8L9.5 9.5L8 15L6.5 9.5L1 8L6.5 6.5L8 1Z" stroke="var(--gold)" stroke-width="1" stroke-linejoin="round"/>
+            </svg>
+            Levels 5–7
+          </span>
         </div>
       </div>
 
@@ -630,7 +829,7 @@
             <path d="M12 2L2 8.5L12 15L22 8.5L12 2Z" stroke="#D9A441" stroke-width="1.4" stroke-linejoin="round"/>
             <path d="M2 8.5V15.5L12 22L22 15.5V8.5" stroke="#D9A441" stroke-width="1.4" stroke-linejoin="round"/>
           </svg>
-          EMBERFALL
+          CRITS & CRAFTS
         </a>
         <p>Digital D&D one-shots for Dungeon Masters who care about the story as much as the fight.</p>
       </div>
@@ -658,7 +857,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      © 2026 Emberfall. All adventures written and playtested in-house.
+      © 2026 Crits & Crafts. All adventures written and playtested in-house.
     </div>
   </div>
 </footer>
@@ -672,6 +871,25 @@
       header.classList.remove('scrolled');
     }
   });
+
+  const showcaseTrack = document.querySelector('.showcase-track');
+  const showcaseDots = document.querySelectorAll('.showcase-dot');
+  let showcaseIndex = 0;
+
+  function goToShowcaseSlide(index) {
+    showcaseIndex = index;
+    showcaseTrack.style.transform = `translateX(-${index * 100}%)`;
+    showcaseDots.forEach(dot => dot.classList.remove('active'));
+    showcaseDots[index].classList.add('active');
+  }
+
+  showcaseDots.forEach(dot => {
+    dot.addEventListener('click', () => goToShowcaseSlide(Number(dot.dataset.index)));
+  });
+
+  setInterval(() => {
+    goToShowcaseSlide((showcaseIndex + 1) % showcaseDots.length);
+  }, 6000);
 </script>
 
 </body>
