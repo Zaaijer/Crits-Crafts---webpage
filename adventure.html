@@ -22,22 +22,22 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<script src="js/site-gate.js"></script>
 
-<!-- Same nav bar as the homepage, just with links pointed back at dnd-navbar-draft1.html since this page lives on its own -->
+<!-- Same nav bar as the homepage, just with links pointed back at index.html since this page lives on its own -->
 <header>
   <nav>
-    <a href="dnd-navbar-draft1.html" class="logo">
+    <a href="index.html" class="logo">
       <img class="logo-mark" src="Images/Crits&amp;Crafts logo.png" alt="Crits & Crafts">
     </a>
     <ul class="nav-links">
-      <li><a href="dnd-navbar-draft1.html">Home</a></li>
-      <li><a href="dnd-navbar-draft1.html#adventures" class="active">Adventures</a></li>
-      <li><a href="dnd-navbar-draft1.html#about">About</a></li>
-      <li><a href="dnd-navbar-draft1.html#">Blog</a></li>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="adventures.html">Adventures</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#">Blog</a></li>
     </ul>
     <div class="nav-right">
-      <a href="#" class="cart-link">Cart (0)</a>
-      <a href="dnd-navbar-draft1.html#adventures" class="btn-cta">Browse Adventures</a>
+      <a href="index.html#adventures" class="btn-cta">Browse Adventures</a>
       <button class="burger" aria-label="Open menu"><span></span><span></span><span></span></button>
     </div>
   </nav>
@@ -55,10 +55,15 @@
   <div id="product-not-found" class="product-fallback wrap" hidden>
     <h1>Adventure not found</h1>
     <p>We couldn't find that adventure — it may have been moved, or the link is out of date.</p>
-    <a href="dnd-navbar-draft1.html#adventures" class="btn-cta">Browse all adventures</a>
+    <a href="index.html#adventures" class="btn-cta">Browse all adventures</a>
   </div>
 
   <div id="product-content" hidden>
+
+    <!-- Small link back to the catalog page, sitting top-left above the gallery -->
+    <div class="back-link wrap">
+      <a href="adventures.html">← All Adventures</a>
+    </div>
 
     <!--
       Opening gallery: one large image, two stacked beside it. This section
@@ -120,7 +125,7 @@
   <div class="wrap">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="dnd-navbar-draft1.html" class="logo footer-logo">
+        <a href="index.html" class="logo footer-logo">
           <img src="Images/Crits&amp;Crafts logo_White_Horizontal-04.png" alt="Crits & Crafts">
         </a>
         <p>Digital D&D one-shots for Dungeon Masters who care about the story as much as the fight.</p>
@@ -128,14 +133,14 @@
       <div class="footer-col">
         <h4>Shop</h4>
         <ul>
-          <li><a href="dnd-navbar-draft1.html#adventures">All adventures</a></li>
+          <li><a href="index.html#adventures">All adventures</a></li>
           <li><a href="#">Bundles</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Company</h4>
         <ul>
-          <li><a href="dnd-navbar-draft1.html#about">About</a></li>
+          <li><a href="index.html#about">About</a></li>
           <li><a href="#">Blog</a></li>
           <li><a href="#">Contact</a></li>
         </ul>

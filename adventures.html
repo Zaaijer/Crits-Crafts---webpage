@@ -1,0 +1,108 @@
+<!--
+  The "All Adventures" catalog page — lists every adventure from
+  data/products.json (not just the 2-3 featured on the homepage), with a
+  live search box and genre filter pills. Like adventure.html, this page
+  starts with an empty grid — js/adventures-loader.js fetches the product
+  data, builds one card per adventure, and handles the search/filter logic.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All Adventures — Crits & Crafts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<script src="js/site-gate.js"></script>
+
+<!-- Same nav bar as the rest of the site, with "Adventures" now marked active/pointing here -->
+<header>
+  <nav>
+    <a href="index.html" class="logo">
+      <img class="logo-mark" src="Images/Crits&amp;Crafts logo.png" alt="Crits & Crafts">
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="adventures.html" class="active">Adventures</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#">Blog</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="adventures.html" class="btn-cta">Browse Adventures</a>
+      <button class="burger" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <div class="page-header wrap">
+    <h1>All Adventures</h1>
+    <p>Browse the full shelf — search by name or filter by genre to find your next one-shot.</p>
+  </div>
+
+  <div class="adventures-catalog wrap">
+
+    <div class="adventures-filter-bar">
+      <input type="text" id="adventures-search" class="adventures-search" placeholder="Search adventures…" autocomplete="off">
+      <!-- "All" + one pill per unique genre, built by js/adventures-loader.js from whatever's actually in products.json -->
+      <div class="genre-filter-row" id="genre-filter-row"></div>
+    </div>
+
+    <p class="results-count" id="results-count"></p>
+
+    <!-- Reuses the exact same .adventure-grid / .adventure-card markup as the homepage's Featured Adventures section, just built dynamically here instead of written by hand -->
+    <div class="adventure-grid" id="adventures-grid"></div>
+
+    <p class="adventures-empty" id="adventures-empty" hidden>No adventures match your search — try a different genre or search term.</p>
+
+  </div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="logo footer-logo">
+          <img src="Images/Crits&amp;Crafts logo_White_Horizontal-04.png" alt="Crits & Crafts">
+        </a>
+        <p>Digital D&D one-shots for Dungeon Masters who care about the story as much as the fight.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="adventures.html">All adventures</a></li>
+          <li><a href="#">Bundles</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Terms</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2026 Crits & Crafts. All adventures written and playtested in-house.
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/adventures-loader.js"></script>
+</body>
+</html>
