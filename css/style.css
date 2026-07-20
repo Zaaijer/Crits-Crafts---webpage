@@ -209,7 +209,8 @@
     color: var(--paper-dim);
     max-width: 52ch;
   }
-  .hero-ctas{ display:flex; gap: 14px; margin-top: 34px; flex-wrap:wrap; }
+  .hero-ctas{ display:flex; align-items:center; gap: 14px; margin-top: 34px; flex-wrap:wrap; }
+  .hero-ctas .btn-cta{ padding: 13px 26px; }
   .trust-row{
     margin-top: 56px;
     display:flex;
