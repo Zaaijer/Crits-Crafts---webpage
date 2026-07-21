@@ -8,7 +8,9 @@
     "levelRange": "3–5",
     "partySize": "4–6 players",
     "sessionLength": "3–4hr session",
-    "hook": "When the airship Aurora Dawn is three days from port, one of its wealthiest passengers turns up dead in a locked stateroom — and the killer is still aboard. Your party has until the ship docks to sort suspects from scapegoats, unravel motives tangled in old debts and older grudges, and catch a murderer before they slip away into the crowd at landing.",
+    "hook": [
+      "When the airship Aurora Dawn is three days from port, one of its wealthiest passengers turns up dead in a locked stateroom — and the killer is still aboard. Your party has until the ship docks to sort suspects from scapegoats, unravel motives tangled in old debts and older grudges, and catch a murderer before they slip away into the crowd at landing."
+    ],
     "whatsIncluded": [
       "Full adventure PDF",
       "VTT-ready battle maps (Roll20 & Foundry)",
@@ -52,7 +54,9 @@
     "levelRange": "1–4",
     "partySize": "4–6 players",
     "sessionLength": "3–4hr session",
-    "hook": "A traveling carnival rolls into town overnight, its tents lit and its performers smiling — but the smiles never seem to move, and nobody in town remembers inviting it. When a local child goes missing after the opening show, your party has one night to find out what the carnival really is before it packs up and vanishes for good.",
+    "hook": [
+      "A traveling carnival rolls into town overnight, its tents lit and its performers smiling — but the smiles never seem to move, and nobody in town remembers inviting it. When a local child goes missing after the opening show, your party has one night to find out what the carnival really is before it packs up and vanishes for good."
+    ],
     "whatsIncluded": [
       "Full adventure PDF",
       "VTT-ready battle maps (Roll20 & Foundry)",

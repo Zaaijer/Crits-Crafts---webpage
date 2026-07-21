@@ -874,10 +874,13 @@
     font-size: clamp(22px, 2.6vw, 28px);
     margin-bottom: 18px;
   }
-  .setup-col p{
+  .setup-text p{
     font-size: 15.5px;
     line-height: 1.75;
     color: var(--paper-dim);
+  }
+  .setup-text p + p{
+    margin-top: 16px;
   }
   .included-list{
     list-style:none;

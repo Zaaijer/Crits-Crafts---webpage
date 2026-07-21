@@ -62,6 +62,19 @@ function renderPlaceholderGrid(fieldName, items) {
   });
 }
 
+// Builds "The Setup" synopsis: one <p> per entry in the product's "hook"
+// array. Usually just one paragraph, but a product can have more (e.g. to
+// balance the column's height against the mockup + What's Included on
+// the other side).
+function renderHook(paragraphs) {
+  const container = document.querySelector('[data-field="hook"]');
+  paragraphs.forEach(text => {
+    const p = document.createElement('p');
+    p.textContent = text;
+    container.appendChild(p);
+  });
+}
+
 // Builds the "What's Included" list: one <li> per item, each with a small
 // checkmark icon (inline SVG) plus the item's text.
 function renderIncluded(items) {
@@ -213,7 +226,7 @@ async function initProductPage() {
   setField('title', product.title);
   setField('genre', product.genre);
   setField('price', `€${product.price}`);
-  setField('hook', product.hook);
+  renderHook(product.hook);
   renderIncluded(product.whatsIncluded);
   renderPlaceholderGrid('gallery', product.images.gallery);
   renderSpotlight('locations', 'locations-spotlight', product.locationsSpotlight);
