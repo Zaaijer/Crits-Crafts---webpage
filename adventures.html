@@ -62,6 +62,40 @@
 
   </div>
 
+  <!--
+    Frequently Asked Questions — built with native <details>/<summary>
+    elements for the underlying open/closed state and accessibility, but
+    native <details> has no built-in open/close animation, it just snaps
+    instantly. js/adventures-loader.js adds a short height transition on
+    click instead (see initFaqAccordion() in that file). The little "+"
+    icon is rotated 45° with CSS when a <details> is open, so it reads as "×".
+  -->
+  <section class="faq-section wrap">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>What do I get when I buy an adventure?<span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><line x1="6" y1="1" x2="6" y2="11" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round"/><line x1="1" y1="6" x2="11" y2="6" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round"/></svg></span></summary>
+        <div class="faq-answer"><p>Every adventure includes the full PDF, VTT-ready battle maps for Roll20 and Foundry, a character token sheet, and a print-ready version — everything you need to prep and run the session.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>What tabletop system are these built for?<span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><line x1="6" y1="1" x2="6" y2="11" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round"/><line x1="1" y1="6" x2="11" y2="6" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round"/></svg></span></summary>
+        <div class="faq-answer"><p>Every adventure on Crits & Crafts is built for 5th Edition D&D and designed as a self-contained one-shot — no ongoing campaign or extra source material required.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>How long does a session take to run?<span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><line x1="6" y1="1" x2="6" y2="11" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round"/><line x1="1" y1="6" x2="11" y2="6" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round"/></svg></span></summary>
+        <div class="faq-answer"><p>Most one-shots are built to run start to finish in a single 3–4 hour sitting, so you can fit a whole story into one session.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Can I run these online or in person?<span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><line x1="6" y1="1" x2="6" y2="11" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round"/><line x1="1" y1="6" x2="11" y2="6" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round"/></svg></span></summary>
+        <div class="faq-answer"><p>Both. Each adventure comes with VTT-ready maps for online play, plus a print-ready version for tables that still roll physical dice.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>How do I get my files after I buy?<span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><line x1="6" y1="1" x2="6" y2="11" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round"/><line x1="1" y1="6" x2="11" y2="6" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round"/></svg></span></summary>
+        <div class="faq-answer"><p>Checkout is handled through Lemon Squeezy — after purchase, you'll get a download link by email.</p></div>
+      </details>
+    </div>
+  </section>
+
 </main>
 
 <footer>

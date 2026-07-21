@@ -154,6 +154,63 @@ async function initAdventuresPage() {
     searchTerm = e.target.value;
     renderGrid();
   });
+
+  initFaqAccordion();
+}
+
+// Native <details>/<summary> gives us the open/closed state and
+// accessibility for free, but no animation — clicking just snaps the
+// content open or shut. This intercepts that click and animates the
+// answer's height instead, using the CSS "height" transition already set
+// on .faq-answer (see the CSS — it's a quick .2s ease, kept short so it
+// feels snappy rather than sluggish).
+function initFaqAccordion() {
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const summary = item.querySelector('summary');
+    const answer = item.querySelector('.faq-answer');
+
+    summary.addEventListener('click', (e) => {
+      e.preventDefault(); // stop the browser's own instant open/close so we can animate it instead
+
+      if (item.open) {
+        closeFaqItem(item, answer);
+      } else {
+        openFaqItem(item, answer);
+      }
+    });
+  });
+}
+
+function openFaqItem(item, answer) {
+  item.open = true; // reveals the content immediately so its height can be measured
+  const targetHeight = answer.scrollHeight;
+  answer.style.height = '0px';
+  // Reading offsetHeight forces the browser to apply that starting height
+  // before the next line changes it — without this "reflow", the two
+  // height changes would get batched together and the transition wouldn't play.
+  answer.offsetHeight;
+  answer.style.height = `${targetHeight}px`;
+
+  answer.addEventListener('transitionend', function onOpenEnd() {
+    // "auto" (not an empty string) — clearing the style entirely would fall
+    // back to .faq-answer's own CSS rule of height:0, which would then
+    // immediately transition itself shut again since the transition is
+    // still active. "auto" keeps it open and still adapts if the content
+    // ever changes size.
+    answer.style.height = 'auto';
+    answer.removeEventListener('transitionend', onOpenEnd);
+  }, { once: true });
+}
+
+function closeFaqItem(item, answer) {
+  answer.style.height = `${answer.scrollHeight}px`;
+  answer.offsetHeight; // same reflow trick as above
+  answer.style.height = '0px';
+
+  answer.addEventListener('transitionend', function onCloseEnd() {
+    item.open = false; // actually collapse the <details> once the animation has finished
+    answer.removeEventListener('transitionend', onCloseEnd);
+  }, { once: true });
 }
 
 initAdventuresPage();

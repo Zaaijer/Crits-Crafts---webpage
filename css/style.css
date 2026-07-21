@@ -571,7 +571,7 @@
     max-width: 55ch;
   }
   .adventures-catalog{
-    padding: 20px 0 110px;
+    padding: 20px 0 72px;
   }
   .adventures-filter-bar{
     display:flex;
@@ -638,6 +638,81 @@
     padding: 80px 0;
     text-align:center;
     color: var(--paper-dim);
+  }
+
+  /* FAQ accordion, built from native <details>/<summary> elements */
+  .faq-section{
+    padding: 20px 0 100px;
+  }
+  .faq-section h2{
+    font-size: clamp(28px, 3.6vw, 40px);
+    text-align:center;
+    margin-bottom: 30px;
+  }
+  .faq-list{
+    max-width: 760px;
+    margin: 0 auto;
+    display:flex;
+    flex-direction:column;
+    gap: 12px;
+  }
+  .faq-item{
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--ink-raised);
+    padding: 0 22px;
+  }
+  .faq-item summary{
+    list-style:none;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 16px;
+    padding: 18px 0;
+    font-weight:600;
+    font-size: 15.5px;
+    color: var(--paper);
+  }
+  /* Hides the browser's own default disclosure triangle, in both Chrome/Safari (::-webkit-details-marker) and Firefox (list-style, already set above) */
+  .faq-item summary::-webkit-details-marker{ display:none; }
+  .faq-icon{
+    flex-shrink:0;
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition: transform .2s ease;
+  }
+  .faq-icon svg{
+    width: 11px;
+    height: 11px;
+    display:block;
+  }
+  /* "[open]" only matches a <details> while it's expanded — this is what spins the "+" into a "×" */
+  .faq-item[open] .faq-icon{
+    transform: rotate(45deg);
+  }
+  /*
+    Wraps each answer so js/adventures-loader.js can animate its height
+    open/closed (native <details> has no built-in transition — it just
+    snaps open/shut). "overflow: hidden" is what makes the height
+    transition look like a reveal instead of just resizing a visible box.
+  */
+  .faq-answer{
+    height: 0;
+    overflow:hidden;
+    transition: height .2s ease;
+  }
+  .faq-item p{
+    margin:0;
+    padding: 0 0 20px;
+    color: var(--paper-dim);
+    font-size: 14.5px;
+    line-height: 1.65;
   }
 
   /*
