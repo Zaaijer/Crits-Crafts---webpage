@@ -9,7 +9,6 @@
     "partySize": "4–6 players",
     "sessionLength": "3–4hr session",
     "hook": "When the airship Aurora Dawn is three days from port, one of its wealthiest passengers turns up dead in a locked stateroom — and the killer is still aboard. Your party has until the ship docks to sort suspects from scapegoats, unravel motives tangled in old debts and older grudges, and catch a murderer before they slip away into the crowd at landing.",
-    "quote": "Everyone on this ship has a reason to want him dead. I'm just the only one honest enough to admit it.",
     "whatsIncluded": [
       "Full adventure PDF",
       "VTT-ready battle maps (Roll20 & Foundry)",
@@ -19,22 +18,30 @@
     "images": {
       "gallery": [
         { "label": "Cover image", "tone": "amber", "src": "Images/Murder on the Aurora Dawn/Cover_image-Aurora.png" },
-        { "label": "Interior scene", "tone": "blue", "src": "Images/Murder on the Aurora Dawn/Module_Render-Aurora.png" },
-        { "label": "Key art", "tone": "moss" }
-      ],
-      "sceneStrip": [
-        { "label": "Scene", "tone": "amber" },
-        { "label": "Scene", "tone": "blue" },
-        { "label": "Scene", "tone": "moss" },
-        { "label": "Scene", "tone": "plum" }
-      ],
-      "breatherBand": { "label": "Cinematic moment", "tone": "plum" },
-      "cast": [
-        { "name": "Mr. Aldous Renner", "role": "Suspect", "tone": "amber" },
-        { "name": "Lady Iris Wentworth", "role": "Victim", "tone": "blue" },
-        { "name": "Chief Engineer Mabel Cross", "role": "Crew", "tone": "moss" },
-        { "name": "Inspector Josiah Vane", "role": "Detective", "tone": "plum" }
+        { "label": "Interior scene", "tone": "blue", "src": "Images/Murder on the Aurora Dawn/Top_Right-Aurora.png" },
+        { "label": "Key art", "tone": "moss", "src": "Images/Murder on the Aurora Dawn/Bottom_Right-Aurora.png" }
       ]
+    },
+    "locationsSpotlight": {
+      "name": "The Grand Dining Hall",
+      "description": "Where the body is found — and where alibis start to crack.",
+      "image": "Images/Murder on the Aurora Dawn/Location-Aurora.png",
+      "tone": "amber",
+      "moreCount": 5
+    },
+    "mapsSpotlight": {
+      "name": "Full Deck Battle Map",
+      "description": "VTT-ready and print-ready, gridded for combat and roleplay alike.",
+      "image": "Images/Murder on the Aurora Dawn/Battlemap-Aurora.png",
+      "tone": "blue",
+      "moreCount": 2
+    },
+    "npcSpotlight": {
+      "name": "Mr. Aldous Renner",
+      "description": "He swears he never left the smoking room — but the porter remembers seeing him near the stateroom, coat still damp from the deck.",
+      "image": "Images/Murder on the Aurora Dawn/NPC-Aurora.png",
+      "tone": "moss",
+      "moreCount": 3
     }
   },
   "the-carnival-of-forgotten-smiles": {
@@ -46,7 +53,6 @@
     "partySize": "4–6 players",
     "sessionLength": "3–4hr session",
     "hook": "A traveling carnival rolls into town overnight, its tents lit and its performers smiling — but the smiles never seem to move, and nobody in town remembers inviting it. When a local child goes missing after the opening show, your party has one night to find out what the carnival really is before it packs up and vanishes for good.",
-    "quote": "Step right up — everyone who walks through these gates gets exactly what they deserve.",
     "whatsIncluded": [
       "Full adventure PDF",
       "VTT-ready battle maps (Roll20 & Foundry)",
@@ -58,20 +64,28 @@
         { "label": "Cover image", "tone": "plum", "src": "Images/Carnival of Forgotten Smiles/Cover_image-Forgotten.png" },
         { "label": "Interior scene", "tone": "amber", "src": "Images/Carnival of Forgotten Smiles/Key_art-Forgotten.jpg" },
         { "label": "Key art", "tone": "blue", "src": "Images/Carnival of Forgotten Smiles/Key_art2-Forgotten.jpg" }
-      ],
-      "sceneStrip": [
-        { "label": "Scene", "tone": "plum" },
-        { "label": "Scene", "tone": "amber" },
-        { "label": "Scene", "tone": "moss" },
-        { "label": "Scene", "tone": "blue" }
-      ],
-      "breatherBand": { "label": "Cinematic moment", "tone": "amber" },
-      "cast": [
-        { "name": "PLACEHOLDER", "role": "Ringmaster", "tone": "plum" },
-        { "name": "PLACEHOLDER", "role": "Fortune Teller", "tone": "amber" },
-        { "name": "PLACEHOLDER", "role": "Missing Performer", "tone": "moss" },
-        { "name": "PLACEHOLDER", "role": "Skeptical Investigator", "tone": "blue" }
       ]
+    },
+    "locationsSpotlight": {
+      "name": "The Hall of Mirrors",
+      "description": "Step inside, and every reflection smiles back a little too wide.",
+      "image": "",
+      "tone": "plum",
+      "moreCount": 4
+    },
+    "mapsSpotlight": {
+      "name": "Carnival Grounds Map",
+      "description": "VTT-ready and print-ready, laid out tent by tent for easy exploration.",
+      "image": "",
+      "tone": "amber",
+      "moreCount": 1
+    },
+    "npcSpotlight": {
+      "name": "The Ringmaster",
+      "description": "He remembers every visitor's name — even the ones who never told him.",
+      "image": "",
+      "tone": "blue",
+      "moreCount": 3
     }
   }
 }

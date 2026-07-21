@@ -100,21 +100,92 @@
       </div>
     </section>
 
-    <!-- Scenes From the Story: a row of 4 more image boxes, same placeholder-or-real-image logic as the opening gallery above -->
-    <section class="scene-strip wrap">
-      <h2>Scenes From the Story</h2>
-      <div class="scene-strip-grid" data-field="sceneStrip"></div>
+    <!--
+      Striking Locations: one full-width featured location, not a grid of
+      all of them. product-loader.js sets the background image (or a
+      gradient placeholder tone if no real art exists yet) via its id.
+      The eyebrow label below is static — it's the same on every adventure,
+      not pulled from product data — only the heading/subtitle/count are.
+    -->
+    <section class="spotlight-section" id="locations-spotlight">
+      <div class="spotlight-overlay"></div>
+      <div class="spotlight-content">
+        <span class="eyebrow">Striking Locations</span>
+        <h2 class="spotlight-heading" data-field="locations-name">Location name</h2>
+        <p class="spotlight-subtitle" data-field="locations-desc">Description</p>
+        <div class="spotlight-divider">
+          <svg viewBox="0 0 120 20" fill="none" aria-hidden="true">
+            <line x1="10" y1="6" x2="50" y2="6" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" opacity="0.9"/>
+            <line x1="70" y1="6" x2="110" y2="6" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" opacity="0.9"/>
+            <line x1="60" y1="7" x2="60" y2="14" stroke="var(--gold)" stroke-width="1.2" opacity="0.9"/>
+            <circle cx="60" cy="17" r="2.2" fill="var(--gold)" opacity="0.9"/>
+          </svg>
+        </div>
+      </div>
     </section>
+    <p class="spotlight-more">+ <span data-field="locations-more"></span> more locations inside</p>
 
-    <!-- Cinematic breather band: one full-width mood image with an in-character pull-quote centered on top of it -->
-    <section class="breather-band" data-field="breatherBand">
-      <blockquote data-field="quote"></blockquote>
+    <!-- Maps Worth Exploring: structurally identical to Striking Locations above, just different content -->
+    <section class="spotlight-section" id="maps-spotlight">
+      <div class="spotlight-overlay"></div>
+      <div class="spotlight-content">
+        <span class="eyebrow">Maps Worth Exploring</span>
+        <h2 class="spotlight-heading" data-field="maps-name">Map name</h2>
+        <p class="spotlight-subtitle" data-field="maps-desc">Description</p>
+        <div class="spotlight-divider">
+          <svg viewBox="0 0 120 20" fill="none" aria-hidden="true">
+            <line x1="10" y1="6" x2="50" y2="6" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" opacity="0.9"/>
+            <line x1="70" y1="6" x2="110" y2="6" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" opacity="0.9"/>
+            <line x1="60" y1="7" x2="60" y2="14" stroke="var(--gold)" stroke-width="1.2" opacity="0.9"/>
+            <circle cx="60" cy="17" r="2.2" fill="var(--gold)" opacity="0.9"/>
+          </svg>
+        </div>
+      </div>
     </section>
+    <p class="spotlight-more">+ <span data-field="maps-more"></span> more maps included</p>
 
-    <!-- Cast of Characters: circular portrait + name + role for each character, built by product-loader.js from the "cast" array -->
-    <section class="cast-section wrap">
-      <h2>Cast of Characters</h2>
-      <div class="cast-grid" data-field="cast"></div>
+    <!--
+      Colorful NPCs: two-column instead of the full-width layout above.
+      Left column is a portrait "frame" — product-loader.js appends the
+      character image (if one exists) positioned to visually break past
+      the frame's top edge. That effect needs real art with a transparent
+      cutout background to look right — see the note in product-loader.js.
+    -->
+    <section class="npc-spotlight wrap">
+      <div class="npc-spotlight-inner">
+        <div class="npc-portrait-col">
+          <div class="npc-portrait-frame" id="npc-portrait-frame">
+            <div class="npc-portrait-panel"></div>
+            <!-- Inner (fainter) rect only — sits BEHIND the character image, so it's only visible where the image doesn't cover it -->
+            <svg class="npc-frame-svg npc-frame-back" viewBox="0 0 340 380" preserveAspectRatio="none" aria-hidden="true">
+              <rect x="10" y="10" width="320" height="360" fill="none" stroke="var(--gold)" stroke-width="0.7" opacity="0.5"/>
+            </svg>
+            <!-- character image gets inserted here by product-loader.js, between the two frame layers -->
+            <!-- Outer rect + corner ticks — sits IN FRONT of the character image, so the frame border always reads clearly over the art -->
+            <svg class="npc-frame-svg npc-frame-front" viewBox="0 0 340 380" preserveAspectRatio="none" aria-hidden="true">
+              <rect x="4" y="4" width="332" height="372" fill="none" stroke="var(--gold)" stroke-width="1.4"/>
+              <line x1="0" y1="0" x2="10" y2="10" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="340" y1="0" x2="330" y2="10" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="0" y1="380" x2="10" y2="370" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="340" y1="380" x2="330" y2="370" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <p class="spotlight-more">+ <span data-field="npc-more"></span> more suspects to meet</p>
+        </div>
+        <div class="npc-text-col">
+          <span class="eyebrow">Colorful NPCs</span>
+          <h2 class="spotlight-heading" data-field="npc-name">Character name</h2>
+          <p class="spotlight-subtitle" data-field="npc-desc">Hook line</p>
+          <div class="spotlight-divider">
+            <svg viewBox="0 0 120 20" fill="none" aria-hidden="true">
+              <line x1="10" y1="6" x2="50" y2="6" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" opacity="0.9"/>
+              <line x1="70" y1="6" x2="110" y2="6" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" opacity="0.9"/>
+              <line x1="60" y1="7" x2="60" y2="14" stroke="var(--gold)" stroke-width="1.2" opacity="0.9"/>
+              <circle cx="60" cy="17" r="2.2" fill="var(--gold)" opacity="0.9"/>
+            </svg>
+          </div>
+        </div>
+      </div>
     </section>
 
   </div>
@@ -170,11 +241,14 @@
       is watching for).
 -->
 <div class="sticky-buy-bar" id="sticky-buy-bar">
-  <div class="sticky-buy-bar-info">
-    <span class="sticky-buy-bar-title" data-field="title">Adventure title</span>
-    <span class="product-price" data-field="price">€0</span>
+  <!-- Mirrors nav's own max-width/padding exactly, so the bar's content lines up with (and fully covers the height of) the nav bar underneath -->
+  <div class="sticky-buy-bar-inner">
+    <div class="sticky-buy-bar-info">
+      <span class="sticky-buy-bar-title" data-field="title">Adventure title</span>
+      <span class="product-price" data-field="price">€0</span>
+    </div>
+    <a href="#" class="btn-cta" id="sticky-bar-buy">Buy Now</a>
   </div>
-  <a href="#" class="btn-cta" id="sticky-bar-buy">Buy Now</a>
 </div>
 
 <!-- main.js handles the nav scroll effect (shared with the homepage); product-loader.js is specific to this page -->

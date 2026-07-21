@@ -62,14 +62,6 @@ function renderPlaceholderGrid(fieldName, items) {
   });
 }
 
-// The breather band already exists as a section in the HTML (with the
-// pull-quote inside it) — this just adds the right tone-* class so its
-// background gradient matches this product's data.
-function renderBreatherBand(image) {
-  const band = document.querySelector('[data-field="breatherBand"]');
-  band.classList.add(`tone-${image.tone}`);
-}
-
 // Builds the "What's Included" list: one <li> per item, each with a small
 // checkmark icon (inline SVG) plus the item's text.
 function renderIncluded(items) {
@@ -86,29 +78,64 @@ function renderIncluded(items) {
   });
 }
 
-// Builds the "Cast of Characters" grid: one circular portrait placeholder
-// + name + role per cast member.
-function renderCast(cast) {
-  const grid = document.querySelector('[data-field="cast"]');
-  cast.forEach(member => {
-    const item = document.createElement('div');
-    item.className = 'cast-item';
+// Shared by the "Striking Locations" and "Maps Worth Exploring" sections —
+// they're structurally identical, so one function handles both. "prefix"
+// picks which section's data-field elements to fill in (e.g. "locations"
+// or "maps"). Sets the section's own background image if real art exists,
+// otherwise falls back to a gradient tone (same placeholder system used
+// elsewhere on this page).
+function renderSpotlight(prefix, sectionId, data) {
+  setField(`${prefix}-name`, data.name);
+  setField(`${prefix}-desc`, data.description);
+  setField(`${prefix}-more`, data.moreCount);
 
-    const portrait = placeholderBlock('Portrait', member.tone, 'cast-portrait');
+  const section = document.getElementById(sectionId);
+  if (data.image) {
+    section.style.backgroundImage = `url("${encodeURI(data.image)}")`;
+  } else {
+    section.classList.add(`tone-${data.tone}`);
+  }
+}
 
-    const name = document.createElement('span');
-    name.className = 'cast-name';
-    name.textContent = member.name;
+// "Colorful NPCs" — different from the two spotlights above because it's a
+// two-column layout, not a full-width background image. If real character
+// art exists, it's layered between the frame's two SVG borders (see the
+// CSS for .npc-frame-back / .npc-frame-front) so it can visually break
+// past the frame's top edge — that only looks right with a
+// transparent-background cutout image, not a plain rectangular photo.
+// Built as a background-image div rather than an <img> so the crop/zoom
+// (background-size/background-position) is directly tunable, rather than
+// fighting object-fit's automatic aspect-ratio math. Without real art yet,
+// it falls back to a plain gradient-filled panel like the other
+// placeholder art on this page.
+function renderNpcSpotlight(data) {
+  setField('npc-name', data.name);
+  setField('npc-desc', data.description);
+  setField('npc-more', data.moreCount);
 
-    const role = document.createElement('span');
-    role.className = 'cast-role';
-    role.textContent = member.role;
+  const frame = document.getElementById('npc-portrait-frame');
+  if (data.image) {
+    const bg = `url("${encodeURI(data.image)}")`;
 
-    item.appendChild(portrait);
-    item.appendChild(name);
-    item.appendChild(role);
-    grid.appendChild(item);
-  });
+    const portrait = document.createElement('div');
+    portrait.className = 'npc-portrait-img';
+    portrait.style.backgroundImage = bg;
+    frame.appendChild(portrait);
+
+    // A second, identical copy of the portrait — clipped to just its top
+    // half and layered above the frame's border (see the CSS), so the
+    // escaping part of the character visually sits in front of the gold
+    // border instead of the border cutting across it.
+    const overlapWrap = document.createElement('div');
+    overlapWrap.className = 'npc-portrait-img-overlap';
+    const overlapDup = document.createElement('div');
+    overlapDup.className = 'npc-portrait-img-dup';
+    overlapDup.style.backgroundImage = bg;
+    overlapWrap.appendChild(overlapDup);
+    frame.appendChild(overlapWrap);
+  } else {
+    frame.querySelector('.npc-portrait-panel').classList.add(`tone-${data.tone}`);
+  }
 }
 
 // Points both "Buy Now" buttons (info bar + sticky bar) at the product's
@@ -187,12 +214,11 @@ async function initProductPage() {
   setField('genre', product.genre);
   setField('price', `€${product.price}`);
   setField('hook', product.hook);
-  setField('quote', `“${product.quote}”`);
   renderIncluded(product.whatsIncluded);
   renderPlaceholderGrid('gallery', product.images.gallery);
-  renderPlaceholderGrid('sceneStrip', product.images.sceneStrip);
-  renderBreatherBand(product.images.breatherBand);
-  renderCast(product.images.cast);
+  renderSpotlight('locations', 'locations-spotlight', product.locationsSpotlight);
+  renderSpotlight('maps', 'maps-spotlight', product.mapsSpotlight);
+  renderNpcSpotlight(product.npcSpotlight);
   renderBuyLinks(product.buyLink);
 
   document.getElementById('product-content').hidden = false;

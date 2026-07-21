@@ -688,8 +688,8 @@
     transition: transform .2s ease;
   }
   .faq-icon svg{
-    width: 11px;
-    height: 11px;
+    width: 12px;
+    height: 12px;
     display:block;
   }
   /* "[open]" only matches a <details> while it's expanded — this is what spins the "+" into a "×" */
@@ -901,84 +901,201 @@
     flex-shrink:0;
   }
 
-  /* scenes from the story */
-  .scene-strip{ padding: 50px 0; }
-  .scene-strip h2{
-    font-size: clamp(22px, 2.6vw, 28px);
-    margin-bottom: 20px;
-  }
-  .scene-strip-grid{
-    display:grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-  }
-  .scene-strip-grid .placeholder-block{
-    height: 220px;
-    border-radius: 10px;
-    border: 1px solid var(--line);
-  }
-
-  /* cinematic breather band */
-  .breather-band{
+  /*
+    Striking Locations / Maps Worth Exploring — full-width, single
+    centered composition. Both sections share this exact same styling
+    (see the matching HTML comment); only their text/image content differs.
+    The radial "spotlight" overlay is lighter in the middle, darker toward
+    the edges — the opposite of the homepage carousel's vignette — so text
+    reads clearly without needing a hard top/bottom band across the image.
+  */
+  .spotlight-section{
     position:relative;
-    min-height: 360px;
+    min-height: 460px;
     display:flex;
     align-items:center;
     justify-content:center;
-    text-align:center;
+    background-size:cover;
+    background-position: center 75%;
+    background-repeat:no-repeat;
     overflow:hidden;
+    text-align:center;
   }
-  .breather-band::before{
-    content:"";
+  .spotlight-overlay{
     position:absolute;
     inset:0;
-    background: linear-gradient(180deg, rgba(12,12,13,0.55) 0%, rgba(12,12,13,0.25) 50%, rgba(12,12,13,0.55) 100%);
+    background: radial-gradient(ellipse at center, rgba(12,12,13,0.25) 0%, rgba(12,12,13,0.55) 55%, rgba(12,12,13,0.88) 100%);
   }
-  .breather-band blockquote{
+  .spotlight-content{
     position:relative;
     z-index:1;
-    margin:0;
-    max-width: 46ch;
-    padding: 0 32px;
-    font-family:'Barlow', sans-serif;
-    font-weight: 700;
-    font-style: italic;
-    font-size: clamp(22px, 3vw, 32px);
-    line-height: 1.3;
+    max-width: 560px;
+    min-height: 440px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding: 50px 64px;
+    background: radial-gradient(ellipse 49% 49% at center, rgba(12,12,13,0.92) 0%, rgba(12,12,13,0.55) 45%, rgba(12,12,13,0.22) 75%, transparent 100%);
+  }
+  .spotlight-heading{
+    font-size: clamp(28px, 3.6vw, 40px);
+    line-height:1.1;
     color: var(--paper);
+  }
+  .spotlight-content .eyebrow{
+    margin-bottom: 8px;
+  }
+  .spotlight-subtitle{
+    margin-top: 8px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--paper-dim);
+  }
+  /* The small "two lines + stem + dot" ornament — a simpler, quieter cousin of the full rapier divider used between major sections elsewhere on the site */
+  .spotlight-divider{
+    width: 90px;
+    margin: 10px auto 0;
+  }
+  .spotlight-divider svg{
+    width:100%;
+    height:auto;
+    display:block;
+  }
+  /* Small muted "+N more..." line, shared by all three spotlight sections */
+  .spotlight-more{
+    text-align:center;
+    padding: 4px 0 24px;
+    font-size: 12.5px;
+    color: var(--paper-dimmer);
   }
 
-  /* cast of characters */
-  .cast-section{ padding: 60px 0; }
-  .cast-section h2{
-    font-size: clamp(22px, 2.6vw, 28px);
-    margin-bottom: 30px;
+  /*
+    Colorful NPCs — two columns instead of the full-width layout above.
+    The portrait "frame" is a rounded panel; product-loader.js layers the
+    character image on top of it, sized taller than the panel and anchored
+    to the bottom, so it visually breaks past the panel's top edge instead
+    of sitting flush inside it.
+  */
+  .npc-spotlight{
+    padding: 70px 0 20px;
   }
-  .cast-grid{
+  .npc-spotlight-inner{
     display:grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 28px;
+    grid-template-columns: 1fr 1fr;
+    align-items:center;
+    gap: 50px;
   }
-  .cast-item{ text-align:center; }
-  .cast-portrait{
-    width: 120px;
-    height: 120px;
-    margin: 0 auto 14px;
-    border-radius: 50%;
-    border: 1px solid var(--line);
+  .npc-portrait-col{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
   }
-  .cast-name{
-    font-size: 15px;
-    font-weight:600;
-    color: var(--paper);
+  /*
+    The frame container carries the fixed size directly (rather than its
+    .npc-portrait-panel child), so the two decorative SVG borders below
+    can line up pixel-for-pixel with it. Stacking order (back to front):
+    panel (z-index 0, the background fill) → .npc-frame-back's faint
+    inner rect (1) → the character portrait (2) → .npc-frame-front's
+    bold outer rect + corner ticks (3). That order is what lets the inner
+    rect show only in the gaps around the character while the outer
+    border still reads clearly on top of the art.
+  */
+  .npc-portrait-frame{
+    position:relative;
+    width: 100%;
+    max-width: 340px;
+    height: 380px;
+    margin: 0 auto;
   }
-  .cast-role{
-    display:block;
-    margin-top: 4px;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--paper-dimmer);
+  .npc-portrait-panel{
+    position:absolute;
+    inset:0;
+    z-index:0;
+  }
+  .npc-frame-back{
+    z-index:1;
+  }
+  /*
+    The character portrait. Built as a background-image div (see
+    product-loader.js) instead of an <img> so the crop is directly
+    controlled here via background-size (zoom) and background-position
+    (which part of the source shows), rather than fighting object-fit's
+    automatic aspect-ratio math. "top" is negative so the element extends
+    above the frame's own top edge — combined with background-position
+    anchored to the top of the source art, that's what lets the character's
+    head/horns escape past the frame instead of being cropped by it.
+    scaleX(-1) mirrors the source image horizontally (there's no file-level
+    flip — see the note in product-loader.js).
+  */
+  .npc-portrait-img{
+    position:absolute;
+    z-index:2;
+    top: -28%;
+    left:4px;
+    right:4px;
+    bottom:4px;
+    background-size: 280% auto;
+    background-position: 50% 0%;
+    background-repeat: no-repeat;
+    transform: scaleX(-1);
+    pointer-events:none;
+  }
+  .npc-frame-front{
+    z-index:3;
+  }
+  /*
+    Makes the escaping top part of the character appear to sit IN FRONT of
+    the frame border, instead of the border simply cutting across it. This
+    wrapper is clipped (overflow:hidden) to just the top half of the full
+    portrait's height, and sits above .npc-frame-front in stacking order —
+    so wherever it overlaps the gold border, it fully covers it. The lower
+    half is left alone, so the border still frames the character normally
+    there.
+  */
+  .npc-portrait-img-overlap{
+    position:absolute;
+    z-index:4;
+    top: -28%;
+    left:4px;
+    right:4px;
+    height: 64%; /* half of the original image's full 128% (top:-28% to bottom:4px) span */
+    overflow:hidden;
+    pointer-events:none;
+  }
+  /*
+    An exact duplicate of .npc-portrait-img, positioned/sized identically
+    but relative to the wrapper above instead of the frame directly —
+    "top:0; height:200%" recreates the same full height within a wrapper
+    that's itself half that size, so the background-size/position math
+    (which is relative to this element's own box) lines up pixel-for-pixel
+    with the original. Only the portion inside the wrapper's clipped
+    bounds ends up visible.
+  */
+  .npc-portrait-img-overlap .npc-portrait-img-dup{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    height: 200%;
+    background-size: 280% auto;
+    background-position: 50% 0%;
+    background-repeat: no-repeat;
+    transform: scaleX(-1);
+  }
+  .npc-frame-svg{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+  }
+  .npc-text-col{
+    text-align:center;
+  }
+  @media (max-width: 860px){
+    .npc-spotlight-inner{ grid-template-columns: 1fr; gap: 24px; }
+    .npc-portrait-frame{ height: 300px; }
   }
 
   /*
@@ -993,13 +1110,18 @@
     position:fixed;
     left:0; right:0;
     z-index: 40;
+    background: rgba(12,12,13,0.92);
+    backdrop-filter: blur(10px);
+  }
+  /* Same max-width/margin/padding as "nav" itself, so the bar's content and height line up exactly with the nav bar underneath */
+  .sticky-buy-bar-inner{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 18px 32px;
     display:flex;
     align-items:center;
     justify-content:space-between;
     gap: 16px;
-    padding: 14px 24px;
-    background: rgba(12,12,13,0.92);
-    backdrop-filter: blur(10px);
   }
   .sticky-buy-bar-info{ display:flex; align-items:center; gap:14px; min-width:0; }
   .sticky-buy-bar-title{
@@ -1020,7 +1142,7 @@
   */
   @media (max-width: 860px){
     body:has(.sticky-buy-bar){
-      padding-bottom: 68px;
+      padding-bottom: 76px;
     }
     .sticky-buy-bar{
       bottom: 0;
@@ -1051,8 +1173,6 @@
     .opening-gallery{ height:auto; grid-template-columns: 1fr; grid-template-rows:none; }
     .opening-gallery .placeholder-block{ height:220px; grid-column:1 !important; grid-row:auto !important; }
     .details-row{ grid-template-columns: 1fr; gap: 36px; }
-    .scene-strip-grid{ grid-template-columns: 1fr 1fr; }
-    .cast-grid{ grid-template-columns: 1fr 1fr; gap: 24px; }
   }
 
   /*
