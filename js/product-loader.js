@@ -75,6 +75,63 @@ function renderHook(paragraphs) {
   });
 }
 
+// Builds the story-beats pacing bar: one dot+label per beat, in order.
+// Handles any array length, not just 4 — the connecting line between
+// dots is pure CSS (see .pacing-beat::after), not drawn here.
+function renderPacingBar(beats) {
+  const bar = document.querySelector('[data-field="pacing"]');
+  beats.forEach(beat => {
+    const item = document.createElement('div');
+    item.className = 'pacing-beat';
+
+    const dot = document.createElement('span');
+    dot.className = 'pacing-dot';
+
+    const label = document.createElement('span');
+    label.className = 'pacing-label';
+    label.textContent = beat;
+
+    item.appendChild(dot);
+    item.appendChild(label);
+    bar.appendChild(item);
+  });
+}
+
+// Builds the Adventure Profile card's 5 stat rows from the product's
+// "profile" object. Each bar's fill width is set directly from the
+// 0–100 value in the data — no numeric label shown, the bar length is
+// the whole point.
+function renderProfile(profile) {
+  const container = document.querySelector('[data-field="profile"]');
+  const rows = [
+    ['Investigation', profile.investigation],
+    ['Social', profile.social],
+    ['Combat', profile.combat],
+    ['Tension', profile.tension],
+    ['Prep Required', profile.prepRequired]
+  ];
+
+  rows.forEach(([label, value]) => {
+    const row = document.createElement('div');
+    row.className = 'profile-stat';
+
+    const labelEl = document.createElement('span');
+    labelEl.className = 'profile-stat-label';
+    labelEl.textContent = label;
+
+    const track = document.createElement('div');
+    track.className = 'profile-stat-track';
+    const fill = document.createElement('div');
+    fill.className = 'profile-stat-fill';
+    fill.style.width = `${value}%`;
+    track.appendChild(fill);
+
+    row.appendChild(labelEl);
+    row.appendChild(track);
+    container.appendChild(row);
+  });
+}
+
 // Builds the "What's Included" list: one <li> per item, each with a small
 // checkmark icon (inline SVG) plus the item's text.
 function renderIncluded(items) {
@@ -227,6 +284,8 @@ async function initProductPage() {
   setField('genre', product.genre);
   setField('price', `€${product.price}`);
   renderHook(product.hook);
+  renderPacingBar(product.pacing);
+  renderProfile(product.profile);
   renderIncluded(product.whatsIncluded);
   renderPlaceholderGrid('gallery', product.images.gallery);
   renderSpotlight('locations', 'locations-spotlight', product.locationsSpotlight);

@@ -862,17 +862,31 @@
     border-radius: 100px;
   }
 
-  /* two-column details row: The Setup / What's Included */
+  /* Setup+Pacing / Profile card row, then a full-width What's Included row beneath both */
   .details-row{
-    display:grid;
-    grid-template-columns: 1.3fr 1fr;
-    gap: 60px;
     padding: 50px 0;
     border-bottom: 1px solid var(--line);
   }
   .details-row h2{
     font-size: clamp(22px, 2.6vw, 28px);
     margin-bottom: 18px;
+  }
+  /*
+    align-items:stretch (the grid default) so both columns match the
+    row's full height — combined with .setup-col being a flex column and
+    .pacing-bar using margin-top:auto (below), and .profile-card being
+    stretched to fill its column's height, this is what lets the pacing
+    bar's bottom and the profile card's bottom line up with each other.
+  */
+  .details-row-top{
+    display:grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 60px;
+    align-items: stretch;
+  }
+  .setup-col{
+    display:flex;
+    flex-direction:column;
   }
   .setup-text p{
     font-size: 15.5px;
@@ -882,12 +896,96 @@
   .setup-text p + p{
     margin-top: 16px;
   }
+  /* Groups the "Adventure Pacing" heading with its timeline so both move together — margin-top:auto pushes the whole unit to the bottom of .setup-col (see above); padding-top guarantees at least the same 30px gap used elsewhere on this page, even in the unlikely case there's no extra space to push into */
+  .pacing-section{
+    margin-top: auto;
+    padding-top: 30px;
+  }
+  .pacing-bar{
+    display:flex;
+    align-items:flex-start;
+  }
+  .pacing-beat{
+    position:relative;
+    flex: 1;
+    text-align:center;
+  }
+  .pacing-beat:not(:last-child)::after{
+    content:"";
+    position:absolute;
+    top: 4px;
+    left: 50%;
+    width: 100%;
+    height: 1px;
+    background: var(--line);
+  }
+  .pacing-dot{
+    position:relative;
+    z-index:1;
+    display:block;
+    width: 9px;
+    height: 9px;
+    margin: 0 auto 10px;
+    border-radius:50%;
+    background: var(--ink);
+    border: 1.5px solid var(--gold);
+  }
+  .pacing-label{
+    font-size: 11px;
+    text-transform:uppercase;
+    letter-spacing: 0.05em;
+    color: var(--paper-dimmer);
+  }
+  /* Adventure Profile card — same card treatment as other cards on the site (ink-raised fill, thin line border, rounded corners), deliberately plain rather than decorated */
+  /* width:85% (15% narrower than its column) centered via margin:auto; height:100% stretches the card's own border to match the row's full height, which — combined with .pacing-bar's margin-top:auto opposite it — is what lines up their two bottom edges */
+  .profile-card{
+    width: 85%;
+    height: 100%;
+    margin: 0 auto;
+    background: var(--ink-raised);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 32px 28px;
+    text-align:center;
+  }
+  .profile-stats{
+    margin-top: 24px;
+    display:flex;
+    flex-direction:column;
+    gap: 16px;
+    text-align:left;
+  }
+  .profile-stat-label{
+    display:block;
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing: 0.05em;
+    color: var(--paper-dim);
+  }
+  .profile-stat-track{
+    width:100%;
+    height: 6px;
+    border-radius: 100px;
+    background: var(--ink);
+    overflow:hidden;
+  }
+  .profile-stat-fill{
+    height:100%;
+    border-radius: 100px;
+    background: var(--gold);
+  }
+  /* Reuses the same 50px rhythm as .details-row's own top/bottom padding, rather than introducing a new spacing value */
+  .included-row{
+    margin-top: 50px;
+  }
   .included-list{
     list-style:none;
     margin:0; padding:0;
-    display:flex;
-    flex-direction:column;
-    gap: 12px;
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px 32px;
   }
   .included-list li{
     display:flex;
@@ -1175,7 +1273,8 @@
   @media (max-width: 860px){
     .opening-gallery{ height:auto; grid-template-columns: 1fr; grid-template-rows:none; }
     .opening-gallery .placeholder-block{ height:220px; grid-column:1 !important; grid-row:auto !important; }
-    .details-row{ grid-template-columns: 1fr; gap: 36px; }
+    .details-row-top{ grid-template-columns: 1fr; gap: 36px; }
+    .included-list{ grid-template-columns: repeat(2, 1fr); }
   }
 
   /*
@@ -1201,4 +1300,5 @@
     .footer-grid{ grid-template-columns: 1fr; }
     .hero-ctas{ flex-direction:column; align-items:stretch; }
     .cta-band{ margin: 0 20px 80px; padding: 44px 24px; }
+    .included-list{ grid-template-columns: 1fr; }
   }

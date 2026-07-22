@@ -15,8 +15,18 @@
       "Full adventure PDF",
       "VTT-ready battle maps (Roll20 & Foundry)",
       "Character token sheet",
-      "Print-ready version"
+      "Print-ready version",
+      "Atmospheric music playlist",
+      "Theater-of-the-Mind location backdrops"
     ],
+    "pacing": ["Boarding", "The Body", "The Alibis Stop Adding Up", "Landfall"],
+    "profile": {
+      "investigation": 85,
+      "social": 70,
+      "combat": 35,
+      "tension": 60,
+      "prepRequired": 20
+    },
     "images": {
       "gallery": [
         { "label": "Cover image", "tone": "amber", "src": "Images/Murder on the Aurora Dawn/Cover_image-Aurora.png" },
@@ -61,8 +71,18 @@
       "Full adventure PDF",
       "VTT-ready battle maps (Roll20 & Foundry)",
       "Character token sheet",
-      "Print-ready version"
+      "Print-ready version",
+      "Atmospheric music playlist",
+      "Theater-of-the-Mind location backdrops"
     ],
+    "pacing": ["Arrival", "The Games Begin", "A Child Vanishes", "Behind the Tents"],
+    "profile": {
+      "investigation": 60,
+      "social": 55,
+      "combat": 30,
+      "tension": 85,
+      "prepRequired": 25
+    },
     "images": {
       "gallery": [
         { "label": "Cover image", "tone": "plum", "src": "Images/Carnival of Forgotten Smiles/Cover_image-Forgotten.png" },

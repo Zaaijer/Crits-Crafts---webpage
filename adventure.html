@@ -88,14 +88,51 @@
       </div>
     </div>
 
-    <!-- Two-column: The Setup (synopsis) on the left, What's Included (bullet list) on the right -->
+    <!--
+      Row 1 (two columns): Setup + Pacing Bar on the left, the Adventure
+      Profile card alone on the right. Row 2 (full width, beneath both):
+      What's Included. align-items:start on the top row is deliberate —
+      see the CSS comment on .details-row-top for why, and the note about
+      possibly needing to switch to center-alignment once this is
+      actually checked in a browser.
+    -->
     <section class="details-row wrap">
-      <div class="setup-col">
-        <h2>The Setup</h2>
-        <!-- One <p> per entry in this product's "hook" array — currently just 1 paragraph per product -->
-        <div class="setup-text" data-field="hook"></div>
+      <div class="details-row-top">
+        <div class="setup-col">
+          <h2>The Setup</h2>
+          <!-- One <p> per entry in this product's "hook" array — currently just 1 paragraph per product -->
+          <div class="setup-text" data-field="hook"></div>
+          <!-- Heading + timeline are grouped together so they get pushed to the bottom of the column as one unit (see .pacing-section in the CSS) -->
+          <div class="pacing-section">
+            <h2>Adventure Pacing</h2>
+            <!-- Horizontal story-beats timeline: one dot+label per beat, connected by a line. Built by product-loader.js from this product's "pacing" array (any length, not just 4). -->
+            <div class="pacing-bar" data-field="pacing"></div>
+          </div>
+        </div>
+        <div class="profile-col">
+          <!--
+            Adventure Profile: a quick-read stat card (Investigation/
+            Social/Combat/Tension/Prep Required), each a horizontal fill
+            bar. Plain card border (same treatment as other cards on the
+            site) — deliberately not a decorated/framed one.
+          -->
+          <div class="profile-card">
+            <span class="eyebrow">Adventure Profile</span>
+            <!-- Same small divider ornament used in the Locations/Maps/NPC sections below — reused as-is, not rebuilt -->
+            <div class="spotlight-divider">
+              <svg viewBox="0 0 120 20" fill="none" aria-hidden="true">
+                <line x1="10" y1="6" x2="50" y2="6" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" opacity="0.9"/>
+                <line x1="70" y1="6" x2="110" y2="6" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" opacity="0.9"/>
+                <line x1="60" y1="7" x2="60" y2="14" stroke="var(--gold)" stroke-width="1.2" opacity="0.9"/>
+                <circle cx="60" cy="17" r="2.2" fill="var(--gold)" opacity="0.9"/>
+              </svg>
+            </div>
+            <!-- 5 stat rows (Investigation/Social/Combat/Tension/Prep Required), built by product-loader.js from this product's "profile" object -->
+            <div class="profile-stats" data-field="profile"></div>
+          </div>
+        </div>
       </div>
-      <div class="included-col">
+      <div class="included-row">
         <h2>What's Included</h2>
         <ul class="included-list" data-field="whatsIncluded"></ul>
       </div>
