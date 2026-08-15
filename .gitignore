@@ -1,0 +1,3 @@
+# Photoshop source files — large working files, not needed for the live
+# site (only the exported PNG/JPG images are ever referenced in HTML/CSS)
+*.psd

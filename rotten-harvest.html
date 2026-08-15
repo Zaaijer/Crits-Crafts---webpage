@@ -1,0 +1,744 @@
+<!--
+  Standalone Kickstarter pre-launch landing page for "A Rotten Harvest."
+
+  IMPORTANT — this page is intentionally NOT part of the main site:
+  - No <header>/nav, and no links anywhere on this page to another
+    critscrafts.com page. The only two actions a visitor can take are
+    signing up below or clicking through to Kickstarter.
+  - js/site-gate.js (the "Coming Soon" password overlay used on index.html
+    and adventure.html while the rest of the site is unfinished) is
+    DELIBERATELY left out of this page. This page needs to work for paid
+    ad traffic regardless of whether the rest of the site is done or
+    gated — do not add the gate script here.
+  - All page-specific styling lives in the <style> block below rather than
+    css/style.css, so this page doesn't depend on (or risk breaking) the
+    shared stylesheet. It still reuses the site's design tokens, Barlow
+    font, and a few existing classes (.wrap, .btn-cta, .btn-ghost,
+    .eyebrow, .placeholder-block/.tone-amber, .spotlight-divider) from
+    css/style.css for brand consistency.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Rotten Harvest — A Spooky D&D 5E One-Shot | Crits & Crafts</title>
+<meta name="description" content="A Halloween-themed one-shot adventure for D&D 5E, low-level and ready to play in a single session. Sign up to be notified when the Kickstarter launches.">
+
+<!-- Canonical + Open Graph / Twitter share tags -->
+<link rel="canonical" href="https://critscrafts.com/rotten-harvest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Crits & Crafts">
+<meta property="og:title" content="A Rotten Harvest — A Spooky D&D 5E One-Shot">
+<meta property="og:description" content="A Halloween-themed one-shot adventure for D&D 5E, low-level and ready to play in a single session.">
+<meta property="og:url" content="https://critscrafts.com/rotten-harvest">
+<meta property="og:image" content="https://critscrafts.com/Images/A%20Rotten%20Harvest/Cover_image-Harvest.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="A Rotten Harvest — A Spooky D&D 5E One-Shot">
+<meta name="twitter:description" content="A Halloween-themed one-shot adventure for D&D 5E, low-level and ready to play in a single session.">
+<meta name="twitter:image" content="https://critscrafts.com/Images/A%20Rotten%20Harvest/Cover_image-Harvest.png">
+<meta name="theme-color" content="#0C0C0D">
+
+<!-- Same font as the rest of the site -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Reused for design tokens (--ink/--gold/etc.) and a few shared classes only -->
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+  /*
+    Page-specific styles for the Rotten Harvest landing page. Uses the
+    same tokens as the rest of the site (--ink, --paper, --gold, --line,
+    --ink-raised) plus two new autumnal accents scoped to this page only
+    (--rh-orange, --rh-red) — the rest of the site has no Halloween
+    content, so these don't belong in the shared stylesheet.
+  */
+  :root{
+    --rh-orange: #C1611A;
+    --rh-red: #7A2B1D;
+    --rh-green: #05CF78; /* sampled from Kickstarter_Teaser.png — Kickstarter's own brand green */
+  }
+
+  body{ overflow-x:hidden; }
+
+  .sr-only{
+    position:absolute; width:1px; height:1px;
+    padding:0; margin:-1px; overflow:hidden;
+    clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+
+  /* ---------- HERO ----------
+     Full-bleed background hero, same pattern as .hero on the homepage
+     (css/style.css): a dark gradient layered over the cover art for text
+     readability, content left-aligned on top (same as the homepage hero).
+  */
+  .rh-hero{
+    position:relative;
+    min-height: 82vh;
+    display:flex;
+    align-items:center;
+    background:
+      linear-gradient(180deg, rgba(12,12,13,0.35) 0%, rgba(12,12,13,0.6) 60%, rgba(12,12,13,1) 100%),
+      url("Images/A Rotten Harvest/Cover_image-Harvest.png");
+    background-size: cover;
+    background-position: 80% center; /* keeps the jack-o'-lantern + swordsman in frame on narrow/tall screens — the artwork's focal point sits toward the right */
+    background-repeat: no-repeat;
+  }
+
+  /* Kickstarter teaser sticker, pinned to the hero's bottom-right corner —
+     color-matched below by .rh-launch-bar (both sampled from this same
+     image, #05CF78, Kickstarter's own brand green). */
+  .rh-teaser-badge{
+    position:absolute;
+    right: 90px;
+    bottom: 0;
+    width: 190px;
+  }
+  .rh-launch-bar{
+    height: 10px;
+    background: var(--rh-green);
+  }
+  @media (max-width: 560px){
+    .rh-teaser-badge{ width: 120px; right: 18px; }
+  }
+  .rh-hero-inner{ max-width: 620px; padding: 70px 0; }
+  /* Same size/line-height as .hero h1 on the homepage (css/style.css) */
+  .rh-hero h1{
+    margin-top: 14px;
+    font-size: clamp(42px, 6vw, 76px);
+    line-height: 1.02;
+    color: var(--paper);
+  }
+  /* Same size/weight/color as .hero p.lede on the homepage — the subtitle
+     plays the same role there (one descriptive line under the headline) */
+  .rh-subtitle{
+    margin: 22px 0 0;
+    max-width: 52ch;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--paper-dim);
+  }
+  .rh-hero-form{ margin-top: 34px; max-width: 460px; }
+
+  /* Shared email-field styling — used by both the hero's inline form and
+     the fuller signup card further down the page. */
+  .rh-email-field{ display:flex; gap: 10px; }
+  .rh-email-field input[type="email"]{
+    flex: 1;
+    min-width: 0;
+    padding: 13px 16px;
+    border-radius: 4px;
+    border: 1px solid rgba(242,239,233,0.2);
+    background: rgba(12,12,13,0.55);
+    color: var(--paper);
+    font-family: 'Barlow', sans-serif;
+    font-size: 15px;
+  }
+  .rh-email-field input[type="email"]::placeholder{ color: var(--paper-dimmer); }
+  .rh-email-field input[type="email"]:focus{ outline: 2px solid var(--gold); border-color: transparent; }
+  .rh-email-field button{
+    border:none;
+    font-family:'Barlow', sans-serif;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .rh-hero-note{
+    margin-top: 12px;
+    font-size: 12.5px;
+    color: var(--paper-dimmer);
+  }
+
+
+  /* ---------- WHAT'S IN THE BOX ----------
+     Same light-background treatment as .about (css/style.css): var(--paper)
+     background, var(--ink) text, set once here and inherited by everything
+     inside rather than repeated on each child. Two columns — a framed
+     image placeholder (double cut-corner frame, gold border) on the left,
+     heading + checklist on the right.
+  */
+  .rh-box{
+    background: var(--paper);
+    color: var(--ink);
+    padding: 60px 0 100px; /* same padding as .about in css/style.css */
+  }
+  .rh-box .wrap{ max-width: 1040px; }
+  .rh-box-grid{
+    display:grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 60px;
+    align-items:center;
+  }
+  /* Outer frame: cuts all 4 corners ~20px, leaving a gap before the inner frame */
+  .rh-box-frame-outer{
+    border: 1px solid var(--gold);
+    padding: 9px;
+    clip-path: polygon(20px 0, calc(100% - 20px) 0, 100% 20px, 100% calc(100% - 20px), calc(100% - 20px) 100%, 20px 100%, 0 calc(100% - 20px), 0 20px);
+  }
+  /* Inner frame: same treatment at a smaller corner cut, holds the actual image area */
+  .rh-box-frame-inner{
+    aspect-ratio: 4 / 2.1; /* same width, 70% of the original 4:3 height */
+    border: 1px solid var(--gold);
+    clip-path: polygon(16px 0, calc(100% - 16px) 0, 100% 16px, 100% calc(100% - 16px), calc(100% - 16px) 100%, 16px 100%, 0 calc(100% - 16px), 0 16px);
+    background: url("Images/A Rotten Harvest/Barn by night.png");
+    background-size: cover;
+    background-position: center;
+  }
+  .rh-box-text-col h2{
+    font-size: 23px;
+    line-height: 1.25;
+  }
+  .rh-box-checklist{
+    list-style:none;
+    margin: 24px 0 0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap: 14px;
+  }
+  .rh-box-checklist li{
+    display:flex;
+    align-items:center;
+    gap: 12px;
+    font-size: 15px;
+    font-weight: 400;
+  }
+  .rh-box-check{
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1px solid var(--rh-green);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+  }
+  .rh-box-check svg{ width: 9px; height: 9px; }
+
+  @media (max-width: 860px){
+    .rh-box-grid{ grid-template-columns: 1fr; gap: 32px; }
+  }
+
+  /* ---------- THE STORY ----------
+     Reuses .spotlight-section/.spotlight-overlay/.spotlight-content/
+     .spotlight-heading/.spotlight-subtitle/.spotlight-divider exactly as
+     defined in css/style.css (same component used for Striking Locations/
+     Maps Worth Exploring on adventure.html) — no new component styling
+     needed. The only page-specific addition: stacking 3 .spotlight-subtitle
+     paragraphs here instead of the usual single one, so this rule adds a
+     bit of breathing room between them without touching the shared class. */
+  .rh-story .spotlight-subtitle + .spotlight-subtitle{ margin-top: 16px; }
+  .rh-story .spotlight-heading + .spotlight-subtitle{ margin-top: 26px; }
+  /* Taller than the shared .spotlight-section min-height (460px), so the
+     centered content block gets visible empty space above and below it
+     instead of the section hugging the content tightly. */
+  #story-spotlight{
+    background-image: url("Images/A Rotten Harvest/Festival_Girl.png");
+    min-height: 620px;
+  }
+  /* Extra center-darkening layer, stacked on top of .spotlight-content's
+     own radial gradient (broader and softer than it) for better text
+     contrast against this particular photo — scoped to this section only. */
+  #story-spotlight .spotlight-content{
+    max-width: 620px;
+    min-height: 480px;
+    background:
+      radial-gradient(ellipse 62% 62% at center, rgba(12,12,13,0.35) 0%, transparent 100%),
+      radial-gradient(ellipse 44% 44% at center, rgba(12,12,13,0.63) 0%, rgba(12,12,13,0.35) 55%, transparent 100%);
+  }
+
+  /* ---------- MEET THE THREAT / CAST ----------
+     Part 1 reuses .npc-spotlight/.npc-spotlight-inner/.npc-portrait-col/
+     .npc-text-col/.npc-portrait-frame exactly as defined in css/style.css
+     (same component as "Colorful NPCs" on adventure.html) — no overrides,
+     same 340x340/380 portrait frame.
+     Part 2 (the 3-up cast row) is new — there's no existing multi-portrait
+     grid version of this component — but it's built from the exact same
+     .npc-portrait-frame/.npc-portrait-panel/.npc-frame-back/.npc-frame-front
+     layers, just wrapped in .rh-cast-frame so the frame's fixed 340x380
+     size can be scaled down for this smaller context without touching the
+     shared class (which adventure.html's NPC spotlight still depends on). */
+  /* Overrides for the threat portrait's art specifically — zoomed out from
+     the shared 280% and un-mirrored from the shared scaleX(-1) default,
+     without touching those shared values (adventure.html's NPC portrait
+     still needs them as-is). Both the main image and its overlap duplicate
+     need the same values so the escaping top portion stays aligned with
+     the rest of the portrait. */
+  #threat-portrait-frame .npc-portrait-img,
+  #threat-portrait-frame .npc-portrait-img-overlap .npc-portrait-img-dup{
+    background-size: 180% auto;
+    background-position: 50% -20%;
+    transform: scaleX(1);
+  }
+  .rh-cast-section{ padding-bottom: 70px; }
+  .rh-cast-row{
+    display:grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content: center;
+    gap: 76px;
+    margin-top: 50px;
+  }
+  .rh-cast-item{ text-align:center; max-width: 200px; }
+  .rh-cast-frame .npc-portrait-frame{ max-width: 200px; height: 200px; }
+  .rh-cast-name{
+    margin: 14px 0 0;
+    font-weight: 700;
+    color: var(--paper);
+    font-size: 15px;
+  }
+  .rh-cast-flavor{
+    margin-top: 2px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--paper-dim);
+  }
+  @media (max-width: 860px){
+    .rh-cast-row{ grid-template-columns: 1fr; gap: 28px; max-width: 280px; margin-left:auto; margin-right:auto; }
+  }
+
+  /* ---------- ABOUT ----------
+     Reuses .about exactly as defined in css/style.css (same component as
+     "About Crits & Crafts" on index.html) — background, text color,
+     heading/paragraph sizing and the .wrap padding-top all come from that
+     shared class, nothing redeclared here.
+     .trust-row is also reused exactly for structure/spacing, but its
+     shared color values (var(--paper-dimmer)) are tuned for the dark
+     hero it was built for — invisible against this section's light
+     background, so just the color is overridden here, scoped to this
+     section only (the homepage hero's trust-row is untouched). Reuses
+     colors already established elsewhere on this page (.rh-box-image-label,
+     .about p) rather than introducing new ones. */
+  .rh-about .trust-row{ justify-content: center; }
+  .rh-about .trust-row span{ color: rgba(12,12,13,0.45); }
+
+  /* ---------- FINAL CTA ----------
+     Replaces the earlier plain signup card — combines the incentive
+     ("free magic item cards") and the page's second (reinforcement)
+     email capture into one two-column section. Reuses .btn-cta and
+     .rh-email-field exactly as built for the hero's form; the only new
+     input-background override is on this section's own field, matching
+     the hero's pattern of overriding just that one property. */
+  .rh-final-cta{ padding: 90px 0 100px; }
+  .rh-final-cta-grid{
+    display:grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 16px;
+    align-items:center;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .rh-final-cta-text h2{
+    font-size: clamp(24px, 3vw, 30px);
+    color: var(--paper);
+  }
+  .rh-final-cta-text p{
+    margin: 14px 0 0;
+    max-width: 42ch;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--paper-dim);
+  }
+  .rh-final-cta-form{ margin-top: 28px; max-width: 420px; }
+  .rh-final-cta-form .rh-email-field input[type="email"]{ background: var(--ink-raised); }
+  .rh-final-cta-note{
+    margin-top: 12px;
+    font-size: 12.5px;
+    color: var(--paper-dimmer);
+  }
+
+  /* Fanned card placeholders — three absolutely-positioned cards, centered
+     as a stack then spread/rotated via transform. Card 3 (front-most,
+     highest z-index) carries the example content; cards 1–2 are plain
+     placeholders. */
+  .rh-final-cta-cards{
+    position:relative;
+    left: 80px;
+    height: 460px;
+  }
+  /* 220x337 — matches the 62.6mm x 95.9mm card art proportions (1:1.532),
+     same ratio as the real Magical_Item_Cards art used below */
+  .rh-final-card{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width: 220px;
+    height: 337px;
+    margin-top: -168px;
+    margin-left: -110px;
+    background-color: var(--ink-raised);
+    background-size: cover;
+    background-position: center;
+    border: 1.5px solid var(--gold);
+    border-radius: 18px;
+  }
+  .rh-final-card--back{ transform: translateX(-98px) rotate(-14deg); z-index:1; }
+  .rh-final-card--mid{ transform: translateX(2px) translateY(-22px) rotate(5deg); z-index:2; }
+  .rh-final-card--front{ transform: translateX(102px) rotate(16deg); z-index:3; }
+  @media (max-width: 860px){
+    .rh-final-cta-grid{ grid-template-columns: 1fr; gap: 48px; text-align:center; }
+    .rh-final-cta-text p,
+    .rh-final-cta-form{ margin-left:auto; margin-right:auto; }
+  }
+
+  /* ---------- FOOTER ---------- */
+  .rh-footer{
+    border-top: 1px solid var(--line);
+    padding: 36px 0;
+  }
+  .rh-footer-inner{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap: 18px;
+    text-align:center;
+  }
+  .rh-footer-logo{ height: 26px; width:auto; object-fit:contain; }
+  .rh-social{ display:flex; gap: 18px; }
+  .rh-social a{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color: var(--paper-dim);
+    transition: color .15s ease;
+  }
+  .rh-social a:hover{ color: var(--gold); }
+  .rh-social svg{ width:18px; height:18px; }
+  .rh-copyright{
+    margin:0;
+    font-size: 12.5px;
+    color: var(--paper-dimmer);
+  }
+
+  @media (max-width: 560px){
+    .rh-email-field{ flex-direction:column; }
+  }
+</style>
+</head>
+<body class="rotten-harvest">
+
+<main>
+
+  <!-- ---------- HERO ---------- -->
+  <section class="rh-hero">
+    <div class="wrap rh-hero-inner">
+      <span class="eyebrow">Crits & Crafts Presents</span>
+      <h1>A ROTTEN HARVEST</h1>
+      <p class="rh-subtitle">A spooky, Halloween-themed D&D 5E one-shot — low-level<br>and ready to play in a single session.</p>
+
+      <!-- ============================================================
+           MAILCHIMP EMBED GOES HERE (hero copy of the signup form — see
+           the matching, fuller form further down the page for notes on
+           swapping in the real Mailchimp action URL / bot-trap field).
+           Both forms post to the same list; keep them in sync.
+           ============================================================ -->
+      <div class="rh-hero-form">
+        <form action="#MAILCHIMP_FORM_ACTION_URL_TBD" method="post" target="_blank" novalidate>
+          <div class="rh-email-field">
+            <label for="rh-email-hero" class="sr-only">Email address</label>
+            <input type="email" name="EMAIL" id="rh-email-hero" placeholder="you@example.com" required>
+            <button type="submit" class="btn-cta">Claim Your Spot</button>
+          </div>
+          <div aria-hidden="true" style="position:absolute; left:-5000px;">
+            <input type="text" name="b_MAILCHIMP_LIST_ID_TBD" tabindex="-1" value="">
+          </div>
+        </form>
+      </div>
+      <p class="rh-hero-note">You'll hear from us when it counts. That's it.</p>
+    </div>
+
+    <img class="rh-teaser-badge" src="Images/A Rotten Harvest/Kickstarter_Teaser.png" alt="Launching soon on Kickstarter">
+  </section>
+
+  <!-- Solid accent bar, same green as the teaser badge above — touches the
+       hero directly so it merges visually with the Kickstarter badge. -->
+  <div class="rh-launch-bar"></div>
+
+  <!-- ---------- WHAT'S IN THE BOX ----------
+       Full-width paper-colored section, same pattern as .about in
+       css/style.css: the section itself carries the background/color and
+       spans the full page width, while a nested .wrap div constrains the
+       actual content. -->
+  <section class="rh-box">
+    <div class="wrap">
+      <div class="rh-box-grid">
+        <div class="rh-box-frame-outer">
+          <div class="rh-box-frame-inner"></div>
+        </div>
+        <div class="rh-box-text-col">
+          <span class="eyebrow">What's in the Box</span>
+          <h2>Everything you need to run this Halloween one-shot</h2>
+          <ul class="rh-box-checklist">
+            <li>
+              <span class="rh-box-check">
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 8.5L6.5 12L13 4" stroke="var(--rh-green)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span>A Halloween harvest one-shot</span>
+            </li>
+            <li>
+              <span class="rh-box-check">
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 8.5L6.5 12L13 4" stroke="var(--rh-green)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span>For 3-4 players at lvl. 1-4</span>
+            </li>
+            <li>
+              <span class="rh-box-check">
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 8.5L6.5 12L13 4" stroke="var(--rh-green)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span>Hand-crafted NPCs & Monsters</span>
+            </li>
+            <li>
+              <span class="rh-box-check">
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 8.5L6.5 12L13 4" stroke="var(--rh-green)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span>Full village battlemap</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- THE STORY ----------
+       Reuses the .spotlight-section component exactly as it appears on
+       adventure.html for Striking Locations/Maps Worth Exploring — same
+       full-bleed background, radial vignette overlay, and centered content
+       block. Background image set via #story-spotlight below, same
+       background-size/position the shared .spotlight-section rule already
+       applies. -->
+  <section class="spotlight-section rh-story" id="story-spotlight">
+    <div class="spotlight-overlay"></div>
+    <div class="spotlight-content">
+      <span class="eyebrow">The Story</span>
+      <h2 class="spotlight-heading">The lanterns are lit. The cider is warm.</h2>
+      <p class="spotlight-subtitle">Amberfield's Harvest Festival is about to crown its winner. Wendell Furrow's prize pumpkin is the talk of the town, the biggest anyone has grown in living memory.</p>
+      <p class="spotlight-subtitle">But Wendell himself is missing. A few travelers passing through, drawn in by the promise of a warm meal, get asked to check on him before the festival wraps.</p>
+      <p class="spotlight-subtitle">What waits for them at his farm is not Wendell, not anymore. Whatever happened to him didn't stay contained to his fields. The festival everyone is celebrating may not survive the morning.</p>
+      <div class="spotlight-divider">
+        <svg viewBox="0 0 120 20" fill="none" aria-hidden="true">
+          <line x1="10" y1="6" x2="50" y2="6" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" opacity="0.9"/>
+          <line x1="70" y1="6" x2="110" y2="6" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" opacity="0.9"/>
+          <line x1="60" y1="7" x2="60" y2="14" stroke="var(--gold)" stroke-width="1.2" opacity="0.9"/>
+          <circle cx="60" cy="17" r="2.2" fill="var(--gold)" opacity="0.9"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- MEET THE THREAT / CAST ----------
+       Part 1 reuses the .npc-spotlight component exactly as it appears on
+       adventure.html for "Colorful NPCs" — same markup, same 340x380
+       portrait frame, same escaping-image mechanic (.npc-portrait-img +
+       .npc-portrait-img-overlap, same as renderNpcSpotlight() in
+       js/product-loader.js builds when a product has real art).
+       NOTE: Pumpkin devourer.png sits on a plain white background, not a
+       transparent cutout — per the note in product-loader.js, this effect
+       needs a transparent cutout to look right. May show a white box
+       around the creature instead of a clean escape past the frame edge
+       until a proper cutout is supplied. -->
+  <section class="npc-spotlight wrap rh-cast-section">
+    <div class="npc-spotlight-inner">
+      <div class="npc-portrait-col">
+        <div class="npc-portrait-frame" id="threat-portrait-frame">
+          <div class="npc-portrait-panel"></div>
+          <svg class="npc-frame-svg npc-frame-back" viewBox="0 0 340 380" preserveAspectRatio="none" aria-hidden="true">
+            <rect x="10" y="10" width="320" height="360" fill="none" stroke="var(--gold)" stroke-width="0.7" opacity="0.5"/>
+          </svg>
+          <div class="npc-portrait-img" style="background-image:url('Images/A Rotten Harvest/Pumpkin devourer.png')"></div>
+          <div class="npc-portrait-img-overlap">
+            <div class="npc-portrait-img-dup" style="background-image:url('Images/A Rotten Harvest/Pumpkin devourer.png')"></div>
+          </div>
+          <svg class="npc-frame-svg npc-frame-front" viewBox="0 0 340 380" preserveAspectRatio="none" aria-hidden="true">
+            <rect x="4" y="4" width="332" height="372" fill="none" stroke="var(--gold)" stroke-width="1.4"/>
+            <line x1="0" y1="0" x2="10" y2="10" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="340" y1="0" x2="330" y2="10" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="0" y1="380" x2="10" y2="370" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="340" y1="380" x2="330" y2="370" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="npc-text-col">
+        <span class="eyebrow">Meet the threat</span>
+        <h2 class="spotlight-heading">The corrupted harvest</h2>
+        <p class="spotlight-subtitle">It was the biggest pumpkin anyone had ever grown. Nobody asked why.</p>
+        <div class="spotlight-divider">
+          <svg viewBox="0 0 120 20" fill="none" aria-hidden="true">
+            <line x1="10" y1="6" x2="50" y2="6" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" opacity="0.9"/>
+            <line x1="70" y1="6" x2="110" y2="6" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" opacity="0.9"/>
+            <line x1="60" y1="7" x2="60" y2="14" stroke="var(--gold)" stroke-width="1.2" opacity="0.9"/>
+            <circle cx="60" cy="17" r="2.2" fill="var(--gold)" opacity="0.9"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Supporting cast — same frame/escape mechanic, scaled down to ~110px, 3-up -->
+    <div class="rh-cast-row">
+      <div class="rh-cast-item">
+        <div class="rh-cast-frame">
+          <div class="npc-portrait-frame" id="wendell-portrait-frame">
+            <div class="npc-portrait-panel"></div>
+            <svg class="npc-frame-svg npc-frame-back" viewBox="0 0 340 380" preserveAspectRatio="none" aria-hidden="true">
+              <rect x="10" y="10" width="320" height="360" fill="none" stroke="var(--gold)" stroke-width="0.7" opacity="0.5"/>
+            </svg>
+            <div class="npc-portrait-img" style="background-image:url('Images/A Rotten Harvest/Wendell.png')"></div>
+            <div class="npc-portrait-img-overlap">
+              <div class="npc-portrait-img-dup" style="background-image:url('Images/A Rotten Harvest/Wendell.png')"></div>
+            </div>
+            <svg class="npc-frame-svg npc-frame-front" viewBox="0 0 340 380" preserveAspectRatio="none" aria-hidden="true">
+              <rect x="4" y="4" width="332" height="372" fill="none" stroke="var(--gold)" stroke-width="1.4"/>
+              <line x1="0" y1="0" x2="10" y2="10" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="340" y1="0" x2="330" y2="10" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="0" y1="380" x2="10" y2="370" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="340" y1="380" x2="330" y2="370" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+        <p class="rh-cast-name">Wendell Furrow</p>
+        <p class="rh-cast-flavor">All he wanted was the biggest pumpkin in Amberfield.</p>
+      </div>
+      <div class="rh-cast-item">
+        <div class="rh-cast-frame">
+          <div class="npc-portrait-frame" id="mayor-portrait-frame">
+            <div class="npc-portrait-panel"></div>
+            <svg class="npc-frame-svg npc-frame-back" viewBox="0 0 340 380" preserveAspectRatio="none" aria-hidden="true">
+              <rect x="10" y="10" width="320" height="360" fill="none" stroke="var(--gold)" stroke-width="0.7" opacity="0.5"/>
+            </svg>
+            <div class="npc-portrait-img" style="background-image:url('Images/A Rotten Harvest/Mayor.png')"></div>
+            <div class="npc-portrait-img-overlap">
+              <div class="npc-portrait-img-dup" style="background-image:url('Images/A Rotten Harvest/Mayor.png')"></div>
+            </div>
+            <svg class="npc-frame-svg npc-frame-front" viewBox="0 0 340 380" preserveAspectRatio="none" aria-hidden="true">
+              <rect x="4" y="4" width="332" height="372" fill="none" stroke="var(--gold)" stroke-width="1.4"/>
+              <line x1="0" y1="0" x2="10" y2="10" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="340" y1="0" x2="330" y2="10" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="0" y1="380" x2="10" y2="370" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="340" y1="380" x2="330" y2="370" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+        <p class="rh-cast-name">Mayor Karga Hollis</p>
+        <p class="rh-cast-flavor">She's run this festival for fifteen years. Tonight might be her last.</p>
+      </div>
+      <div class="rh-cast-item">
+        <div class="rh-cast-frame">
+          <div class="npc-portrait-frame">
+            <div class="npc-portrait-panel tone-blue"></div>
+            <svg class="npc-frame-svg npc-frame-back" viewBox="0 0 340 380" preserveAspectRatio="none" aria-hidden="true">
+              <rect x="10" y="10" width="320" height="360" fill="none" stroke="var(--gold)" stroke-width="0.7" opacity="0.5"/>
+            </svg>
+            <svg class="npc-frame-svg npc-frame-front" viewBox="0 0 340 380" preserveAspectRatio="none" aria-hidden="true">
+              <rect x="4" y="4" width="332" height="372" fill="none" stroke="var(--gold)" stroke-width="1.4"/>
+              <line x1="0" y1="0" x2="10" y2="10" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="340" y1="0" x2="330" y2="10" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="0" y1="380" x2="10" y2="370" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="340" y1="380" x2="330" y2="370" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+        <p class="rh-cast-name">Many more...</p>
+        <p class="rh-cast-flavor">Not everyone at the festival is who they seem.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- ABOUT ----------
+       Reuses the .about component exactly as it appears on index.html —
+       same light-on-dark color flip, .eyebrow, heading, and paragraph
+       structure. No CTA button here (unlike the homepage's .about, which
+       ends in "See what's on the shelf") — this page is built around a
+       single call-to-action (the email signup below), so this section's
+       only job is building credibility, not offering a second link. -->
+  <section class="about rh-about">
+    <div class="wrap">
+      <span class="eyebrow">About Crits & Crafts</span>
+      <h2>We've done this before</h2>
+      <p>Crits & Crafts has shipped two Kickstarter-funded one-shots, Murder on the Aurora Dawn and The Carnival of Forgotten Smiles, backed by 375 Dungeon Masters combined. A Rotten Harvest is built the same way, playtested, prepped in one sitting, and written to be run at your table, not just read.</p>
+      <div class="trust-row">
+        <span>Trusted by over 365 DM's on Kickstarter.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- FINAL CTA ----------
+       Second (reinforcement) email capture point for anyone who scrolled
+       past the hero without signing up — same destination/list as the
+       hero's form, not a separate list or incentive track. -->
+  <section class="rh-final-cta wrap" id="signup">
+    <div class="rh-final-cta-grid">
+      <div class="rh-final-cta-text">
+        <h2>Free magic item cards</h2>
+        <p>Sign up now and get a set of cursed harvest magic item cards, free. The perfect twisted loot for your next table.</p>
+
+        <!-- ============================================================
+             MAILCHIMP EMBED GOES HERE — same list as the hero's form
+             above. Replace everything inside .rh-final-cta-form below
+             with the real embed code from Mailchimp (Audience → Signup
+             forms → Embedded forms), same notes as the hero's form.
+             ============================================================ -->
+        <div class="rh-final-cta-form">
+          <form action="#MAILCHIMP_FORM_ACTION_URL_TBD" method="post" target="_blank" novalidate>
+            <div class="rh-email-field">
+              <label for="rh-email-final" class="sr-only">Email address</label>
+              <input type="email" name="EMAIL" id="rh-email-final" placeholder="you@example.com" required>
+              <button type="submit" class="btn-cta">Claim my cards</button>
+            </div>
+            <!-- Mailchimp bot-trap field — every real Mailchimp embed includes
+                 one of these with a list-specific name. Leave it in place
+                 (just swap the name/id) when pasting the real embed code. -->
+            <div aria-hidden="true" style="position:absolute; left:-5000px;">
+              <input type="text" name="b_MAILCHIMP_LIST_ID_TBD" tabindex="-1" value="">
+            </div>
+          </form>
+        </div>
+        <p class="rh-final-cta-note">We'll email when it matters. Nothing else.</p>
+      </div>
+
+      <div class="rh-final-cta-cards">
+        <div class="rh-final-card rh-final-card--back" style="background-image:url('Images/A Rotten Harvest/Magical_Item_Cards-03-web.png')"></div>
+        <div class="rh-final-card rh-final-card--mid" style="background-image:url('Images/A Rotten Harvest/Magical_Item_Cards-02-web.png')"></div>
+        <div class="rh-final-card rh-final-card--front" style="background-image:url('Images/A Rotten Harvest/Magical_Item_Cards-04-web.png')"></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ---------- MINIMAL FOOTER ---------- -->
+<footer class="rh-footer">
+  <div class="wrap rh-footer-inner">
+    <img class="rh-footer-logo" src="Images/Crits&amp;Crafts logo_White_Horizontal-04.png" alt="Crits & Crafts">
+    <!-- FOLLOW-UP: swap href="#" for real social profile URLs once they exist -->
+    <div class="rh-social">
+      <a href="#" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="5"/>
+          <circle cx="12" cy="12" r="4.2"/>
+          <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
+        </svg>
+      </a>
+      <a href="#" aria-label="TikTok">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <path d="M14 3v10.5a3.5 3.5 0 1 1-3-3.46"/>
+          <path d="M14 3c0 2.5 2 4.5 4.5 4.5"/>
+        </svg>
+      </a>
+      <a href="#" aria-label="X (Twitter)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <path d="M4 4l16 16M20 4L4 20"/>
+        </svg>
+      </a>
+    </div>
+    <p class="rh-copyright">© 2026 Crits & Crafts. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>
