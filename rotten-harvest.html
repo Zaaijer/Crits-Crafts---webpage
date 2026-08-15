@@ -119,7 +119,16 @@
     line-height: 1.6;
     color: var(--paper-dim);
   }
-  .rh-hero-form{ margin-top: 34px; max-width: 460px; }
+  /* Early-bird incentive line — separate element from .rh-subtitle on
+     purpose (not merged into that paragraph), so it reads as its own
+     callout above the signup form. */
+  .rh-hero-incentive{
+    margin: 20px 0 0;
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--gold);
+  }
+  .rh-hero-form{ margin-top: 20px; max-width: 460px; }
 
   /* Shared email-field styling — used by both the hero's inline form and
      the fuller signup card further down the page. */
@@ -175,9 +184,11 @@
      heading + checklist on the right.
   */
   .rh-box{
+    position:relative;
+    overflow:hidden; /* crops .rh-box-mockup at this section's own edges, so it never bleeds into the sections above/below */
     background: var(--paper);
     color: var(--ink);
-    padding: 60px 0 100px; /* same padding as .about in css/style.css */
+    padding: 100px 0 140px;
   }
   .rh-box .wrap{ max-width: 1040px; }
   .rh-box-grid{
@@ -186,19 +197,42 @@
     gap: 60px;
     align-items:center;
   }
+  /* Wraps the frame + the mockup overlay together, purely so the mockup
+     has a positioning anchor that ISN'T clip-path'd (unlike
+     .rh-box-frame-outer below, whose clip-path would otherwise mask the
+     mockup image too, since clip-path clips all of an element's
+     descendants, not just its own background/border). */
+  .rh-box-image-wrap{ position:relative; }
   /* Outer frame: cuts all 4 corners ~20px, leaving a gap before the inner frame */
   .rh-box-frame-outer{
     border: 1px solid var(--gold);
     padding: 9px;
     clip-path: polygon(20px 0, calc(100% - 20px) 0, 100% 20px, 100% calc(100% - 20px), calc(100% - 20px) 100%, 20px 100%, 0 calc(100% - 20px), 0 20px);
   }
+  /* Book mockup overlay — anchored to the map frame, floating up and to
+     the left of it. .rh-box's own overflow:hidden (above) is what actually
+     crops this at the section's top/bottom edges, since this image is
+     taller than the space available. */
+  .rh-box-mockup{
+    position:absolute;
+    top: -140px;
+    left: -300px;
+    width: 800px;
+    max-width: none; /* overrides the sitewide img{max-width:100%} reset, which was silently capping this at its container's width */
+    height:auto;
+    z-index: 2;
+    pointer-events:none;
+  }
+  @media (max-width: 860px){
+    .rh-box-mockup{ display:none; }
+  }
   /* Inner frame: same treatment at a smaller corner cut, holds the actual image area */
   .rh-box-frame-inner{
     aspect-ratio: 4 / 2.1; /* same width, 70% of the original 4:3 height */
     border: 1px solid var(--gold);
     clip-path: polygon(16px 0, calc(100% - 16px) 0, 100% 16px, 100% calc(100% - 16px), calc(100% - 16px) 100%, 16px 100%, 0 calc(100% - 16px), 0 16px);
-    background: url("Images/A Rotten Harvest/Barn by night.png");
-    background-size: cover;
+    background: url("Images/A Rotten Harvest/Amberfield Map.jpg");
+    background-size: 130% auto; /* cover (~100% auto at this box's ratio) + 30% zoom */
     background-position: center;
   }
   .rh-box-text-col h2{
@@ -224,7 +258,7 @@
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    border: 1px solid var(--rh-green);
+    border: 1px solid var(--gold);
     display:flex;
     align-items:center;
     justify-content:center;
@@ -267,14 +301,38 @@
   /* ---------- MEET THE THREAT / CAST ----------
      Part 1 reuses .npc-spotlight/.npc-spotlight-inner/.npc-portrait-col/
      .npc-text-col/.npc-portrait-frame exactly as defined in css/style.css
-     (same component as "Colorful NPCs" on adventure.html) — no overrides,
-     same 340x340/380 portrait frame.
+     (same component as "Colorful NPCs" on adventure.html), same 340x380
+     portrait frame — with one scoped override below (align-items), since
+     the shared default centers the text column against the portrait's
+     full height, including the escaping stem/vine art above the frame's
+     top edge, which read as the text sitting too low relative to the
+     pumpkin itself. Scoped to .rh-cast-section rather than changing
+     .npc-spotlight-inner globally, since adventure.html's NPC spotlight
+     still relies on the centered default.
      Part 2 (the 3-up cast row) is new — there's no existing multi-portrait
      grid version of this component — but it's built from the exact same
      .npc-portrait-frame/.npc-portrait-panel/.npc-frame-back/.npc-frame-front
      layers, just wrapped in .rh-cast-frame so the frame's fixed 340x380
      size can be scaled down for this smaller context without touching the
      shared class (which adventure.html's NPC spotlight still depends on). */
+  .rh-cast-section .npc-spotlight-inner{ align-items: flex-start; }
+  /* Widened back out from an earlier, narrower attempt (367px, meant to
+     line up with the last cast frame below) — at that width the heading
+     had to shrink to an uncomfortably small 24px just to keep "Some faces
+     you'll trust." on one line. Prioritizing a readable heading size over
+     that exact right-edge alignment. */
+  .rh-cast-section .npc-text-col{ max-width: 520px; margin-top: 90px; margin-left: -60px; }
+  /* Forces the title to break at the sentence boundary ("trust." / "Some")
+     instead of the browser's natural wrap. At 32px, "Some faces you'll
+     trust." fits on one line within the 520px column above. */
+  .rh-cast-section .npc-text-col .spotlight-heading{ font-size: 32px; }
+  @media (max-width: 560px){
+    .rh-cast-title-break{ display:none; }
+  }
+  /* Extra room in case the new, longer subtitle wraps to two lines — the
+     shared .spotlight-divider margin-top (10px) was tuned for a single
+     short line and would crowd a wrapped one. */
+  .rh-cast-section .npc-text-col .spotlight-divider{ margin-top: 22px; }
   /* Overrides for the threat portrait's art specifically — zoomed out from
      the shared 280% and un-mirrored from the shared scaleX(-1) default,
      without touching those shared values (adventure.html's NPC portrait
@@ -287,13 +345,33 @@
     background-position: 50% -20%;
     transform: scaleX(1);
   }
+  /* Wendell and Mayor both have some empty headroom above them in their
+     source art — the shared default (0% = top-anchored) was showing that
+     empty space instead of starting on the character, making them read as
+     too low in the frame. Nudging the Y position down the source image
+     slightly skips past that margin, without touching the frame itself or
+     the shared default (Mystery Guest and adventure.html's NPC still use
+     the unmodified default). */
+  #wendell-portrait-frame .npc-portrait-img,
+  #wendell-portrait-frame .npc-portrait-img-overlap .npc-portrait-img-dup,
+  #mayor-portrait-frame .npc-portrait-img,
+  #mayor-portrait-frame .npc-portrait-img-overlap .npc-portrait-img-dup{
+    background-position: 50% 6%;
+  }
   .rh-cast-section{ padding-bottom: 70px; }
+  /* Nudges the monster portrait right so it lines up with Wendell's frame
+     in the row below, without touching .npc-portrait-col itself (shared
+     with adventure.html's NPC spotlight, which should stay centered).
+     transform (not margin-left) so the shift is the full px amount — a
+     margin would've only moved the centered content by half its value,
+     since .npc-portrait-col centers its frame within its own box. */
+  .rh-cast-section .npc-portrait-col{ transform: translateX(90px); }
   .rh-cast-row{
     display:grid;
     grid-template-columns: repeat(3, auto);
     justify-content: center;
-    gap: 76px;
-    margin-top: 50px;
+    gap: 92px;
+    margin-top: 90px;
   }
   .rh-cast-item{ text-align:center; max-width: 200px; }
   .rh-cast-frame .npc-portrait-frame{ max-width: 200px; height: 200px; }
@@ -318,15 +396,90 @@
      "About Crits & Crafts" on index.html) — background, text color,
      heading/paragraph sizing and the .wrap padding-top all come from that
      shared class, nothing redeclared here.
-     .trust-row is also reused exactly for structure/spacing, but its
-     shared color values (var(--paper-dimmer)) are tuned for the dark
-     hero it was built for — invisible against this section's light
-     background, so just the color is overridden here, scoped to this
-     section only (the homepage hero's trust-row is untouched). Reuses
-     colors already established elsewhere on this page (.rh-box-image-label,
-     .about p) rather than introducing new ones. */
-  .rh-about .trust-row{ justify-content: center; }
-  .rh-about .trust-row span{ color: rgba(12,12,13,0.45); }
+     Below the paragraph: two paired "proof" cards instead of the earlier
+     .trust-row sentence — new, page-specific component, not shared with
+     index.html. Checkmark icon reuses the exact same inline SVG path
+     already used in "What's in the Box" (.rh-box-checklist) for
+     consistency, rather than a different icon source. */
+  /* Widened from the shared .wrap's 1200px — at their current size the two
+     proof cards need ~1184px side by side, which no longer fit within the
+     default 1136px content width and were wrapping onto separate lines. */
+  .rh-about .wrap{ max-width: 1300px; }
+  .rh-proof-cards{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap: 40px;
+    margin-top: 30px;
+  }
+  .rh-proof-card{
+    display:flex;
+    align-items:stretch; /* lets the thumb stretch to match the (now taller) text column's height */
+    width: 540px; /* fixed + flex-shrink:0 below — see .rh-proof-text's min-width:0 for why this was needed */
+    flex-shrink:0;
+    gap: 48px;
+    background:#fff;
+    border: 1px solid rgba(12,12,13,0.08);
+    border-radius: 17px;
+    padding: 30px 8px 30px 34px;
+    box-shadow: 0 5px 14px rgba(12,12,13,0.09); /* no existing card-shadow token fit this light-card/always-on context — .adventure-card:hover's shadow is hover-only and tuned much darker/dramatic for a dark card */
+  }
+  /* Real cover art (Cover_Concept_Lineup-01/-03, both 613x793) — sized to
+     that image's actual proportions via aspect-ratio, with align-self
+     overriding the card's align-items:stretch so it renders at its true
+     shape instead of being force-stretched to match the text column's
+     height (which would crop/distort it inconsistently between the two
+     cards). Padding on .rh-proof-card is the breathing space around it. */
+  .rh-proof-thumb{
+    width: 128px;
+    aspect-ratio: 613 / 793;
+    align-self: center;
+    border-radius: 8px;
+    background-color: #16161A;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid rgba(217,164,65,0.5);
+    flex-shrink:0;
+  }
+  .rh-proof-text{
+    width: 310px; /* fixed so both cards' captions wrap at the same point */
+    min-width: 0; /* flex items default to min-width:auto, which let the longer "Carnival" caption's hard <br> line force this (and the whole card) wider than 310px to avoid overflow — this is what caused the two cards to mismatch */
+    text-align:left;
+  }
+  /* Scoped as ".rh-about .rh-proof-number" (two classes) rather than just
+     ".rh-proof-number" (one class) — both this and .rh-proof-caption are
+     <p> tags inside .about, and the shared ".about p" rule (a class + a
+     tag = higher specificity than a single class) was silently winning
+     over a single-class selector here, forcing font-size:16px regardless
+     of what was set below. */
+  .rh-about .rh-proof-number{
+    margin:0;
+    font-size: 72px; /* the eye-catcher — much bigger than the caption/label text below it */
+    line-height:1;
+    font-weight:800;
+    color: var(--ink);
+  }
+  .rh-about .rh-proof-caption{
+    margin: 11px 0 0;
+    font-size: 17px;
+    line-height: 1.4;
+    color: rgba(12,12,13,0.55);
+  }
+  .rh-proof-launched{
+    display:flex;
+    align-items:center;
+    gap: 7px;
+    margin-top: 8px;
+  }
+  .rh-proof-launched svg{ width:18px; height:18px; flex-shrink:0; }
+  .rh-proof-launched span{
+    font-size: 18px;
+    font-weight:600;
+    color: var(--gold);
+  }
+  @media (max-width: 860px){
+    .rh-proof-cards{ flex-direction:column; align-items:center; }
+  }
 
   /* ---------- FINAL CTA ----------
      Replaces the earlier plain signup card — combines the incentive
@@ -441,6 +594,7 @@
       <span class="eyebrow">Crits & Crafts Presents</span>
       <h1>A ROTTEN HARVEST</h1>
       <p class="rh-subtitle">A spooky, Halloween-themed D&D 5E one-shot — low-level<br>and ready to play in a single session.</p>
+      <p class="rh-hero-incentive">Sign up now for early-bird pricing and free magic item cards.</p>
 
       <!-- Real Mailchimp embed values wired in — posts to the same list as
            the final-CTA form further down the page. Keep both in sync.
@@ -480,8 +634,11 @@
   <section class="rh-box">
     <div class="wrap">
       <div class="rh-box-grid">
-        <div class="rh-box-frame-outer">
-          <div class="rh-box-frame-inner"></div>
+        <div class="rh-box-image-wrap">
+          <div class="rh-box-frame-outer">
+            <div class="rh-box-frame-inner"></div>
+          </div>
+          <img class="rh-box-mockup" src="Images/A Rotten Harvest/Paperback-Book-Mockup.png" alt="A Rotten Harvest paperback and open book mockup">
         </div>
         <div class="rh-box-text-col">
           <span class="eyebrow">What's in the Box</span>
@@ -490,7 +647,7 @@
             <li>
               <span class="rh-box-check">
                 <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M3 8.5L6.5 12L13 4" stroke="var(--rh-green)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M3 8.5L6.5 12L13 4" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </span>
               <span>A Halloween harvest one-shot</span>
@@ -498,7 +655,7 @@
             <li>
               <span class="rh-box-check">
                 <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M3 8.5L6.5 12L13 4" stroke="var(--rh-green)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M3 8.5L6.5 12L13 4" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </span>
               <span>For 3-4 players at lvl. 1-4</span>
@@ -506,7 +663,7 @@
             <li>
               <span class="rh-box-check">
                 <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M3 8.5L6.5 12L13 4" stroke="var(--rh-green)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M3 8.5L6.5 12L13 4" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </span>
               <span>Hand-crafted NPCs & Monsters</span>
@@ -514,10 +671,10 @@
             <li>
               <span class="rh-box-check">
                 <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M3 8.5L6.5 12L13 4" stroke="var(--rh-green)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M3 8.5L6.5 12L13 4" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </span>
-              <span>Full village battlemap</span>
+              <span>Multiple battlemaps</span>
             </li>
           </ul>
         </div>
@@ -584,9 +741,9 @@
         </div>
       </div>
       <div class="npc-text-col">
-        <span class="eyebrow">Meet the threat</span>
-        <h2 class="spotlight-heading">The corrupted harvest</h2>
-        <p class="spotlight-subtitle">It was the biggest pumpkin anyone had ever grown. Nobody asked why.</p>
+        <span class="eyebrow">The Cast</span>
+        <h2 class="spotlight-heading">Some faces you'll trust.<br class="rh-cast-title-break">Some you shouldn't.</h2>
+        <p class="spotlight-subtitle">A full cast of original NPCs and monsters, ready to bring to life<br>the moment you open the book.</p>
         <div class="spotlight-divider">
           <svg viewBox="0 0 120 20" fill="none" aria-hidden="true">
             <line x1="10" y1="6" x2="50" y2="6" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" opacity="0.9"/>
@@ -648,11 +805,15 @@
       </div>
       <div class="rh-cast-item">
         <div class="rh-cast-frame">
-          <div class="npc-portrait-frame">
-            <div class="npc-portrait-panel tone-blue"></div>
+          <div class="npc-portrait-frame" id="mystery-portrait-frame">
+            <div class="npc-portrait-panel"></div>
             <svg class="npc-frame-svg npc-frame-back" viewBox="0 0 340 380" preserveAspectRatio="none" aria-hidden="true">
               <rect x="10" y="10" width="320" height="360" fill="none" stroke="var(--gold)" stroke-width="0.7" opacity="0.5"/>
             </svg>
+            <div class="npc-portrait-img" style="background-image:url('Images/A Rotten Harvest/Mystery_guest.png')"></div>
+            <div class="npc-portrait-img-overlap">
+              <div class="npc-portrait-img-dup" style="background-image:url('Images/A Rotten Harvest/Mystery_guest.png')"></div>
+            </div>
             <svg class="npc-frame-svg npc-frame-front" viewBox="0 0 340 380" preserveAspectRatio="none" aria-hidden="true">
               <rect x="4" y="4" width="332" height="372" fill="none" stroke="var(--gold)" stroke-width="1.4"/>
               <line x1="0" y1="0" x2="10" y2="10" stroke="var(--gold)" stroke-width="1.2" stroke-linecap="round"/>
@@ -679,9 +840,34 @@
     <div class="wrap">
       <span class="eyebrow">About Crits & Crafts</span>
       <h2>We've done this before</h2>
-      <p>Crits & Crafts has shipped two Kickstarter-funded one-shots, Murder on the Aurora Dawn and The Carnival of Forgotten Smiles, backed by 375 Dungeon Masters combined. A Rotten Harvest is built the same way, playtested, prepped in one sitting, and written to be run at your table, not just read.</p>
-      <div class="trust-row">
-        <span>Trusted by over 365 DM's on Kickstarter.</span>
+      <p>A Rotten Harvest is our third one-shot, built the same way as the last two: playtested, and written to be run, not just read.</p>
+      <div class="rh-proof-cards">
+        <div class="rh-proof-card">
+          <div class="rh-proof-thumb" style="background-image:url('Images/A Rotten Harvest/Cover_Concept_Lineup-01.png')"></div>
+          <div class="rh-proof-text">
+            <p class="rh-proof-number">224</p>
+            <p class="rh-proof-caption">DMs backed Murder<br>on the Aurora Dawn</p>
+            <div class="rh-proof-launched">
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8.5L6.5 12L13 4" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>Successfully launched</span>
+            </div>
+          </div>
+        </div>
+        <div class="rh-proof-card">
+          <div class="rh-proof-thumb" style="background-image:url('Images/A Rotten Harvest/Cover_Concept_Lineup-03.png')"></div>
+          <div class="rh-proof-text">
+            <p class="rh-proof-number">151</p>
+            <p class="rh-proof-caption">DMs backed Carnival<br>of Forgotten Smiles</p>
+            <div class="rh-proof-launched">
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8.5L6.5 12L13 4" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>Successfully launched</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -694,7 +880,7 @@
     <div class="rh-final-cta-grid">
       <div class="rh-final-cta-text">
         <h2>Free magic item cards</h2>
-        <p>Sign up now and get a set of cursed harvest magic item cards, free. The perfect twisted loot for your next table.</p>
+        <p>Sign up now and get a set of cursed harvest magic item cards, free, plus early-bird pricing when the campaign goes live.</p>
 
         <!-- Real Mailchimp embed values wired in — same list as the hero's
              form above. Submits invisibly into the hidden iframe below,
