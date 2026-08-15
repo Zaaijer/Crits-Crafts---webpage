@@ -143,6 +143,23 @@
     cursor:pointer;
     white-space:nowrap;
   }
+  /*
+    .rh-email-field already sets display:flex, and that author rule beats
+    the browser's built-in [hidden]{display:none} rule (author styles
+    always win over browser defaults, even at equal specificity) — so
+    without this, JS setting .hidden on the field row wouldn't actually
+    hide it. This rule wins the tie by being more specific.
+  */
+  .rh-email-field[hidden]{ display:none; }
+  /* Confirmation message shown in place of the email field after a
+     successful submit — sized close to the input it replaces so the
+     layout doesn't jump. Shared by both signup forms on this page. */
+  .rh-signup-success{
+    padding: 13px 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--paper);
+  }
   .rh-hero-note{
     margin-top: 12px;
     font-size: 12.5px;
@@ -426,14 +443,20 @@
       <p class="rh-subtitle">A spooky, Halloween-themed D&D 5E one-shot — low-level<br>and ready to play in a single session.</p>
 
       <!-- Real Mailchimp embed values wired in — posts to the same list as
-           the final-CTA form further down the page. Keep both in sync. -->
+           the final-CTA form further down the page. Keep both in sync.
+           Submits invisibly into the hidden iframe below (see target=)
+           instead of opening Mailchimp's hosted page in a new tab — see
+           the shared script near the end of <body> for how the confirmation
+           message gets swapped in. -->
       <div class="rh-hero-form">
-        <form action="https://gmail.us12.list-manage.com/subscribe/post?u=5893dac59a1d9ae4c0412f45a&amp;id=5e595beac1&amp;f_id=000946e0f0" method="post" target="_blank" novalidate>
+        <iframe name="mc-embed-response-hero" title="Signup response" style="display:none;"></iframe>
+        <form id="rh-hero-signup-form" action="https://gmail.us12.list-manage.com/subscribe/post?u=5893dac59a1d9ae4c0412f45a&amp;id=5e595beac1&amp;f_id=000946e0f0" method="post" target="mc-embed-response-hero">
           <div class="rh-email-field">
             <label for="rh-email-hero" class="sr-only">Email address</label>
             <input type="email" name="EMAIL" id="rh-email-hero" placeholder="you@example.com" required>
             <button type="submit" class="btn-cta">Claim Your Spot</button>
           </div>
+          <p class="rh-signup-success" id="rh-hero-signup-success" hidden>Thanks — you're on the list. We'll email when it matters.</p>
           <div aria-hidden="true" style="position:absolute; left:-5000px;">
             <input type="text" name="b_5893dac59a1d9ae4c0412f45a_5e595beac1" tabindex="-1" value="">
           </div>
@@ -674,14 +697,17 @@
         <p>Sign up now and get a set of cursed harvest magic item cards, free. The perfect twisted loot for your next table.</p>
 
         <!-- Real Mailchimp embed values wired in — same list as the hero's
-             form above. -->
+             form above. Submits invisibly into the hidden iframe below,
+             same pattern as the hero form. -->
         <div class="rh-final-cta-form">
-          <form action="https://gmail.us12.list-manage.com/subscribe/post?u=5893dac59a1d9ae4c0412f45a&amp;id=5e595beac1&amp;f_id=000946e0f0" method="post" target="_blank" novalidate>
+          <iframe name="mc-embed-response-final" title="Signup response" style="display:none;"></iframe>
+          <form id="rh-final-signup-form" action="https://gmail.us12.list-manage.com/subscribe/post?u=5893dac59a1d9ae4c0412f45a&amp;id=5e595beac1&amp;f_id=000946e0f0" method="post" target="mc-embed-response-final">
             <div class="rh-email-field">
               <label for="rh-email-final" class="sr-only">Email address</label>
               <input type="email" name="EMAIL" id="rh-email-final" placeholder="you@example.com" required>
               <button type="submit" class="btn-cta">Claim my cards</button>
             </div>
+            <p class="rh-signup-success" id="rh-final-signup-success" hidden>Thanks — you're on the list. We'll email when it matters.</p>
             <!-- Mailchimp bot-trap field — every real Mailchimp embed includes
                  one of these with a list-specific name. Leave it in place
                  (just swap the name/id) when pasting the real embed code. -->
@@ -731,6 +757,38 @@
     <p class="rh-copyright">© 2026 Crits & Crafts. All rights reserved.</p>
   </div>
 </footer>
+
+<script>
+  // Wires up one signup form so it submits invisibly (into its hidden
+  // iframe — see the "target" attribute on the <form>) instead of opening
+  // Mailchimp's hosted confirmation page in a new tab, and swaps the
+  // visible email field for a "thanks" message right in place.
+  //
+  // Note this is an "optimistic" success message: because the iframe's
+  // response comes back from a different domain (list-manage.com), the
+  // browser won't let this script read whether Mailchimp actually accepted
+  // it — cross-origin pages are sandboxed from each other for security.
+  // So "success" here really just means "the browser accepted the form and
+  // sent it" (which already only happens once the email field passes its
+  // own required/type="email" checks) rather than "Mailchimp confirmed the
+  // signup." That's the standard, expected tradeoff for this pattern.
+  function wireInlineSignupForm(formId, successId) {
+    var form = document.getElementById(formId);
+    if (!form) return;
+
+    form.addEventListener('submit', function () {
+      var fieldRow = form.querySelector('.rh-email-field');
+      var success = document.getElementById(successId);
+      if (fieldRow) fieldRow.hidden = true;
+      if (success) success.hidden = false;
+      // No preventDefault() here — the submission still goes through
+      // normally, it just lands in the hidden iframe instead of a new tab.
+    });
+  }
+
+  wireInlineSignupForm('rh-hero-signup-form', 'rh-hero-signup-success');
+  wireInlineSignupForm('rh-final-signup-form', 'rh-final-signup-success');
+</script>
 
 </body>
 </html>
