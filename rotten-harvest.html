@@ -188,7 +188,7 @@
     overflow:hidden; /* crops .rh-box-mockup at this section's own edges, so it never bleeds into the sections above/below */
     background: var(--paper);
     color: var(--ink);
-    padding: 100px 0 140px;
+    padding: 140px 0 180px;
   }
   .rh-box .wrap{ max-width: 1040px; }
   .rh-box-grid{
@@ -228,7 +228,7 @@
   }
   /* Inner frame: same treatment at a smaller corner cut, holds the actual image area */
   .rh-box-frame-inner{
-    aspect-ratio: 4 / 2.1; /* same width, 70% of the original 4:3 height */
+    aspect-ratio: 4 / 2.3; /* slightly taller than the original 4:3-derived 2.1, to re-balance against the checklist's now-5th item */
     border: 1px solid var(--gold);
     clip-path: polygon(16px 0, calc(100% - 16px) 0, 100% 16px, 100% calc(100% - 16px), calc(100% - 16px) 100%, 16px 100%, 0 calc(100% - 16px), 0 16px);
     background: url("Images/A Rotten Harvest/Amberfield Map.jpg");
@@ -245,7 +245,7 @@
     padding:0;
     display:flex;
     flex-direction:column;
-    gap: 14px;
+    gap: 12px;
   }
   .rh-box-checklist li{
     display:flex;
@@ -285,17 +285,22 @@
      instead of the section hugging the content tightly. */
   #story-spotlight{
     background-image: url("Images/A Rotten Harvest/Festival_Girl.png");
-    min-height: 620px;
+    min-height: 700px;
   }
-  /* Extra center-darkening layer, stacked on top of .spotlight-content's
-     own radial gradient (broader and softer than it) for better text
-     contrast against this particular photo — scoped to this section only. */
   #story-spotlight .spotlight-content{
     max-width: 620px;
     min-height: 480px;
+  }
+  /* Horizontal darkening band spanning the section's FULL height (this
+     element is inset:0, i.e. the whole section) — invisible at the left
+     and right edges, dark through the middle where the text sits, rather
+     than a boxed/centered shape. Layered on top of the shared edge-vignette
+     radial-gradient below it (unchanged, still fading the photo's own
+     corners), not replacing it. */
+  #story-spotlight .spotlight-overlay{
     background:
-      radial-gradient(ellipse 62% 62% at center, rgba(12,12,13,0.35) 0%, transparent 100%),
-      radial-gradient(ellipse 44% 44% at center, rgba(12,12,13,0.63) 0%, rgba(12,12,13,0.35) 55%, transparent 100%);
+      linear-gradient(90deg, transparent 0%, transparent 25%, rgba(12,12,13,0.6) 40%, rgba(12,12,13,0.6) 60%, transparent 75%, transparent 100%),
+      radial-gradient(ellipse at center, rgba(12,12,13,0.25) 0%, rgba(12,12,13,0.55) 55%, rgba(12,12,13,0.88) 100%);
   }
 
   /* ---------- MEET THE THREAT / CAST ----------
@@ -358,7 +363,9 @@
   #mayor-portrait-frame .npc-portrait-img-overlap .npc-portrait-img-dup{
     background-position: 50% 6%;
   }
-  .rh-cast-section{ padding-bottom: 70px; }
+  /* padding-top scoped here (not touching the shared .npc-spotlight rule,
+     which adventure.html's "Colorful NPCs" still uses at its default 70px) */
+  .rh-cast-section{ padding-top: 110px; padding-bottom: 70px; }
   /* Nudges the monster portrait right so it lines up with Wendell's frame
      in the row below, without touching .npc-portrait-col itself (shared
      with adventure.html's NPC spotlight, which should stay centered).
@@ -508,6 +515,40 @@
     line-height: 1.6;
     color: var(--paper-dim);
   }
+  /* Concrete pricing, between the incentive paragraph and the form. €12 is
+     the focal point here the same way .rh-proof-number is in the About
+     section (large + bold, clearly the most prominent thing in the line)
+     — sized down from that section's 72px since this column is narrower
+     and already has a heading/paragraph/form competing for attention. */
+  .rh-final-cta-price{
+    margin-top: 16px;
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap: 10px;
+  }
+  .rh-price-tier{
+    font-size: 13px;
+    font-weight:600;
+    color: var(--paper-dim);
+  }
+  .rh-final-cta-price strong{
+    font-size: 32px;
+    font-weight:800;
+    line-height:1;
+    color: var(--paper);
+  }
+  .rh-final-cta-price s{
+    margin-left: 4px;
+    font-size: 15px;
+    font-weight:500;
+    color: rgba(242,239,233,0.5);
+  }
+  .rh-price-note{
+    font-size: 12px;
+    font-weight:600;
+    color: var(--gold);
+  }
   .rh-final-cta-form{ margin-top: 28px; max-width: 420px; }
   .rh-final-cta-form .rh-email-field input[type="email"]{ background: var(--ink-raised); }
   .rh-final-cta-note{
@@ -593,7 +634,7 @@
     <div class="wrap rh-hero-inner">
       <span class="eyebrow">Crits & Crafts Presents</span>
       <h1>A ROTTEN HARVEST</h1>
-      <p class="rh-subtitle">A spooky, Halloween-themed D&D 5E one-shot — low-level<br>and ready to play in a single session.</p>
+      <p class="rh-subtitle">A spooky, Halloween-themed D&D 5E one-shot for 3-4 players at level 1-4, ready to play in a single session.</p>
       <p class="rh-hero-incentive">Sign up now for early-bird pricing and free magic item cards.</p>
 
       <!-- Real Mailchimp embed values wired in — posts to the same list as
@@ -616,7 +657,7 @@
           </div>
         </form>
       </div>
-      <p class="rh-hero-note">You'll hear from us when it counts. That's it.</p>
+      <p class="rh-hero-note">We'll never share your email. Unsubscribe anytime.</p>
     </div>
 
     <img class="rh-teaser-badge" src="Images/A Rotten Harvest/Kickstarter_Teaser.png" alt="Launching soon on Kickstarter">
@@ -658,14 +699,6 @@
                   <path d="M3 8.5L6.5 12L13 4" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </span>
-              <span>For 3-4 players at lvl. 1-4</span>
-            </li>
-            <li>
-              <span class="rh-box-check">
-                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M3 8.5L6.5 12L13 4" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
               <span>Hand-crafted NPCs & Monsters</span>
             </li>
             <li>
@@ -674,7 +707,23 @@
                   <path d="M3 8.5L6.5 12L13 4" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </span>
-              <span>Multiple battlemaps</span>
+              <span>Multiple battlemaps (VTT & Print-ready)</span>
+            </li>
+            <li>
+              <span class="rh-box-check">
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 8.5L6.5 12L13 4" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span>Atmospheric playlist</span>
+            </li>
+            <li>
+              <span class="rh-box-check">
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 8.5L6.5 12L13 4" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span>Theater of the Mind plates</span>
             </li>
           </ul>
         </div>
@@ -881,6 +930,11 @@
       <div class="rh-final-cta-text">
         <h2>Free magic item cards</h2>
         <p>Sign up now and get a set of cursed harvest magic item cards, free, plus early-bird pricing when the campaign goes live.</p>
+        <p class="rh-final-cta-price">
+          <span class="rh-price-tier">Harvester's Early Bird</span>
+          <strong>€12</strong> <s>€15</s>
+          <span class="rh-price-note">Save 20% · First 35 backers only</span>
+        </p>
 
         <!-- Real Mailchimp embed values wired in — same list as the hero's
              form above. Submits invisibly into the hidden iframe below,
@@ -902,7 +956,7 @@
             </div>
           </form>
         </div>
-        <p class="rh-final-cta-note">We'll email when it matters. Nothing else.</p>
+        <p class="rh-final-cta-note">We'll never share your email. Unsubscribe anytime.</p>
       </div>
 
       <div class="rh-final-cta-cards">
@@ -919,24 +973,12 @@
 <footer class="rh-footer">
   <div class="wrap rh-footer-inner">
     <img class="rh-footer-logo" src="Images/Crits&amp;Crafts logo_White_Horizontal-04.png" alt="Crits & Crafts">
-    <!-- FOLLOW-UP: swap href="#" for real social profile URLs once they exist -->
     <div class="rh-social">
-      <a href="#" aria-label="Instagram">
+      <a href="https://www.instagram.com/critscrafts/" target="_blank" rel="noopener" aria-label="Instagram">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
           <rect x="3" y="3" width="18" height="18" rx="5"/>
           <circle cx="12" cy="12" r="4.2"/>
           <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/>
-        </svg>
-      </a>
-      <a href="#" aria-label="TikTok">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-          <path d="M14 3v10.5a3.5 3.5 0 1 1-3-3.46"/>
-          <path d="M14 3c0 2.5 2 4.5 4.5 4.5"/>
-        </svg>
-      </a>
-      <a href="#" aria-label="X (Twitter)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-          <path d="M4 4l16 16M20 4L4 20"/>
         </svg>
       </a>
     </div>
