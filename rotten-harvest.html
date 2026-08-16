@@ -25,6 +25,15 @@
 <title>A Rotten Harvest — A Spooky D&D 5E One-Shot | Crits & Crafts</title>
 <meta name="description" content="A Halloween-themed one-shot adventure for D&D 5E, low-level and ready to play in a single session. Sign up to be notified when the Kickstarter launches.">
 
+<!-- The hero's CSS background-image is this page's LCP element (a
+     full-bleed background image is a bigger painted area than the H1 text
+     next to it), but fetchpriority can't be set on a CSS background-image
+     directly — this preload is the standard way to get the same
+     high-priority-fetch effect for one. Placed early in <head>, before
+     the font/stylesheet links, so the browser starts fetching it
+     immediately rather than after those. -->
+<link rel="preload" as="image" href="Images/A Rotten Harvest/Cover_image-Harvest.webp" fetchpriority="high" type="image/webp">
+
 <!-- Canonical + Open Graph / Twitter share tags -->
 <link rel="canonical" href="https://critscrafts.com/rotten-harvest">
 <meta property="og:type" content="website">
