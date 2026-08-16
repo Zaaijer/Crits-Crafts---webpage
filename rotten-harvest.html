@@ -1370,11 +1370,12 @@
         success.hidden = false;
         // wireInlineSignupForm() is called once per form below, so this
         // fires independently the moment each form's own success state
-        // shows. Guarded because fbq only exists once cookie consent has
-        // been accepted (see initMetaPixel() below) — rejecting cookies
-        // must never block the actual Mailchimp signup above, just this
-        // tracking call.
+        // shows. Guarded because fbq/gtag only exist once cookie consent
+        // has been accepted (see initMetaPixel() below) — rejecting
+        // cookies must never block the actual Mailchimp signup above,
+        // just these two tracking calls.
         if (window.fbq) fbq('track', 'Lead');
+        if (window.gtag) gtag('event', 'sign_up', { method: 'email' });
       }
       // No preventDefault() here — the submission still goes through
       // normally, it just lands in the hidden iframe instead of a new tab.
