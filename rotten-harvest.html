@@ -1386,13 +1386,18 @@
 </script>
 
 <script>
-  // ---------- COOKIE CONSENT + META PIXEL ----------
-  // The Pixel base snippet (fbq shim + init + PageView) only runs from
-  // inside this function — nothing Pixel-related happens at parse time
-  // in <head> anymore. Safe to call more than once (the shim's own
-  // `if(f.fbq)return` no-ops a second call), so both the "already
-  // consented on a past visit" path and the "just clicked Accept" path
-  // can call it without needing to track whether it already ran.
+  // ---------- COOKIE CONSENT + META PIXEL + GA4 ----------
+  // The Pixel base snippet (fbq shim + init + PageView) and the GA4
+  // snippet (gtag.js load + config) only run from inside this function —
+  // nothing tracking-related happens at parse time in <head> anymore.
+  // Safe to call more than once (the Pixel shim's own `if(f.fbq)return`
+  // and GA4's `if(!window.gtag)` both no-op a second call), so both the
+  // "already consented on a past visit" path and the "just clicked
+  // Accept" path can call it without needing to track whether it already
+  // ran. Both trackers live in this one function (rather than, say,
+  // separate initMetaPixel()/initGA4() functions each called from both
+  // sites) specifically so they can never end up out of sync — accepting
+  // always fires both together, rejecting always skips both.
   var CONSENT_KEY = 'rh-cookie-consent';
 
   function initMetaPixel() {
@@ -1406,6 +1411,22 @@
     'https://connect.facebook.net/en_US/fbevents.js');
     fbq('init', '1683971676620176');
     fbq('track', 'PageView');
+
+    // Google Analytics 4 — same "only from here, only after consent"
+    // treatment as the Pixel above. gtag.js is injected dynamically
+    // (rather than a static <script src> tag) for the same reason the
+    // Pixel's fbevents.js is: a static tag in <head> would load
+    // unconditionally, defeating the consent gate.
+    if (!window.gtag) {
+      var gaScript = document.createElement('script');
+      gaScript.async = true;
+      gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-JC21VLYSG4';
+      document.head.appendChild(gaScript);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { dataLayer.push(arguments); };
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-JC21VLYSG4');
   }
 
   var consent = localStorage.getItem(CONSENT_KEY);

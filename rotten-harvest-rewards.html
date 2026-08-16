@@ -247,10 +247,10 @@
   </div>
 
   <script>
-    // ---------- COOKIE CONSENT + META PIXEL ----------
+    // ---------- COOKIE CONSENT + META PIXEL + GA4 ----------
     // Same logic as rotten-harvest.html — see that file for the fuller
     // explanation. This page has no signup forms/Lead events, so there's
-    // nothing else here to gate besides the Pixel itself.
+    // nothing else here to gate besides the Pixel and GA4 themselves.
     var CONSENT_KEY = 'rh-cookie-consent';
 
     function initMetaPixel() {
@@ -264,6 +264,21 @@
       'https://connect.facebook.net/en_US/fbevents.js');
       fbq('init', '1683971676620176');
       fbq('track', 'PageView');
+
+      // Google Analytics 4 — same "only from here, only after consent"
+      // treatment as the Pixel above, dynamically injected for the same
+      // reason fbevents.js is (a static <script src> tag in <head> would
+      // load unconditionally, defeating the consent gate).
+      if (!window.gtag) {
+        var gaScript = document.createElement('script');
+        gaScript.async = true;
+        gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-JC21VLYSG4';
+        document.head.appendChild(gaScript);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () { dataLayer.push(arguments); };
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-JC21VLYSG4');
     }
 
     var consent = localStorage.getItem(CONSENT_KEY);
