@@ -1,0 +1,165 @@
+<!--
+  Standalone rewards-delivery page for "A Rotten Harvest."
+
+  Linked from the Mailchimp welcome email sent after someone signs up on
+  rotten-harvest.html — its only job is handing over the free magic item
+  card PDF. Same no-nav discipline as rotten-harvest.html:
+  - No <header>/nav, and no links anywhere on this page to another
+    critscrafts.com page — nothing to click except the download button.
+  - No Kickstarter link or mention: the campaign isn't live yet, so the
+    page ends right after the download button and its caption.
+  - js/site-gate.js (the "Coming Soon" password overlay used on index.html
+    and adventure.html) is deliberately left out, same reasoning as
+    rotten-harvest.html — this needs to work for everyone who signed up,
+    regardless of whether the rest of the site is gated.
+  - All page-specific styling lives in the <style> block below rather than
+    css/style.css, matching rotten-harvest.html's pattern. Reuses the same
+    design tokens (--ink/--paper/--gold/etc.), the same Barlow font-loading
+    setup, and a few existing classes (.wrap, .eyebrow, .btn-cta,
+    .spotlight-divider) from css/style.css, plus the exact fanned-card
+    markup/CSS/art from rotten-harvest.html's Final CTA section
+    (.rh-final-cta-cards / .rh-final-card), so this reads as a direct
+    continuation of the landing page rather than a separate page.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Cursed Harvest Cards — A Rotten Harvest | Crits & Crafts</title>
+<meta name="description" content="Download your free cursed harvest magic item cards for A Rotten Harvest, a Halloween-themed D&D 5E one-shot from Crits & Crafts.">
+<!-- Private post-signup delivery page, not meant to show up in search. -->
+<meta name="robots" content="noindex, nofollow">
+
+<link rel="canonical" href="https://critscrafts.com/rotten-harvest-rewards">
+<meta name="theme-color" content="#0C0C0D">
+
+<!-- Same font as the rest of the site -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Reused for design tokens (--ink/--gold/etc.) and a few shared classes only -->
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+  /* Guards against any future fanned-card overflow the way rotten-harvest.html's
+     Final CTA section needed a scoped fix for — cheap insurance on a page
+     this simple, since the cards below are the one thing on the page wide
+     enough to ever risk it. */
+  body{ overflow-x:hidden; }
+
+  .rrw-section{
+    padding: 90px 0 120px;
+  }
+  .rrw-inner{
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .rrw-inner .eyebrow{
+    margin-top: 22px;
+  }
+  .rrw-inner h1{
+    margin-top: 14px;
+    font-size: clamp(26px, 4vw, 34px);
+    line-height: 1.2;
+    color: var(--paper);
+  }
+  .rrw-body{
+    margin: 16px auto 0;
+    max-width: 44ch;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--paper-dim);
+  }
+
+  /* ---------- FANNED CARDS ----------
+     Exact same markup/art/styling as .rh-final-cta-cards on
+     rotten-harvest.html, minus that section's left:80px nudge — that
+     existed only to line the fan up against a text column beside it,
+     which doesn't exist in this single-centered-column layout, so the
+     fan just centers on its own here instead.
+  */
+  .rrw-cards{
+    position:relative;
+    left: 0;
+    height: 460px;
+    margin-top: 48px;
+  }
+  /* 220x337 — matches the 62.6mm x 95.9mm card art proportions (1:1.532) */
+  .rh-final-card{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width: 220px;
+    height: 337px;
+    margin-top: -168px;
+    margin-left: -110px;
+    background-color: var(--ink-raised);
+    background-size: cover;
+    background-position: center;
+    border: 1.5px solid var(--gold);
+    border-radius: 18px;
+  }
+  .rh-final-card--back{ transform: translateX(-98px) rotate(-14deg); z-index:1; }
+  .rh-final-card--mid{ transform: translateX(2px) translateY(-22px) rotate(5deg); z-index:2; }
+  .rh-final-card--front{ transform: translateX(102px) rotate(16deg); z-index:3; }
+  @media (max-width: 860px){
+    .rrw-cards{ height: 300px; }
+    .rh-final-card{
+      width: 150px;
+      height: 230px;
+      margin-top: -115px;
+      margin-left: -75px;
+    }
+    .rh-final-card--back{ transform: translateX(-62px) rotate(-14deg); }
+    .rh-final-card--mid{ transform: translateX(1px) translateY(-14px) rotate(5deg); }
+    .rh-final-card--front{ transform: translateX(65px) rotate(16deg); }
+  }
+
+  .rrw-download-btn{
+    margin-top: 32px;
+    padding: 15px 32px;
+  }
+  .rrw-caption{
+    margin-top: 14px;
+    font-size: 12.5px;
+    color: var(--paper-dimmer);
+  }
+</style>
+</head>
+<body>
+
+  <section class="rrw-section">
+    <div class="wrap">
+      <div class="rrw-inner">
+        <div class="spotlight-divider">
+          <svg viewBox="0 0 120 20" fill="none" aria-hidden="true">
+            <line x1="10" y1="6" x2="50" y2="6" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" opacity="0.9"/>
+            <line x1="70" y1="6" x2="110" y2="6" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" opacity="0.9"/>
+            <line x1="60" y1="7" x2="60" y2="14" stroke="var(--gold)" stroke-width="1.2" opacity="0.9"/>
+            <circle cx="60" cy="17" r="2.2" fill="var(--gold)" opacity="0.9"/>
+          </svg>
+        </div>
+
+        <span class="eyebrow">Thanks for signing up</span>
+        <h1>Your cursed harvest cards are ready</h1>
+        <p class="rrw-body">Three magic items pulled straight from Amberfield's rotten fields. Print them, shuffle them into your loot table, or just admire the curse.</p>
+
+        <!-- Cards moved below the CTA (not directly under the body copy)
+             so the download button lands in view without scrolling past
+             a large card visual first, especially on small phones. -->
+        <a class="btn-cta rrw-download-btn" href="/downloads/rotten-harvest-magic-item-cards.pdf" download>Download Your Cards (PDF)</a>
+        <p class="rrw-caption">One PDF, ready to print at home.</p>
+
+        <div class="rrw-cards">
+          <div class="rh-final-card rh-final-card--back" style="background-image:url('Images/A Rotten Harvest/Magical_Item_Cards-03-web.png')"></div>
+          <div class="rh-final-card rh-final-card--mid" style="background-image:url('Images/A Rotten Harvest/Magical_Item_Cards-02-web.png')"></div>
+          <div class="rh-final-card rh-final-card--front" style="background-image:url('Images/A Rotten Harvest/Magical_Item_Cards-04-web.png')"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

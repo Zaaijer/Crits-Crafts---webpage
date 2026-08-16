@@ -656,6 +656,7 @@
     margin: 0 auto;
   }
   .rh-final-cta-text h2{
+    margin-bottom: 26px;
     font-size: clamp(24px, 3vw, 30px);
     color: var(--paper);
   }
@@ -666,25 +667,57 @@
     line-height: 1.6;
     color: var(--paper-dim);
   }
-  /* Concrete pricing, between the incentive paragraph and the form. €12 is
-     the focal point here the same way .rh-proof-number is in the About
-     section (large + bold, clearly the most prominent thing in the line)
-     — sized down from that section's 72px since this column is narrower
-     and already has a heading/paragraph/form competing for attention. */
-  .rh-final-cta-price{
-    margin-top: 16px;
+  /* Two labeled blocks between the heading and the form: the free-cards
+     offer (full-brightness gold rule, primary) and the early-access
+     pricing notice (dimmed rule, secondary) — kept visually separate so
+     the €12 doesn't read as part of the free offer or an active charge.
+     Placed after .rh-final-cta-text p on purpose: that rule and these
+     both target plain <p> tags at equal specificity (one class + one
+     type selector each), so without this ordering the earlier-but-later
+     -declared generic rule would win the cascade regardless of viewport,
+     silently overriding the font-size/color/margin set here. */
+  .rh-final-cta-block{
+    border-left: 2px solid;
+    padding-left: 14px;
+    margin-bottom: 18px;
+  }
+  .rh-final-cta-block--notify{ margin-bottom: 26px; }
+  .rh-final-cta-block--free{ border-color: var(--gold); }
+  .rh-final-cta-block--notify{ border-color: rgba(217,164,65,0.4); }
+  .rh-final-cta-label{
+    display:block;
+    font-size: 10.5px;
+    font-weight:700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .rh-final-cta-label--dim{ color: rgba(242,239,233,0.45); }
+  .rh-final-cta-block p{
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: rgba(242,239,233,0.7);
+  }
+  /* €12 is the focal point here the same way .rh-proof-number is in the
+     About section (large + bold, clearly the most prominent thing in the
+     line) — sized down since this is now one line among several in a
+     secondary block, not the whole column's headline pricing anymore. */
+  .rh-final-cta-block .rh-final-cta-price{
+    margin-top: 10px;
     display:flex;
     align-items:center;
     flex-wrap:wrap;
-    gap: 10px;
+    gap: 8px;
   }
   .rh-price-tier{
     font-size: 13px;
     font-weight:600;
-    color: var(--paper-dim);
+    color: var(--paper);
   }
   .rh-final-cta-price strong{
-    font-size: 32px;
+    font-size: 17px;
     font-weight:800;
     line-height:1;
     color: var(--paper);
@@ -693,11 +726,11 @@
     margin-left: 4px;
     font-size: 15px;
     font-weight:500;
-    color: rgba(242,239,233,0.5);
+    color: rgba(242,239,233,0.4);
   }
-  .rh-price-note{
+  .rh-final-cta-block .rh-final-cta-price-note{
+    margin-top: 4px;
     font-size: 12px;
-    font-weight:600;
     color: var(--gold);
   }
   .rh-final-cta-form{ margin-top: 28px; max-width: 420px; }
@@ -748,6 +781,31 @@
     .rh-final-cta-grid{ grid-template-columns: 1fr; gap: 48px; text-align:center; }
     .rh-final-cta-text p,
     .rh-final-cta-form{ margin-left:auto; margin-right:auto; }
+    /* Caps the whole text column (heading + blocks + form) to one
+       shared width and centers THAT as a unit, instead of centering or
+       left-aligning each piece independently — on a wide single-column
+       layout (tablets, ~700-860px), a heading/blocks pinned to the true
+       left edge while the form centers itself within its own narrower
+       max-width left the two halves visibly misaligned from each other.
+       With one shared box, the heading and blocks (left-aligned text
+       inside) and the form (already 420px/centered) all land on the
+       same edges at every width from 390px up to this 860px breakpoint. */
+    .rh-final-cta-text{
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    /* text-align:center above (inherited) would otherwise center the
+       heading's text against left-aligned block text below it, reading
+       as a jump/misalignment as the eye moves down the page. */
+    .rh-final-cta-text h2{ text-align:left; }
+    .rh-final-cta-block{ text-align: left; }
+    /* .rh-final-cta-price{justify-content:center} above was written for
+       the old fully-centered column — now that the block itself is
+       left-aligned, that centered price row reads as inconsistent
+       against the label/paragraphs around it. Back to its default
+       (left-aligned) start. */
+    .rh-final-cta-block .rh-final-cta-price{ justify-content:flex-start; }
     /* Fix #2 (part of general pass): price line is a left-aligned flex
        row by default — center it to match the rest of this now-centered
        column. */
@@ -935,9 +993,8 @@
     <div class="spotlight-content">
       <span class="eyebrow">The Story</span>
       <h2 class="spotlight-heading">The lanterns are lit. The cider is warm.</h2>
-      <p class="spotlight-subtitle">Amberfield's Harvest Festival is about to crown its winner. Wendell Furrow's prize pumpkin is the talk of the town, the biggest anyone has grown in living memory.</p>
-      <p class="spotlight-subtitle">But Wendell himself is missing. A few travelers passing through, drawn in by the promise of a warm meal, get asked to check on him before the festival wraps.</p>
-      <p class="spotlight-subtitle">What waits for them at his farm is not Wendell, not anymore. Whatever happened to him didn't stay contained to his fields. The festival everyone is celebrating may not survive the morning.</p>
+      <p class="spotlight-subtitle">Amberfield's Harvest Festival is about to crown its winner. Wendell Furrow grew the biggest pumpkin anyone has ever seen. But Wendell is missing. A few travelers passing through get asked to check on him before the festival ends.</p>
+      <p class="spotlight-subtitle">They find something terrible at his farm. It didn't stay there. It's already headed for the festival. Amberfield has no idea what's coming. The travelers might be the only ones who can stop it.</p>
       <div class="spotlight-divider">
         <svg viewBox="0 0 120 20" fill="none" aria-hidden="true">
           <line x1="10" y1="6" x2="50" y2="6" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" opacity="0.9"/>
@@ -1121,12 +1178,21 @@
     <div class="rh-final-cta-grid">
       <div class="rh-final-cta-text">
         <h2>Free magic item cards</h2>
-        <p>Sign up now and get a set of cursed harvest magic item cards, free, plus early-bird pricing when the campaign goes live.</p>
-        <p class="rh-final-cta-price">
-          <span class="rh-price-tier">Harvester's Early Bird</span>
-          <strong>€12</strong> <s>€15</s>
-          <span class="rh-price-note">Save 20% · First 35 backers only</span>
-        </p>
+
+        <div class="rh-final-cta-block rh-final-cta-block--free">
+          <span class="rh-final-cta-label">Free · sent to your inbox</span>
+          <p>Sign up and get a set of cursed harvest <br> magic item cards for free.</p>
+        </div>
+
+        <div class="rh-final-cta-block rh-final-cta-block--notify">
+          <span class="rh-final-cta-label rh-final-cta-label--dim">Get notified · early access launch</span>
+          <p>No payment now. We'll let you know the <br> moment early-bird pricing opens:</p>
+          <p class="rh-final-cta-price">
+            <span class="rh-price-tier">Harvester's Early Bird</span> —
+            <strong>€12</strong> <s>€15</s>
+          </p>
+          <p class="rh-final-cta-price-note">Save 20% · First 35 backers only</p>
+        </div>
 
         <!-- Real Mailchimp embed values wired in — same list as the hero's
              form above. Submits invisibly into the hidden iframe below,
