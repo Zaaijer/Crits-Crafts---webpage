@@ -99,10 +99,48 @@
     height: 10px;
     background: var(--rh-green);
   }
-  @media (max-width: 560px){
-    .rh-teaser-badge{ width: 120px; right: 18px; }
-  }
   .rh-hero-inner{ max-width: 620px; padding: 70px 0; }
+  /* Placed AFTER the base .rh-hero-inner/.rh-teaser-badge rules above on
+     purpose: this media query and those rules have equal selector
+     specificity, so without this ordering the base rules (appearing
+     later) would win the cascade regardless of viewport width, silently
+     no-op'ing these overrides. */
+  @media (max-width: 560px){
+    /* .rh-hero-inner inherits margin:0 auto from .wrap, and as a flex item
+       that centers it via flexbox's auto-margin alignment (overrides
+       justify-content) instead of the left-alignment this hero was
+       designed for. On wide screens the content's natural width nearly
+       fills the space so this is invisible; on a phone there's real free
+       space, and the auto-margins claim all of it, leaving text flush
+       against both screen edges (padding was already zeroed by this
+       element's own padding:70px 0 override, which only kept the
+       vertical value). Resetting margin + restoring horizontal padding. */
+    .rh-hero-inner{ margin-left:0; margin-right:0; padding: 70px 24px 0; }
+    /* min-height:0 overrides the base 82vh — in this column layout, a flex
+       container defaults to justify-content:flex-start, so any leftover
+       height beyond the content (whenever 82vh exceeds it) collects as
+       empty space AFTER the last item — the badge — instead of touching
+       the hero's true bottom edge (and the green bar right below it).
+       Letting the hero's height come from its content only closes that
+       gap; the content here is substantial enough that this doesn't make
+       the section feel short. */
+    .rh-hero{ flex-direction:column; align-items:flex-start; min-height:0; }
+    /* First attempt kept the badge absolutely positioned at the hero's
+       bottom edge and just tried to free up leftover space above it by
+       top-anchoring the text — worked on a tall test viewport, but
+       min-height:82vh shrinks on shorter real phone screens, so the
+       "leftover space" it depended on could vanish entirely and the badge
+       would overlap the note text regardless. Taking it out of absolute
+       positioning entirely and letting it sit in normal flow below the
+       content (matching .rh-hero's new column direction above) guarantees
+       it can never overlap anything, regardless of screen height. */
+    .rh-teaser-badge{
+      position:static;
+      align-self:flex-end;
+      width: 120px;
+      margin: 28px 18px 0 0;
+    }
+  }
   /* Same size/line-height as .hero h1 on the homepage (css/style.css) */
   .rh-hero h1{
     margin-top: 14px;
@@ -215,16 +253,25 @@
      taller than the space available. */
   .rh-box-mockup{
     position:absolute;
-    top: -140px;
-    left: -300px;
-    width: 800px;
+    top: -5px;
+    left: -164px;
+    width: 502px;
     max-width: none; /* overrides the sitewide img{max-width:100%} reset, which was silently capping this at its container's width */
     height:auto;
     z-index: 2;
     pointer-events:none;
   }
   @media (max-width: 860px){
-    .rh-box-mockup{ display:none; }
+    /* Scaled-down version of the desktop overlap treatment, sized
+       relative to the frame (its containing block) via percentages
+       so it scales consistently across 768/390/360 rather than
+       needing three hand-tuned pixel values. */
+    .rh-box-mockup{
+      top: 20%;
+      left: -8%;
+      width: 89%;
+      max-width: none;
+    }
   }
   /* Inner frame: same treatment at a smaller corner cut, holds the actual image area */
   .rh-box-frame-inner{
@@ -239,6 +286,10 @@
     font-size: 23px;
     line-height: 1.25;
   }
+  /* Hidden by default — only shown in the narrow 561-860px window
+     below, where the heading has enough room to sit on one line and
+     looks like a stray long line against the short checklist rows. */
+  .rh-box-title-break{ display:none; }
   .rh-box-checklist{
     list-style:none;
     margin: 24px 0 0;
@@ -267,7 +318,40 @@
   .rh-box-check svg{ width: 9px; height: 9px; }
 
   @media (max-width: 860px){
-    .rh-box-grid{ grid-template-columns: 1fr; gap: 32px; }
+    .rh-box-grid{ grid-template-columns: 1fr; gap: 0; }
+    /* The mockup now hangs well below the (shrunk) frame's own bottom
+       edge — margin-bottom in % resolves against the element's own
+       width, so this clears the overhang consistently at every mobile
+       width instead of needing a fixed px value that only works at one.
+       Replaces the grid gap above (a fixed px value doesn't scale the
+       same way, so mixing the two under- or over-shoots at one width
+       or the other). */
+    .rh-box-image-wrap{ margin-bottom: 35%; }
+    /* Fix #6: 4/2.3 (tuned for the wide desktop column) crops too tightly
+       once this renders full-width on a narrow screen — back to the
+       original, less-cropped 4/3 there. Desktop keeps 4/2.3. Shrunk a
+       further 30% (4/2.1) since the mockup no longer needs the tall
+       frame to have room to float above it. */
+    .rh-box-frame-inner{ aspect-ratio: 4 / 2.1; }
+    /* The mockup used to need 140px of headroom to float above the
+       frame; now that it sits almost flush with the frame's top edge,
+       that padding is mostly dead space. Desktop keeps 140px. */
+    .rh-box{ padding-top: 40px; padding-bottom: 90px; }
+    /* Nudges the text column toward center — a straight vw-based ramp
+       rather than a fixed px value, so it grows smoothly from nothing
+       at 440px wide up to a firmer shift by 860px, instead of snapping
+       to one fixed amount that reads as "too far right" once the
+       viewport (and the column it's shifting within) gets narrower.
+       Self-limits to 0 below 440px, so 390/360 are unaffected. */
+    .rh-box-text-col{ margin-left: clamp(0px, (100vw - 440px) * 0.62, 240px); }
+  }
+
+  /* Only in this narrower mobile band does the text column get its
+     own full-width single line for the heading (390/360 already wrap
+     it naturally) — so the manual break is scoped to just this range
+     instead of the whole 860px query. */
+  @media (min-width: 561px) and (max-width: 860px){
+    .rh-box-title-break{ display:block; }
   }
 
   /* ---------- THE STORY ----------
@@ -302,6 +386,29 @@
       linear-gradient(90deg, transparent 0%, transparent 25%, rgba(12,12,13,0.6) 40%, rgba(12,12,13,0.6) 60%, transparent 75%, transparent 100%),
       radial-gradient(ellipse at center, rgba(12,12,13,0.25) 0%, rgba(12,12,13,0.55) 55%, rgba(12,12,13,0.88) 100%);
   }
+  /* Fixes #4 and #5 — no existing breakpoint covers this section's own
+     rules, so this is a new one scoped to it only. Desktop's 25/40/60/75%
+     band, 50px 64px content padding, and 700px min-height are untouched
+     above/below this block. */
+  @media (max-width: 768px){
+    /* #4: the desktop band only covers the middle 20% of the section's
+       width — fine when the text column is narrow relative to a wide
+       desktop image, but on a narrow screen the text fills nearly the
+       full width, so most of it would fall outside that band. Widened so
+       almost the whole width is covered, with just a small fade at the
+       true edges. */
+    #story-spotlight .spotlight-overlay{
+      background:
+        linear-gradient(90deg, transparent 0%, transparent 8%, rgba(12,12,13,0.6) 20%, rgba(12,12,13,0.6) 80%, transparent 92%, transparent 100%),
+        radial-gradient(ellipse at center, rgba(12,12,13,0.25) 0%, rgba(12,12,13,0.55) 55%, rgba(12,12,13,0.88) 100%);
+    }
+    /* #5: .spotlight-content's shared 50px 64px padding (css/style.css)
+       eats a lot of a narrow viewport; and 700px min-height (tuned for a
+       wide desktop hero) forces excess scrolling on a short phone
+       screen relative to how little text there actually is. */
+    #story-spotlight .spotlight-content{ padding: 32px 24px; }
+    #story-spotlight{ min-height: 540px; }
+  }
 
   /* ---------- MEET THE THREAT / CAST ----------
      Part 1 reuses .npc-spotlight/.npc-spotlight-inner/.npc-portrait-col/
@@ -333,6 +440,10 @@
   .rh-cast-section .npc-text-col .spotlight-heading{ font-size: 32px; }
   @media (max-width: 560px){
     .rh-cast-title-break{ display:none; }
+    /* Fix #7: the fixed 32px (set to keep "Some faces you'll trust." on
+       one line at 520px desktop width) risks overflow on very narrow
+       phones. Desktop stays at 32px. */
+    .rh-cast-section .npc-text-col .spotlight-heading{ font-size: 27px; }
   }
   /* Extra room in case the new, longer subtitle wraps to two lines — the
      shared .spotlight-divider margin-top (10px) was tuned for a single
@@ -395,7 +506,28 @@
     color: var(--paper-dim);
   }
   @media (max-width: 860px){
-    .rh-cast-row{ grid-template-columns: 1fr; gap: 28px; max-width: 280px; margin-left:auto; margin-right:auto; }
+    /* gap bumped 28px -> 72px: each portrait's character art intentionally
+       escapes 28% above its own 200px frame (56px) as part of the shared
+       "escaping portrait" effect — fine with room to spare in the desktop
+       row, but in this tight single-column stack that 56px overlap ate
+       into the caption text of the item above it. Found by screenshotting
+       this at 360/390/768px — the caption behind Mayor Karga Hollis was
+       genuinely being covered by the next portrait's silhouette bleeding
+       up from below. */
+    .rh-cast-row{ grid-template-columns: 1fr; gap: 72px; max-width: 280px; margin-left:auto; margin-right:auto; }
+    /* .rh-cast-item has its own max-width:200px, narrower than this row's
+       280px column — as a grid item with a capped max-width, it defaults
+       to sitting flush at the start of its column instead of centering
+       within the extra space, reading as shifted left. */
+    .rh-cast-item{ justify-self:center; }
+    /* Fix #3: the -60px/90px/translateX(90px) trio was tuned to line the
+       monster portrait's column up against the cast row in the desktop
+       two-column layout (css/style.css's own 860px breakpoint stacks
+       .npc-spotlight-inner to one column here, so there's nothing left to
+       line up against). Reset to a plain, centered mobile stack. Desktop
+       values are untouched. */
+    .rh-cast-section .npc-text-col{ max-width: 100%; margin-left: 0; margin-top: 30px; }
+    .rh-cast-section .npc-portrait-col{ transform: none; }
   }
 
   /* ---------- ABOUT ----------
@@ -486,6 +618,25 @@
   }
   @media (max-width: 860px){
     .rh-proof-cards{ flex-direction:column; align-items:center; }
+    /* Fix #1: the desktop card is a fixed 540px with flex-shrink:0 — fluid
+       here instead, capped so it doesn't stretch too wide on tablet. Thumb/
+       gap/padding also scaled down together so the fixed 310px text column
+       (now width:auto + flex:1) has room to breathe down to ~360px wide
+       phones instead of being squeezed to ~76px. Desktop rule (540px,
+       flex-shrink:0, 310px text, full-size thumb/gap/padding) is untouched. */
+    .rh-proof-card{
+      width: 100%;
+      max-width: 380px;
+      flex-shrink: 1;
+      gap: 20px;
+      padding: 20px 18px 20px 20px;
+    }
+    .rh-proof-thumb{ width: 84px; }
+    .rh-proof-text{ width: auto; flex: 1; min-width: 0; }
+    .rh-about .rh-proof-number{ font-size: 44px; }
+    .rh-about .rh-proof-caption{ font-size: 14px; }
+    .rh-proof-launched span{ font-size: 14px; }
+    .rh-proof-launched svg{ width: 15px; height: 15px; }
   }
 
   /* ---------- FINAL CTA ----------
@@ -586,9 +737,50 @@
   .rh-final-card--mid{ transform: translateX(2px) translateY(-22px) rotate(5deg); z-index:2; }
   .rh-final-card--front{ transform: translateX(102px) rotate(16deg); z-index:3; }
   @media (max-width: 860px){
+    /* Same bug as the hero: .rh-final-cta and the shared .wrap class both
+       apply to this section, and .rh-final-cta's padding:90px 0 100px
+       (equal specificity, later in the cascade) cancels out wrap's own
+       padding:0 32px entirely — invisible while .rh-final-cta-grid's own
+       max-width:900px keeps content away from the true edge, but once
+       the grid stacks to full-width on mobile, content runs flush to the
+       screen edges. */
+    .rh-final-cta{ padding: 90px 24px 100px; }
     .rh-final-cta-grid{ grid-template-columns: 1fr; gap: 48px; text-align:center; }
     .rh-final-cta-text p,
     .rh-final-cta-form{ margin-left:auto; margin-right:auto; }
+    /* Fix #2 (part of general pass): price line is a left-aligned flex
+       row by default — center it to match the rest of this now-centered
+       column. */
+    .rh-final-cta-price{ justify-content:center; }
+    /* Fix #2: the desktop 80px nudge (added to line the fan up with the
+       text column) has nothing to line up with once the grid stacks —
+       back to 0. Card fan scaled down (~0.68x) and its container shrunk
+       to match, so the whole thing fits within a narrow viewport instead
+       of overflowing. Desktop's left:80px / 220x337 cards / ±98–102px
+       offsets are untouched. */
+    .rh-final-cta-cards{ left: 0; height: 300px; }
+    .rh-final-card{
+      width: 150px;
+      height: 230px;
+      margin-top: -115px;
+      margin-left: -75px;
+    }
+    .rh-final-card--back{ transform: translateX(-62px) rotate(-14deg); }
+    .rh-final-card--mid{ transform: translateX(1px) translateY(-14px) rotate(5deg); }
+    .rh-final-card--front{ transform: translateX(65px) rotate(16deg); }
+  }
+  /* The fanned cards are deliberately wider than their own grid column
+     and bleed past it by design — fine on real desktop, where .wrap's
+     centering leaves hundreds of spare px on each side to absorb the
+     bleed. Between this breakpoint and ~1200px (tablets, foldables,
+     landscape phones, small windows) that spare margin hasn't opened
+     up yet, so the front card's bleed pushes past the actual page edge
+     and widens the whole document — a horizontal scrollbar/black-bar
+     for the entire page, not just this section. Clipping it here (only
+     in that gap) removes the extra scrollable width; above 1200px
+     there's nothing to clip since it no longer reaches the edge. */
+  @media (min-width: 861px) and (max-width: 1200px){
+    .rh-final-cta{ overflow-x: hidden; }
   }
 
   /* ---------- FOOTER ---------- */
@@ -683,7 +875,7 @@
         </div>
         <div class="rh-box-text-col">
           <span class="eyebrow">What's in the Box</span>
-          <h2>Everything you need to run this Halloween one-shot</h2>
+          <h2>Everything you need to run<br class="rh-box-title-break"> this Halloween one-shot</h2>
           <ul class="rh-box-checklist">
             <li>
               <span class="rh-box-check">
@@ -791,7 +983,7 @@
       </div>
       <div class="npc-text-col">
         <span class="eyebrow">The Cast</span>
-        <h2 class="spotlight-heading">Some faces you'll trust.<br class="rh-cast-title-break">Some you shouldn't.</h2>
+        <h2 class="spotlight-heading">Some faces you'll trust. <br class="rh-cast-title-break">Some you shouldn't.</h2>
         <p class="spotlight-subtitle">A full cast of original NPCs and monsters, ready to bring to life<br>the moment you open the book.</p>
         <div class="spotlight-divider">
           <svg viewBox="0 0 120 20" fill="none" aria-hidden="true">
