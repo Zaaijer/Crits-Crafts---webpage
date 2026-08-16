@@ -52,6 +52,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Meta Pixel Code — consent-gated, not loaded here.
+     The base snippet (fbq shim + init + PageView) now lives inside
+     initMetaPixel() near the end of <body>, and only runs once the
+     visitor has accepted the cookie banner (or already had on a past
+     visit) — see the cookie-consent script block below the signup-form
+     one. No noscript fallback pixel either: that would fire
+     unconditionally for JS-disabled visitors, who have no way to grant
+     consent through this banner in the first place. -->
+<!-- End Meta Pixel Code -->
+
 <!-- Reused for design tokens (--ink/--gold/etc.) and a few shared classes only -->
 <link rel="stylesheet" href="css/style.css">
 
@@ -882,6 +893,74 @@
   @media (max-width: 560px){
     .rh-email-field{ flex-direction:column; }
   }
+
+  /* ---------- COOKIE CONSENT BANNER ----------
+     Hidden by default (both the [hidden] attribute below and this rule —
+     see the note on .rh-email-field[hidden] earlier in this file for why
+     an explicit display:none is needed to reliably win over this class's
+     own display:flex). Shown only via JS, once, on a visitor's first
+     visit — see the consent script near the end of <body>. */
+  .rh-cookie-banner{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 24px;
+    padding: 18px 32px;
+    background: #16161A;
+    border-top: 1px solid rgba(217,164,65,0.3);
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 -8px 24px rgba(0,0,0,0.35);
+  }
+  .rh-cookie-banner[hidden]{ display:none; }
+  .rh-cookie-text{
+    margin:0;
+    max-width: 640px;
+    font-size: 13.5px;
+    line-height:1.5;
+    color: var(--paper);
+  }
+  .rh-cookie-actions{
+    display:flex;
+    align-items:center;
+    gap: 12px;
+    flex-shrink:0;
+  }
+  .rh-cookie-reject{
+    background:transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--paper-dimmer);
+    font-family:'Barlow', sans-serif;
+    font-size: 13px;
+    font-weight:600;
+    padding: 9px 18px;
+    border-radius: 4px;
+    cursor:pointer;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .rh-cookie-reject:hover{ border-color: rgba(255,255,255,0.3); color: var(--paper); }
+  /* .btn-cta (css/style.css) was built for <a> tags — none of its
+     properties are anchor-specific, but a native <button> brings its own
+     OS-styled border/font that .btn-cta never had to reset. Undoing just
+     those two here rather than touching the shared class. */
+  .rh-cookie-accept{
+    border:none;
+    font-family:'Barlow', sans-serif;
+    cursor:pointer;
+  }
+  @media (max-width: 640px){
+    .rh-cookie-banner{
+      flex-direction: column;
+      align-items:flex-start;
+      padding: 18px 20px;
+    }
+    .rh-cookie-text{ max-width:none; }
+    .rh-cookie-actions{ width:100%; justify-content:flex-end; }
+  }
 </style>
 </head>
 <body class="rotten-harvest">
@@ -1253,6 +1332,18 @@
   </div>
 </footer>
 
+<!-- ---------- COOKIE CONSENT BANNER ----------
+     Hidden by default; shown via JS only on a visitor's first visit (see
+     the consent script below). Reject/Accept both hide it and remember
+     the choice — see initMetaPixel()/localStorage logic further down. -->
+<div class="rh-cookie-banner" id="rh-cookie-banner" hidden role="region" aria-label="Cookie consent">
+  <p class="rh-cookie-text">We use cookies to understand how visitors use this page and improve it. No cookies are set until you choose.</p>
+  <div class="rh-cookie-actions">
+    <button type="button" class="rh-cookie-reject" id="rh-cookie-reject">Reject</button>
+    <button type="button" class="btn-cta rh-cookie-accept" id="rh-cookie-accept">Accept</button>
+  </div>
+</div>
+
 <script>
   // Wires up one signup form so it submits invisibly (into its hidden
   // iframe — see the "target" attribute on the <form>) instead of opening
@@ -1275,7 +1366,16 @@
       var fieldRow = form.querySelector('.rh-email-field');
       var success = document.getElementById(successId);
       if (fieldRow) fieldRow.hidden = true;
-      if (success) success.hidden = false;
+      if (success) {
+        success.hidden = false;
+        // wireInlineSignupForm() is called once per form below, so this
+        // fires independently the moment each form's own success state
+        // shows. Guarded because fbq only exists once cookie consent has
+        // been accepted (see initMetaPixel() below) — rejecting cookies
+        // must never block the actual Mailchimp signup above, just this
+        // tracking call.
+        if (window.fbq) fbq('track', 'Lead');
+      }
       // No preventDefault() here — the submission still goes through
       // normally, it just lands in the hidden iframe instead of a new tab.
     });
@@ -1283,6 +1383,59 @@
 
   wireInlineSignupForm('rh-hero-signup-form', 'rh-hero-signup-success');
   wireInlineSignupForm('rh-final-signup-form', 'rh-final-signup-success');
+</script>
+
+<script>
+  // ---------- COOKIE CONSENT + META PIXEL ----------
+  // The Pixel base snippet (fbq shim + init + PageView) only runs from
+  // inside this function — nothing Pixel-related happens at parse time
+  // in <head> anymore. Safe to call more than once (the shim's own
+  // `if(f.fbq)return` no-ops a second call), so both the "already
+  // consented on a past visit" path and the "just clicked Accept" path
+  // can call it without needing to track whether it already ran.
+  var CONSENT_KEY = 'rh-cookie-consent';
+
+  function initMetaPixel() {
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1683971676620176');
+    fbq('track', 'PageView');
+  }
+
+  var consent = localStorage.getItem(CONSENT_KEY);
+  var banner = document.getElementById('rh-cookie-banner');
+
+  if (consent === 'accepted') {
+    initMetaPixel();
+  } else if (consent !== 'rejected') {
+    // No stored choice yet — ask, once. Both 'accepted' and 'rejected'
+    // skip this and never show the banner again on a later visit.
+    if (banner) banner.hidden = false;
+  }
+
+  var rejectBtn = document.getElementById('rh-cookie-reject');
+  var acceptBtn = document.getElementById('rh-cookie-accept');
+  if (rejectBtn) {
+    rejectBtn.addEventListener('click', function () {
+      localStorage.setItem(CONSENT_KEY, 'rejected');
+      if (banner) banner.hidden = true;
+      // Deliberately no Pixel call here — rejecting means the Pixel
+      // never loads at all, not even a partial/base load.
+    });
+  }
+  if (acceptBtn) {
+    acceptBtn.addEventListener('click', function () {
+      localStorage.setItem(CONSENT_KEY, 'accepted');
+      if (banner) banner.hidden = true;
+      initMetaPixel();
+    });
+  }
 </script>
 
 </body>

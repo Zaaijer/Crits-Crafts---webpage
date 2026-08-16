@@ -38,6 +38,16 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Meta Pixel Code — consent-gated, not loaded here.
+     The base snippet (fbq shim + init + PageView) now lives inside
+     initMetaPixel() near the end of <body>, and only runs once the
+     visitor has accepted the cookie banner (or already had on a past
+     visit) — see the cookie-consent script block at the end of <body>.
+     No noscript fallback pixel either: that would fire unconditionally
+     for JS-disabled visitors, who have no way to grant consent through
+     this banner in the first place. -->
+
 <!-- Reused for design tokens (--ink/--gold/etc.) and a few shared classes only -->
 <link rel="stylesheet" href="css/style.css">
 
@@ -126,6 +136,70 @@
     font-size: 12.5px;
     color: var(--paper-dimmer);
   }
+
+  /* ---------- COOKIE CONSENT BANNER ----------
+     Identical to rotten-harvest.html's — see that file for the fuller
+     explanation of the [hidden]-plus-display:none pairing and the .btn-cta
+     button reset. Kept in sync between the two pages rather than shared
+     from one file, matching how each of these pages is otherwise fully
+     self-contained (no shared page-specific CSS/JS file between them). */
+  .rh-cookie-banner{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 24px;
+    padding: 18px 32px;
+    background: #16161A;
+    border-top: 1px solid rgba(217,164,65,0.3);
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 -8px 24px rgba(0,0,0,0.35);
+  }
+  .rh-cookie-banner[hidden]{ display:none; }
+  .rh-cookie-text{
+    margin:0;
+    max-width: 640px;
+    font-size: 13.5px;
+    line-height:1.5;
+    color: var(--paper);
+  }
+  .rh-cookie-actions{
+    display:flex;
+    align-items:center;
+    gap: 12px;
+    flex-shrink:0;
+  }
+  .rh-cookie-reject{
+    background:transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--paper-dimmer);
+    font-family:'Barlow', sans-serif;
+    font-size: 13px;
+    font-weight:600;
+    padding: 9px 18px;
+    border-radius: 4px;
+    cursor:pointer;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .rh-cookie-reject:hover{ border-color: rgba(255,255,255,0.3); color: var(--paper); }
+  .rh-cookie-accept{
+    border:none;
+    font-family:'Barlow', sans-serif;
+    cursor:pointer;
+  }
+  @media (max-width: 640px){
+    .rh-cookie-banner{
+      flex-direction: column;
+      align-items:flex-start;
+      padding: 18px 20px;
+    }
+    .rh-cookie-text{ max-width:none; }
+    .rh-cookie-actions{ width:100%; justify-content:flex-end; }
+  }
 </style>
 </head>
 <body>
@@ -160,6 +234,63 @@
       </div>
     </div>
   </section>
+
+  <!-- ---------- COOKIE CONSENT BANNER ----------
+       Hidden by default; shown via JS only on a visitor's first visit —
+       see the consent script below. -->
+  <div class="rh-cookie-banner" id="rh-cookie-banner" hidden role="region" aria-label="Cookie consent">
+    <p class="rh-cookie-text">We use cookies to understand how visitors use this page and improve it. No cookies are set until you choose.</p>
+    <div class="rh-cookie-actions">
+      <button type="button" class="rh-cookie-reject" id="rh-cookie-reject">Reject</button>
+      <button type="button" class="btn-cta rh-cookie-accept" id="rh-cookie-accept">Accept</button>
+    </div>
+  </div>
+
+  <script>
+    // ---------- COOKIE CONSENT + META PIXEL ----------
+    // Same logic as rotten-harvest.html — see that file for the fuller
+    // explanation. This page has no signup forms/Lead events, so there's
+    // nothing else here to gate besides the Pixel itself.
+    var CONSENT_KEY = 'rh-cookie-consent';
+
+    function initMetaPixel() {
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '1683971676620176');
+      fbq('track', 'PageView');
+    }
+
+    var consent = localStorage.getItem(CONSENT_KEY);
+    var banner = document.getElementById('rh-cookie-banner');
+
+    if (consent === 'accepted') {
+      initMetaPixel();
+    } else if (consent !== 'rejected') {
+      if (banner) banner.hidden = false;
+    }
+
+    var rejectBtn = document.getElementById('rh-cookie-reject');
+    var acceptBtn = document.getElementById('rh-cookie-accept');
+    if (rejectBtn) {
+      rejectBtn.addEventListener('click', function () {
+        localStorage.setItem(CONSENT_KEY, 'rejected');
+        if (banner) banner.hidden = true;
+      });
+    }
+    if (acceptBtn) {
+      acceptBtn.addEventListener('click', function () {
+        localStorage.setItem(CONSENT_KEY, 'accepted');
+        if (banner) banner.hidden = true;
+        initMetaPixel();
+      });
+    }
+  </script>
 
 </body>
 </html>
