@@ -226,6 +226,40 @@
       </div>
     </section>
 
+    <!--
+      Peek Inside: an optional hosted-flipbook preview (Heyzine, via
+      iframe) of a few real module pages, so visitors can judge the
+      layout and writing before buying. Entirely data-driven and hidden
+      by default (see the "hidden" attribute below) — product-loader.js
+      only fills in the iframe and un-hides this whole section when this
+      product has a "previewEmbedUrl" set in products.json; otherwise it
+      never shows, not even an empty gap. Eyebrow/heading/subtitle are
+      static text (same on every adventure), not pulled from product
+      data — only the embed itself and the optional note under it are.
+    -->
+    <section class="peek-inside wrap" id="peek-inside" hidden>
+      <span class="eyebrow">Peek Inside</span>
+      <h2 class="spotlight-heading">Read the First Pages</h2>
+      <p class="spotlight-subtitle">See the layout, the read-aloud text, and the maps before you buy.</p>
+      <div class="spotlight-divider">
+        <svg viewBox="0 0 120 20" fill="none" aria-hidden="true">
+          <line x1="10" y1="6" x2="50" y2="6" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" opacity="0.9"/>
+          <line x1="70" y1="6" x2="110" y2="6" stroke="var(--gold)" stroke-width="1.4" stroke-linecap="round" opacity="0.9"/>
+          <line x1="60" y1="7" x2="60" y2="14" stroke="var(--gold)" stroke-width="1.2" opacity="0.9"/>
+          <circle cx="60" cy="17" r="2.2" fill="var(--gold)" opacity="0.9"/>
+        </svg>
+      </div>
+      <!-- No "src" here on purpose — product-loader.js only ever sets one
+           once it has a real previewEmbedUrl, so nothing loads at all for
+           adventures without a preview. "loading=lazy" still applies
+           however the src gets set, so this doesn't fetch until it's
+           scrolled near the viewport. -->
+      <div class="peek-inside-embed">
+        <iframe id="peek-inside-iframe" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <p class="spotlight-more" id="peek-inside-note" hidden></p>
+    </section>
+
   </div>
 
 </main>

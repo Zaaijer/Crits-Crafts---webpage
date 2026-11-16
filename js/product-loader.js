@@ -208,6 +208,28 @@ function renderNpcSpotlight(data) {
   }
 }
 
+// "Peek Inside" — an optional hosted-flipbook (Heyzine) preview embed.
+// Only runs if this product has a previewEmbedUrl; otherwise the section
+// (which starts "hidden" in the HTML) is left exactly as-is, so nothing
+// loads and nothing shows — no empty gap, no orphan heading. The iframe
+// never gets a "src" at all unless there's a real URL, which is what
+// actually guarantees nothing is fetched for products without a preview.
+function renderPeekInside(product) {
+  if (!product.previewEmbedUrl) return;
+
+  const iframe = document.getElementById('peek-inside-iframe');
+  iframe.src = product.previewEmbedUrl;
+  iframe.title = `Preview pages of ${product.title}`;
+
+  if (product.previewNote) {
+    const note = document.getElementById('peek-inside-note');
+    note.textContent = product.previewNote;
+    note.hidden = false;
+  }
+
+  document.getElementById('peek-inside').hidden = false;
+}
+
 // Points both "Buy Now" buttons (info bar + sticky bar) at the product's
 // real checkout link, if it has one. Products without a buyLink yet (like
 // ones still using placeholder data) just keep the "#" placeholder so the
@@ -291,6 +313,7 @@ async function initProductPage() {
   renderSpotlight('locations', 'locations-spotlight', product.locationsSpotlight);
   renderSpotlight('maps', 'maps-spotlight', product.mapsSpotlight);
   renderNpcSpotlight(product.npcSpotlight);
+  renderPeekInside(product);
   renderBuyLinks(product.buyLink);
 
   document.getElementById('product-content').hidden = false;

@@ -54,7 +54,9 @@
       "image": "Images/Murder on the Aurora Dawn/NPC-Aurora.png",
       "tone": "moss",
       "moreCount": 3
-    }
+    },
+    "previewEmbedUrl": "",
+    "previewNote": ""
   },
   "the-carnival-of-forgotten-smiles": {
     "title": "The Carnival of Forgotten Smiles",
@@ -110,6 +112,67 @@
       "image": "",
       "tone": "blue",
       "moreCount": 3
-    }
+    },
+    "previewEmbedUrl": "",
+    "previewNote": ""
+  },
+  "a-rotten-harvest": {
+    "title": "A Rotten Harvest",
+    "genre": "Cozy Horror",
+    "tagline": "A cozy-horror harvest festival one-shot for 5th Edition",
+    "price": 15,
+    "levelRange": "1–4",
+    "partySize": "3–4 players",
+    "sessionLength": "3–4hr session",
+    "hook": [
+      "The lanterns are lit, the cider is warm, and Amberfield's Harvest Festival is about to crown its winner: a pumpkin twice the size of anything else on the stage. But farmer Wendell Furrow never came to claim it. The mayor asks your party to walk out to his farm and check on him. What you find there makes one thing clear. Whatever took root in Wendell's fields is already sitting in the middle of town, and tonight it wakes up."
+    ],
+    "whatsIncluded": [
+      "Full adventure PDF",
+      "VTT-ready battle maps (Roll20 & Foundry)",
+      "Character token sheet",
+      "Print-ready version",
+      "Atmospheric music playlist",
+      "Theater-of-the-Mind location backdrops",
+      "Printable magic item cards"
+    ],
+    "pacing": ["Festival Night", "The Road to the Farm", "Something in the Barn", "The Pumpkin Wakes"],
+    "profile": {
+      "investigation": 50,
+      "social": 55,
+      "combat": 60,
+      "tension": 70,
+      "prepRequired": 30
+    },
+    "images": {
+      "gallery": [
+        { "label": "Cover image", "tone": "amber", "src": "Images/A Rotten Harvest/Cover_image-Harvest.webp" },
+        { "label": "Interior scene", "tone": "blue", "src": "Images/A Rotten Harvest/Festival_Girl.webp" },
+        { "label": "Key art", "tone": "moss", "src": "Images/A Rotten Harvest/Pumpkin devourer.png" }
+      ]
+    },
+    "locationsSpotlight": {
+      "name": "Wendell's Barn",
+      "description": "A red glow leaks between the boards. Something inside is still breathing.",
+      "image": "Images/A Rotten Harvest/Barn by night.png",
+      "tone": "amber",
+      "moreCount": 6
+    },
+    "mapsSpotlight": {
+      "name": "Festival Square Battle Map",
+      "description": "Day and night, gridded and gridless, built for the final showdown.",
+      "image": "Images/A Rotten Harvest/Amberfield Map.jpg",
+      "tone": "blue",
+      "moreCount": 1
+    },
+    "npcSpotlight": {
+      "name": "Wendell Furrow",
+      "description": "All he wanted was the biggest pumpkin in Amberfield. Nobody has seen him since he got it.",
+      "image": "Images/A Rotten Harvest/Wendell.png",
+      "tone": "moss",
+      "moreCount": 3
+    },
+    "previewEmbedUrl": "",
+    "previewNote": ""
   }
 }

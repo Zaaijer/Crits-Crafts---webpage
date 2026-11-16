@@ -1200,6 +1200,50 @@
   }
 
   /*
+    Peek Inside — an optional hosted-flipbook preview (Heyzine iframe).
+    Plain centered text block (not the full-bleed .spotlight-section
+    pattern used by Locations/Maps), so text-align:center is set
+    explicitly here rather than inherited from that shared class.
+  */
+  .peek-inside{
+    padding: 60px 0 80px;
+    text-align:center;
+  }
+  .peek-inside .eyebrow{ margin-bottom: 8px; }
+  .peek-inside .spotlight-subtitle{
+    max-width: 560px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  /*
+    16/10 ≈ a two-page spread, which is what Heyzine shows by default on
+    a wide viewport. Height comes from aspect-ratio (not a fixed px
+    value) so the box resizes with its width instead of leaving dead
+    space or cropping at different screen sizes. Background is
+    --ink-raised so there's no white flash while the iframe loads.
+  */
+  .peek-inside-embed{
+    margin-top: 28px;
+    aspect-ratio: 16 / 10;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--ink-raised);
+    overflow:hidden;
+  }
+  .peek-inside-embed iframe{
+    width:100%;
+    height:100%;
+    border:0;
+    display:block;
+  }
+  @media (max-width: 860px){
+    /* Flipbooks fall back to a single page (not a spread) on narrow
+       screens, which reads taller than wide — unlike the 16/10 above,
+       this is a starting guess to revisit once a real embed exists. */
+    .peek-inside-embed{ aspect-ratio: 3 / 4; }
+  }
+
+  /*
     Sticky buy bar. This is ONE bar styled two different ways depending on
     screen width — the two @media blocks further down are what actually
     decide whether it sticks to the top or the bottom (see the HTML
